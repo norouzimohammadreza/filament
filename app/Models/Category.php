@@ -9,6 +9,10 @@ class Category extends Model
 {
     use softDeletes;
 
+    protected $fillable = [
+        'name',
+    ];
+
     public function transactions()
     {
         $this->belongsTo(Category::class);

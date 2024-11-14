@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Filament\Resources\CategoryResource\RelationManagers;
+use App\Http\Requests\CategoryStoreRequest;
 use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -22,6 +23,8 @@ class CategoryResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                   ->minLength('3')->maxLength(255)->required()
+                ->unique(ignoreRecord: true)
             ]);
     }
 
@@ -29,7 +32,8 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')->sortable()
+
             ])
             ->filters([
                 //
