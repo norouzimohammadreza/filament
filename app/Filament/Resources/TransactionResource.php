@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\CategoryResource\RelationManagers\TransactionsRelationManager;
 use App\Filament\Resources\TransactionResource\Pages;
 use App\Models\Category;
 use App\Models\Transaction;
@@ -22,11 +23,13 @@ class TransactionResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('amount')
-                    ->required()->maxLength(255)->integer(),
+                    ->required()->maxLength(255)->numeric(),
                 Forms\Components\TextInput::make('description')
                     ->required()->maxLength(255),
                 Forms\Components\Select::make('category_id')
-                    ->options(Category::all()->pluck('name', 'id'))->required(),
+//                    ->options(Category::all()->pluck('name', 'id'))
+                    ->relationship('category', 'name')
+                    ->required(),
             ]);
     }
 
@@ -34,10 +37,11 @@ class TransactionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('amount'),
+                Tables\Columns\TextColumn::make('amount')->sortable(),
                 Tables\Columns\TextColumn::make('description'),
-                Tables\Columns\TextColumn::make('categories.name'),
-                Tables\Columns\TextColumn::make('created_at'),
+                Tables\Columns\TextColumn::make('category.name'),
+                Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
+
             ])
             ->filters([
                 //
@@ -55,7 +59,7 @@ class TransactionResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            TransactionsRelationManager::class
         ];
     }
 

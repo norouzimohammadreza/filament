@@ -15,7 +15,9 @@ return new class extends Migration {
             $table->id();
             $table->float('amount');
             $table->string('description');
-            $table->foreignIdFor(Category::class);
+            $table->unsignedBigInteger('category_id')->index();
+            $table->foreign('category_id')->references('id')
+                ->on('categories')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

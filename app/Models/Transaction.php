@@ -11,10 +11,10 @@ class Transaction extends Model
     protected $fillable = [
         'amount',
         'description',
-        'category_id',
+
     ];
     public function category()
     {
-        $this->hasMany(Transaction::class);
+       return $this->belongsTo(Category::class);
     }
 }
