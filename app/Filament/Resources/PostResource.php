@@ -3,20 +3,15 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
-use App\Filament\Resources\PostResource\RelationManagers;
+use App\Filament\Resources\PostResource\RelationManagers\CategoriesRelationManager;
 use App\Filament\Resources\PostResource\RelationManagers\TagsRelationManager;
-use App\Filament\Resources\UserResource\RelationManagers\PostsRelationManager;
 use App\Models\Post;
-use App\Models\User;
-use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PostResource extends Resource
 {
@@ -34,7 +29,11 @@ class PostResource extends Resource
                     ->placeholder('Title'),
                 Forms\Components\Select::make('tags')
                     ->multiple()
-                    ->relationship('tags', 'name')
+                    ->relationship('tags', 'name'),
+                Forms\Components\Select::make('categories')
+                    ->multiple()
+                    ->relationship('categories', 'name')
+                    ->required()
 
             ]);
     }
@@ -65,6 +64,7 @@ class PostResource extends Resource
     {
         return [
             TagsRelationManager::class,
+            CategoriesRelationManager::class,
         ];
     }
 

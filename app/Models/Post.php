@@ -23,4 +23,8 @@ class Post extends Model
     {
        return $this->belongsToMany(Tag::class,'post_tag')->withTimestamps();
     }
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class,'category_post')->withTimestamps();
+    }
 }

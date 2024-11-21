@@ -18,4 +18,8 @@ class Category extends Model
     {
         $this->hasMany(Transaction::class);
     }
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class,'category_post')->withTimestamps();
+    }
 }

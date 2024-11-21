@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TagResource\RelationManagers\PostsRelationManager;
-use App\Filament\Resources\TagResourseResource\Pages;
 use App\Models\Tag;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -22,9 +21,9 @@ class TagResourseResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
-                ->required()
-                ->maxLength(255)
-                ->minLength(3)
+                    ->required()
+                    ->maxLength(255)
+                    ->minLength(3)
             ]);
     }
 
@@ -57,9 +56,9 @@ class TagResourseResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTagResourses::route('/'),
-            'create' => Pages\CreateTagResourse::route('/create'),
-            'edit' => Pages\EditTagResourse::route('/{record}/edit'),
+            'index' => TagResource\Pages\ListTagResourses::route('/'),
+            'create' => TagResource\Pages\CreateTagResourse::route('/create'),
+            'edit' => TagResource\Pages\EditTagResourse::route('/{record}/edit'),
         ];
     }
 }
