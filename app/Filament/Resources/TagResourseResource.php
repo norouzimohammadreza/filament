@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\TagResource\RelationManagers\PostsRelationManager;
 use App\Filament\Resources\TagResourseResource\Pages;
 use App\Models\Tag;
 use Filament\Forms\Components\TextInput;
@@ -49,7 +50,7 @@ class TagResourseResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            PostsRelationManager::class,
         ];
     }
 

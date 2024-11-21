@@ -13,8 +13,8 @@ class Tag extends Model
     protected $fillable = [
         'name',
     ];
-    public function post()
+    public function posts()
     {
-        return $this->belongsToMany(Post::class,'post_tag');
+        return $this->belongsToMany(Post::class,'post_tag')->withTimestamps();
     }
 }

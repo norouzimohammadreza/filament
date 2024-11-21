@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource\RelationManagers;
+use App\Filament\Resources\PostResource\RelationManagers\TagsRelationManager;
 use App\Filament\Resources\UserResource\RelationManagers\PostsRelationManager;
 use App\Models\Post;
 use App\Models\User;
@@ -28,9 +29,12 @@ class PostResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title')
-                ->required()
-                ->maxLength(255)
-                ->placeholder('Title'),
+                    ->required()
+                    ->maxLength(255)
+                    ->placeholder('Title'),
+                Forms\Components\Select::make('tags')
+                    ->multiple()
+                    ->relationship('tags', 'name')
 
             ]);
     }
@@ -60,7 +64,7 @@ class PostResource extends Resource
     public static function getRelations(): array
     {
         return [
-//
+            TagsRelationManager::class,
         ];
     }
 
