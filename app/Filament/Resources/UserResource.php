@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Models\Role;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -30,10 +29,12 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('password')->required()
                     ->password()
                     ->minLength(6)
+                    ->visibleOn('create')
                     ->maxLength(12),
                 Forms\Components\TextInput::make('password_confirmation')
                     ->password()
                     ->required()
+                    ->visibleOn('create')
                     ->same('password')
                     ->label('Confirm Password'),
 
@@ -53,7 +54,6 @@ class UserResource extends Resource
                 TextColumn::make('email')->searchable(),
                 TextColumn::make('roles.name'),
             ])
-
             ->filters([
                 //
             ])
