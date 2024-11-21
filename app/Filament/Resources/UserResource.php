@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
+use App\Models\Role;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -26,14 +26,23 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')->required()
                     ->maxLength(255),
+
                 Forms\Components\TextInput::make('password')->required()
-                ->minLength(6)
-                ->maxLength(12),
+                    ->password()
+                    ->minLength(6)
+                    ->maxLength(12),
+                Forms\Components\TextInput::make('password_confirmation')
+                    ->password()
+                    ->required()
+                    ->same('password')
+                    ->label('Confirm Password'),
+
                 Forms\Components\Select::make('role')
-                ->relationship('roles', 'name')
-                ->preload()
-                ->required(),
+                    ->relationship('roles', 'name')
+                    ->preload()
+                    ->required(),
             ]);
+
     }
 
     public static function table(Table $table): Table
@@ -44,11 +53,13 @@ class UserResource extends Resource
                 TextColumn::make('email')->searchable(),
                 TextColumn::make('roles.name'),
             ])
+
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -70,6 +81,7 @@ class UserResource extends Resource
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
+            'password' => Pages\EditUser::route('/{record}/change-password'),
         ];
     }
 }

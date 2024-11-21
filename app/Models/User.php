@@ -33,4 +33,8 @@ class User extends Authenticatable implements FilamentUser
             'password' => 'hashed',
         ];
     }
+    public function posts()
+    {
+        $this->hasMany(Post::class);
+    }
 }
