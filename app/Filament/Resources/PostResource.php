@@ -6,6 +6,7 @@ use App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource\RelationManagers;
 use App\Filament\Resources\UserResource\RelationManagers\PostsRelationManager;
 use App\Models\Post;
+use App\Models\User;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -30,11 +31,6 @@ class PostResource extends Resource
                 ->required()
                 ->maxLength(255)
                 ->placeholder('Title'),
-/*                Forms\Components\TextInput::make('user_id')
-                ->required()
-                ->default(Filament::auth()->user()->id)
-                ->readOnly()
-                ->hidden()*/
 
             ]);
     }
@@ -43,7 +39,10 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title')
+                TextColumn::make('title'),
+                TextColumn::make('user.name')->label('Author'),
+                TextColumn::make('created_at')->label('Published'),
+
             ])
             ->filters([
                 //
