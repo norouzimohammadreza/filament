@@ -6,10 +6,12 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
@@ -59,6 +61,27 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('تغییر مرز عبور')
+                ->icon('heroicon-o-check-circle')
+                ->form([
+                    Forms\Components\TextInput::make('password')->required()
+                        ->password()
+                        ->minLength(6)
+                        ->maxLength(12),
+                    Forms\Components\TextInput::make('password_confirmation')
+                        ->password()
+                        ->required()
+                        ->same('password')
+                        ->label('Confirm Password'),
+
+                    ])
+                    ->action(function (User $user,array $data):void {
+                        $user->password = Hash::make($data['password']);
+                        $user->save();
+                        Notification::make()->title('کلمه عبور با موفقیت تغییر کرد.')
+                            ->success()
+                            ->send();
+                    })
 
             ])
             ->bulkActions([
@@ -81,7 +104,6 @@ class UserResource extends Resource
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
-            'password' => Pages\EditUser::route('/{record}/change-password'),
         ];
     }
 }
