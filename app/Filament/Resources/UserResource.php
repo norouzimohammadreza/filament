@@ -62,20 +62,20 @@ class UserResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('تغییر مرز عبور')
-                ->icon('heroicon-o-check-circle')
-                ->form([
-                    Forms\Components\TextInput::make('password')->required()
-                        ->password()
-                        ->minLength(6)
-                        ->maxLength(12),
-                    Forms\Components\TextInput::make('password_confirmation')
-                        ->password()
-                        ->required()
-                        ->same('password')
-                        ->label('Confirm Password'),
+                    ->icon('heroicon-o-check-circle')
+                    ->form([
+                        Forms\Components\TextInput::make('password')->required()
+                            ->password()
+                            ->minLength(6)
+                            ->maxLength(12),
+                        Forms\Components\TextInput::make('password_confirmation')
+                            ->password()
+                            ->required()
+                            ->same('password')
+                            ->label('Confirm Password'),
 
                     ])
-                    ->action(function (User $user,array $data):void {
+                    ->action(function (User $user, array $data): void {
                         $user->password = Hash::make($data['password']);
                         $user->save();
                         Notification::make()->title('کلمه عبور با موفقیت تغییر کرد.')
