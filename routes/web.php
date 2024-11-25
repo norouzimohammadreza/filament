@@ -1,8 +1,10 @@
 <?php
 
 use App\Models\Category;
+use App\Models\Post;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Route;
+use Spatie\Activitylog\Facades\CauserResolver;
 use Spatie\Activitylog\Facades\LogBatch;
 use Spatie\Activitylog\Models\Activity;
 
@@ -30,4 +32,14 @@ Route::get('/test-batch', function () {
     $category->delete();
     LogBatch::endBatch();
 
+});
+
+//causer-log
+Route::get('/causer-log', function () {
+    $post = Post::find(1);
+    $causer = $post->user;
+    CauserResolver::setCauser($causer);
+    $post->update(['title' => 'شرق بهشت']);
+    echo Activity::all()->last()->causer; // Post Model
+    echo Activity::all()->last()->causer->id; // Post#1 Owner
 });
