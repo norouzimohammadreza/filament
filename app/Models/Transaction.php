@@ -27,7 +27,9 @@ class Transaction extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly($this->fillable);
+            ->logOnly(['amount', 'description', 'category.name'])
+            ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}")
+            ->useLogName('Crud on Transaction');
 
     }
 }

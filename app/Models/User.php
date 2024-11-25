@@ -9,12 +9,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\CausesActivity;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
 {
-    use HasFactory, Notifiable, SoftDeletes, HasRoles, HasPanelShield, LogsActivity;
+    use HasFactory, Notifiable, SoftDeletes, HasRoles, HasPanelShield, LogsActivity, CausesActivity;
 
     protected $fillable = [
         'name',
