@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\ActivityLogsFunctions\ActivityLog;
+use App\ActivityLogsFunctions\ActivityLogHelper;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,16 +16,13 @@ class ActivityLogMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-
-        $causer = auth()->user();
-        $url = request()->getPathInfo();
-        $queryString = request()->query() ?? null;
         $response = $next($request);
-        $setLog = new ActivityLog();
-        $setLog->setLog($causer, $url, $queryString, $response->getStatusCode());
+
+        ActivityLogHelper::logResponse($response);
         if ($response->getStatusCode() > 400) {
-            $setLog->setLog($causer, $url, $queryString, $response->getStatusCode());
+            ActivityLogHelper::logErrorResponse($response);
         }
+
         return $response;
     }
 }

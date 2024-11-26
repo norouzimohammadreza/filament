@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\ActivityLogsFunctions\ActivityLog;
+use App\ActivityLogsFunctions\ActivityLogHelper;
 use App\Filament\Resources\LogResource\Pages;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -44,10 +44,9 @@ class LogResource extends Resource
                 Tables\Actions\DeleteAction::make(),
                 Action::make('view')
                     ->url(function (Activity $record) {
-                        return ActivityLog::getSubjectUrl($record->subject_type, $record->subject_id);
+                        return ActivityLogHelper::getViewUrl($record);
                     })
                     ->icon('heroicon-o-eye')
-                    ->disabled(fn(Activity $record) => $record->subject_id === null),
 
             ])
             ->filters([
