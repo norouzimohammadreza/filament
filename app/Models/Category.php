@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Category extends Model
@@ -15,7 +16,10 @@ class Category extends Model
     protected $fillable = [
         'name',
     ];
-
+    public function tapActivity(Activity $activity, string $eventName)
+    {
+        $activity->ip = inet_pton(request()->ip());
+    }
     public function transactions()
     {
         $this->hasMany(Transaction::class);

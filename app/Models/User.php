@@ -38,6 +38,11 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 
+    public function tapActivity(Activity $activity, string $eventName)
+    {
+        $activity->ip = inet_pton(request()->ip());
+    }
+
     public function posts()
     {
         $this->hasMany(Post::class);
@@ -49,6 +54,7 @@ class User extends Authenticatable implements FilamentUser
             ->logOnly($this->fillable)
             ->setDescriptionForEvent(fn(string $eventName) => "user has been {$eventName}");
     }
+
     public function logs()
     {
         return $this->hasMany(Activity::class, 'causer_id');

@@ -2,10 +2,6 @@
 
 namespace App\ActivityLogsFunctions;
 
-use App\Models\Category;
-use App\Models\Post;
-use App\Models\Tag;
-use App\Models\Transaction;
 use App\Models\User;
 use Spatie\Activitylog\Models\Activity;
 
@@ -13,7 +9,7 @@ class ActivityLog
 {
     public function setLog(?User $user, string $url, array $queryString, int $statusCode)
     {
-        $log =  activity('default log')
+        $log = activity('default log')
             ->withProperties([
                 'url' => $url,
                 'queryString' => $queryString,
@@ -21,8 +17,8 @@ class ActivityLog
             ])->tap(function (Activity $activity) {
                 $activity->ip = inet_pton(request()->ip());
             });
-        if (!auth()->user()){
-           return $log->log(' route: ' . $url);
+        if (!auth()->user()) {
+            return $log->log('unknown user => route: ' . $url);
 
         }
         $log->causedBy($user)

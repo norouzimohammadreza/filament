@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Post extends Model
@@ -17,6 +18,11 @@ class Post extends Model
         'user_id',
         'category_id',
     ];
+
+    public function tapActivity(Activity $activity, string $eventName)
+    {
+        $activity->ip = inet_pton(request()->ip());
+    }
 
     public function user()
     {

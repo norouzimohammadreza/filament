@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Tag extends Model
@@ -15,6 +16,11 @@ class Tag extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function tapActivity(Activity $activity, string $eventName)
+    {
+        $activity->ip = inet_pton(request()->ip());
+    }
 
     public function posts()
     {
