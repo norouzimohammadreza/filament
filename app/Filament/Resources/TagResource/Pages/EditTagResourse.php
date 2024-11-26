@@ -2,13 +2,13 @@
 
 namespace App\Filament\Resources\TagResource\Pages;
 
-use App\Filament\Resources\TagResourseResource;
+use App\Filament\Resources\TagResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
 class EditTagResourse extends EditRecord
 {
-    protected static string $resource = TagResourseResource::class;
+    protected static string $resource = TagResource::class;
     protected function getRedirectUrl() :string
     {
         return $this->getResource()::getUrl('index');

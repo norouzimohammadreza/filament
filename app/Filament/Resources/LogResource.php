@@ -2,14 +2,15 @@
 
 namespace App\Filament\Resources;
 
+use App\ActivityLogsFunctions\ActivityLog;
 use App\Filament\Resources\LogResource\Pages;
-use Filament\Tables\Columns\TextColumn;
-use Spatie\Activitylog\Models\Activity;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Spatie\Activitylog\Models\Activity;
 
 
 class LogResource extends Resource
@@ -30,10 +31,24 @@ class LogResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('ip')->label('ip address'),
+                TextColumn::make('ip_address')
+                    ->getStateUsing(function (Activity $activity) {
+                        return inet_ntop($activity->ip);
+                    }),
                 TextColumn::make('description'),
                 TextColumn::make('causer.name'),
-                TextColumn::make('name'),
+                TextColumn::make('subject_id')->wrap(),
+                TextColumn::make('subject_type'),
+            ])
+            ->actions([
+                Tables\Actions\DeleteAction::make(),
+                Action::make('view')
+                    ->url(function (Activity $record) {
+                        return ActivityLog::getSubjectUrl($record->subject_type, $record->subject_id);
+                    })
+                    ->icon('heroicon-o-eye')
+                    ->disabled(fn(Activity $record) => $record->subject_id === null),
+
             ])
             ->filters([
                 //
@@ -56,8 +71,6 @@ class LogResource extends Resource
     {
         return [
             'index' => Pages\ListLogs::route('/'),
-            'create' => Pages\CreateLog::route('/create'),
-            //'edit' => Pages\EditLog::route('/{record}/edit'),
         ];
     }
 }
