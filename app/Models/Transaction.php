@@ -23,6 +23,7 @@ class Transaction extends Model
     public function tapActivity(Activity $activity, string $eventName)
     {
         $activity->ip = inet_pton(request()->ip());
+        $activity->url = request()->getPathInfo();
     }
 
     public function category()
@@ -34,7 +35,6 @@ class Transaction extends Model
     {
         return LogOptions::defaults()
             ->logOnly(['amount', 'description', 'category.name'])
-            ->setDescriptionForEvent(fn(string $eventName) => "transaction has been {$eventName}")
             ->useLogName('Crud on Transaction');
 
     }

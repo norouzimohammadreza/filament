@@ -22,6 +22,7 @@ class Post extends Model
     public function tapActivity(Activity $activity, string $eventName)
     {
         $activity->ip = inet_pton(request()->ip());
+        $activity->url = request()->getPathInfo();
     }
 
     public function user()
@@ -42,8 +43,7 @@ class Post extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly($this->fillable)
-            ->setDescriptionForEvent(fn(string $eventName) => "post has been {$eventName}");
+            ->logOnly($this->fillable);
 
     }
 }

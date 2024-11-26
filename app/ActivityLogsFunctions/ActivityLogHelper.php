@@ -10,7 +10,7 @@ class ActivityLogHelper
     public static function logResponse(Response $response)
     {
         self::log('HTTP',
-            request()->getPathInfo(),
+            'HTTP Response',
             'HTTP Response',
             [
                 'getStatusCode' => $response->getStatusCode()
@@ -21,7 +21,7 @@ class ActivityLogHelper
     public static function logErrorResponse(Response $response)
     {
         self::log('HTTP',
-            request()->getPathInfo(),
+            'HTTP Error Response',
             'HTTP Error Response',
             [
                 'getStatusCode' => $response->getStatusCode()
@@ -39,13 +39,14 @@ class ActivityLogHelper
                 ...$properties
             ])->tap(function (Activity $activity) {
                 $activity->ip = inet_pton(request()->ip());
+                $activity->url = request()->getPathInfo();
             });
 
         if (auth()->check()) {
             $log->causedBy(auth()->user());
         }
 
-        $log->log(request()->getPathInfo());
+        $log->log($description);
     }
 
     public static function getViewUrl(Activity $activity): ?string
@@ -56,7 +57,7 @@ class ActivityLogHelper
             'App\Models\Tag' => route('filament.admin.resources.tags.edit', $activity->subject_id),
             'App\Models\Category' => route('filament.admin.resources.categories.edit', $activity->subject_id),
             'App\Models\Transaction' => route('filament.admin.resources.transactions.edit', $activity->subject_id),
-            null => url($activity->description),
+            null => url($activity->url),
             default => null
         };
     }

@@ -19,6 +19,7 @@ class Category extends Model
     public function tapActivity(Activity $activity, string $eventName)
     {
         $activity->ip = inet_pton(request()->ip());
+        $activity->url = request()->getPathInfo();
     }
     public function transactions()
     {
@@ -32,8 +33,7 @@ class Category extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly($this->fillable)
-            ->setDescriptionForEvent(fn(string $eventName) => "category has been {$eventName}");
+            ->logOnly($this->fillable);
 
 
     }

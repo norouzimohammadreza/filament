@@ -35,7 +35,7 @@ class LogResource extends Resource
                     ->getStateUsing(function (Activity $activity) {
                         return inet_ntop($activity->ip);
                     }),
-                TextColumn::make('description'),
+                TextColumn::make('url'),
                 TextColumn::make('causer.name'),
                 TextColumn::make('subject_id')->wrap(),
                 TextColumn::make('subject_type'),
