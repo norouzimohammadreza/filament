@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\ActivityLogsFunctions\ActivityLog;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,11 +19,28 @@ class ActivityLogMiddleware
 
         $causer = auth()->user();
         $url = request()->getPathInfo();
-        $query = request()->query() ?? 'none';
+        $queryString = request()->query() ?? null;
         $response = $next($request);
-
-//        if ($response->exception !== null)
-//            dd($response->getStatusCode(), $response->exception, $response->getContent());
+        activity()
+            ->causedBy($causer)
+            ->event('User activity log')
+            ->withProperties([
+                'url' => $url,
+                'queryString' => $queryString,
+                'getStatusCode' => $response->getStatusCode(),
+            ])
+            ->log('User activity log')
+            ->subject($causer);
+        if ($response->getStatusCode() > 400) {
+            activity()
+                ->causedBy($causer)
+                ->withProperties([
+                    'url' => $url,
+                    'queryString' => $queryString,
+                    'getStatusCode' => $response->getStatusCode(),
+                ])
+                ->log('400 Client Error');
+        }
         return $response;
     }
 }
