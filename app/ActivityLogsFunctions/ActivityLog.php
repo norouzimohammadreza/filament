@@ -13,17 +13,21 @@ class ActivityLog
 {
     public function setLog(?User $user, string $url, array $queryString, int $statusCode)
     {
-        activity('user log')
-            ->causedBy($user)
-            ->performedOn($user)
-            ->event('User activity log')
+        $log =  activity('default log')
             ->withProperties([
                 'url' => $url,
                 'queryString' => $queryString,
                 'getStatusCode' => $statusCode,
             ])->tap(function (Activity $activity) {
                 $activity->ip = inet_pton(request()->ip());
-            })
+            });
+        if (!auth()->user()){
+           return $log->log(' route: ' . $url);
+
+        }
+        $log->causedBy($user)
+            ->performedOn($user)
+            ->event('User activity log')
             ->log(' route: ' . $url);
     }
 
