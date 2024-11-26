@@ -21,25 +21,10 @@ class ActivityLogMiddleware
         $url = request()->getPathInfo();
         $queryString = request()->query() ?? null;
         $response = $next($request);
-        activity()
-            ->causedBy($causer)
-            ->event('User activity log')
-            ->withProperties([
-                'url' => $url,
-                'queryString' => $queryString,
-                'getStatusCode' => $response->getStatusCode(),
-            ])
-            ->log('User activity log')
-            ->subject($causer);
+        $setLog = new ActivityLog();
+        $setLog->setLog($causer, $url, $queryString, $response->getStatusCode());
         if ($response->getStatusCode() > 400) {
-            activity()
-                ->causedBy($causer)
-                ->withProperties([
-                    'url' => $url,
-                    'queryString' => $queryString,
-                    'getStatusCode' => $response->getStatusCode(),
-                ])
-                ->log('400 Client Error');
+            $setLog->setLog($causer, $url, $queryString, $response->getStatusCode());
         }
         return $response;
     }

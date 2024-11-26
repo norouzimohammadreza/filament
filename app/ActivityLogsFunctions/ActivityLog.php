@@ -3,20 +3,23 @@
 namespace App\ActivityLogsFunctions;
 
 use App\Models\User;
+use Spatie\Activitylog\Models\Activity;
 
 class ActivityLog
 {
-    public function setLog(User $user,string $url,string $queryString,int $statusCode)
+    public function setLog(?User $user, string $url, array $queryString, int $statusCode)
     {
-        activity()
+        activity('user log')
             ->causedBy($user)
             ->event('User activity log')
             ->withProperties([
                 'url' => $url,
                 'queryString' => $queryString,
                 'getStatusCode' => $statusCode,
-            ])
-            ->log($user->name .' on ' . $url . ' with query string ' . $queryString)
-        ->subject($user);
+            ])->tap(function (Activity $activity) {
+                $activity->ip = inet_pton(request()->ip());
+            })
+            ->log(' with ip:' . request()->ip() . ' on ' . $url)
+            ->subject();
     }
 }

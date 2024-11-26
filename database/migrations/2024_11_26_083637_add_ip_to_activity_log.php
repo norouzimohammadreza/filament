@@ -12,12 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('activity_log', function (Blueprint $table) {
-            $table->string('id')->primary();
-
-        });
-
-        DB::statement('ALTER TABLE `activity_log` ADD `ip` VARBINARY(16)');
+        DB::statement('ALTER TABLE `activity_log` ADD `ip` VARBINARY(16) AFTER `id`');
     }
 
     /**
@@ -25,8 +20,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('activity_log', function (Blueprint $table) {
-            DB::statement('ALTER TABLE `activity_log` DROP COLUMN `ip`');
-        });
+        DB::statement('ALTER TABLE `activity_log` DROP COLUMN `ip`');
     }
 };
