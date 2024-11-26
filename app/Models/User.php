@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\CausesActivity;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
@@ -47,5 +48,9 @@ class User extends Authenticatable implements FilamentUser
         return LogOptions::defaults()
             ->logOnly($this->fillable)
             ->setDescriptionForEvent(fn(string $eventName) => "user has been {$eventName}");
+    }
+    public function logs()
+    {
+        return $this->hasMany(Activity::class, 'causer_id');
     }
 }

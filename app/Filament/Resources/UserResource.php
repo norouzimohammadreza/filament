@@ -3,6 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers\ActivityLogRelationManager;
+use App\Filament\Resources\UserResource\RelationManagers\LogsRelationManager;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -94,7 +96,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            LogsRelationManager::class,
         ];
     }
 
