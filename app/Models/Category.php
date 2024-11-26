@@ -28,7 +28,9 @@ class Category extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly($this->fillable);
+            ->logOnly($this->fillable)
+            ->setDescriptionForEvent(fn(string $eventName) => "category has been {$eventName}");
+
 
     }
 }

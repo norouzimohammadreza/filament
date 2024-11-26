@@ -28,7 +28,7 @@ class Transaction extends Model
     {
         return LogOptions::defaults()
             ->logOnly(['amount', 'description', 'category.name'])
-            ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}")
+            ->setDescriptionForEvent(fn(string $eventName) => "transaction has been {$eventName}")
             ->useLogName('Crud on Transaction');
 
     }

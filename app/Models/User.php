@@ -45,6 +45,7 @@ class User extends Authenticatable implements FilamentUser
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly($this->fillable);
+            ->logOnly($this->fillable)
+            ->setDescriptionForEvent(fn(string $eventName) => "user has been {$eventName}");
     }
 }
