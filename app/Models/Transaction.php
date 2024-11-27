@@ -35,6 +35,7 @@ class Transaction extends Model
     {
         return LogOptions::defaults()
             ->logOnly(['amount', 'description', 'category.name'])
+            ->logOnlyDirty()
             ->useLogName('Crud on Transaction');
 
     }

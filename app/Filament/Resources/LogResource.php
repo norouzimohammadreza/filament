@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\ActivityLogsFunctions\ActivityLogHelper;
 use App\Filament\Resources\LogResource\Pages;
+use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -46,8 +48,10 @@ class LogResource extends Resource
                     ->url(function (Activity $record) {
                         return ActivityLogHelper::getViewUrl($record);
                     })
-                    ->icon('heroicon-o-eye')
-
+                    ->icon('heroicon-o-eye'),
+                Tables\Actions\ViewAction::make()->form([
+                   KeyValue::make('properties')
+                ]),
             ])
             ->filters([
                 //
