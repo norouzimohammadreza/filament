@@ -28,9 +28,11 @@ class PostResource extends Resource
                     ->maxLength(255)
                     ->placeholder('Title'),
                 Forms\Components\Select::make('tags')
+                    ->preload()
                     ->multiple()
                     ->relationship('tags', 'name'),
                 Forms\Components\Select::make('categories')
+                    ->preload()
                     ->multiple()
                     ->relationship('categories', 'name')
                     ->required()

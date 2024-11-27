@@ -52,10 +52,12 @@ class LogResource extends Resource
                         return ActivityLogHelper::getViewUrl($record);
                     })
                     ->icon('heroicon-o-eye'),
-                Tables\Actions\ViewAction::make('detail')->form([
+                Tables\Actions\ViewAction::make('detail')
+                    ->label('جزئیات')
+                    ->form([
                    KeyValue::make('properties.old'),
                    KeyValue::make('properties.attributes'),
-                ]),
+                ])->disabled(fn(Activity $record) => $record->subject_id == null),
             ])
             ->filters([
                 //
