@@ -47,13 +47,14 @@ class LogResource extends Resource
             ])->defaultSort('created_at', 'desc')
             ->actions([
                 Tables\Actions\DeleteAction::make(),
-                Action::make('view')
+                Action::make('نمایش')
                     ->url(function (Activity $record) {
                         return ActivityLogHelper::getViewUrl($record);
                     })
                     ->icon('heroicon-o-eye'),
-                Tables\Actions\ViewAction::make()->form([
-                   KeyValue::make('properties')
+                Tables\Actions\ViewAction::make('detail')->form([
+                   KeyValue::make('properties.old'),
+                   KeyValue::make('properties.attributes'),
                 ]),
             ])
             ->filters([
