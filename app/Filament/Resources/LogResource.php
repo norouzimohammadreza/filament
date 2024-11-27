@@ -41,7 +41,10 @@ class LogResource extends Resource
                 TextColumn::make('causer.name'),
                 TextColumn::make('subject_id')->wrap(),
                 TextColumn::make('subject_type'),
-            ])
+                TextColumn::make('created_at')->label('Time')
+                    ->sortable()->dateTime()
+                ,
+            ])->defaultSort('created_at', 'desc')
             ->actions([
                 Tables\Actions\DeleteAction::make(),
                 Action::make('view')
