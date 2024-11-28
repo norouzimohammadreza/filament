@@ -8,52 +8,51 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ActivityLogHelper
 {
+    private static bool $toggle = true;
     public static function logResponse(Response $response)
     {
         self::toggleLog();
-        $a = new LogResponseBuilder(new LogResponse());
-        $a->withName('HTTP')->withEvent('HTTP Response')->withProperties([
-            'getStatusCode' => $response->getStatusCode()
-        ])->withLevel(0)->logging();
-//        self::log('HTTP',
-//            'HTTP Response',
-//            'HTTP Response',
-//            [
-//                'getStatusCode' => $response->getStatusCode()
-//            ],
-//            LogLevelEnum::Low->value
-//        );
+        self::LogAsLevel();
+        $logger = new LogResponseBuilder();
+        $logger
+            ->withName('HTTP')
+            ->withEvent('HTTP Response')
+            ->withDescription('HTTP Response')
+            ->withProperties([
+                'getStatusCode' => $response->getStatusCode()
+            ])->withLevel(3)->log()->response();
+
     }
 
     public static function logErrorResponse(Response $response)
     {
         self::toggleLog();
-        $a = new LogResponseBuilder(new LogResponse());
-
-        /*self::log('HTTP',
-            'HTTP Error Response',
-            'HTTP Error Response',
-            [
+        //self::LogAsLevel();
+        $logger = new LogResponseBuilder(new LogResponse());
+        $logger->withName('HTTP')->withEvent('HTTP Error Response')
+            ->withDescription('HTTP Error Response')->withProperties([
                 'getStatusCode' => $response->getStatusCode()
-            ],
-            LogLevelEnum::MEDIUM->value
-
-        );*/
+            ])->withLevel(0)->log()->response();
     }
 
 
     public static function toggleLog()
     {
-        $toggle = true;
-        if (!$toggle) {
-           return activity()->disableLogging();
+        if (!ActivityLogHelper::$toggle) {
+            return activity()->disableLogging();
         }
         return activity()->enableLogging();
     }
-    public function LogAsLevel()
-    {
-        //self::log();
 
+    public static function LogAsLevel()
+    {
+        $logger = new LogResponse();
+        $level = $logger->getLevel();
+        dd($level);
+        if ($level > LogLevelEnum::MEDIUM->value) {
+            return activity()->disableLogging();
+        }
+        return activity()->enableLogging();
     }
 
     public static function getViewUrl(Activity $activity): ?string

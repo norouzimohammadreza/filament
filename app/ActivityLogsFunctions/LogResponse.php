@@ -9,7 +9,7 @@ class LogResponse
 {
     private string $name = 'Http';
     private string $description = '';
-    private ?string $event = null;
+    private string $event = '';
     private array $properties = [];
     private int $level = LogLevelEnum::Low->value;
 
@@ -23,7 +23,7 @@ class LogResponse
         return $this->description = $description;
     }
 
-    public function setEvent(?string $event): ?string
+    public function setEvent(string $event): string
     {
         return $this->event = $event;
     }
@@ -37,26 +37,30 @@ class LogResponse
     {
         return $this->level = $level;
     }
-
-    public static function log()
+    public function getLevel(): int
     {
-        $log = activity(LogResponse::class->name)
-            ->event(LogResponse::class->event)
+        return $this->level;
+    }
+
+    public function response()
+    {
+        $log = activity($this->name)
+            ->event($this->event)
             ->withProperties([
                 'url' => request()->getPathInfo(),
                 'queryString' => request()->query() ?? null,
-                ...LogResponse::class->properties
+                ...$this->properties
             ])->tap(function (Activity $activity) {
                 $activity->ip = inet_pton(request()->ip());
                 $activity->url = request()->getPathInfo();
-                $activity->level = LogResponse::class->level;
+                $activity->level = $this->level;
             });
 
         if (auth()->check()) {
             $log->causedBy(auth()->user());
         }
 
-        $log->log(LogResponse::class->description);
+        $log->log($this->description);
     }
 
 }

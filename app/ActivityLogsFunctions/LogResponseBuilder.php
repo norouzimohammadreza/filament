@@ -6,9 +6,9 @@ class LogResponseBuilder
 {
     private LogResponse $response;
 
-    public function __construct(LogResponse $response)
+    public function __construct()
     {
-        $this->response = $response;
+        $this->response = new LogResponse();
     }
 
     public function withName(string $name)
@@ -23,7 +23,7 @@ class LogResponseBuilder
         return $this;
     }
 
-    public function withEvent(?string $event)
+    public function withEvent(string $event)
     {
         $this->response->setEvent($event);
         return $this;
@@ -41,7 +41,7 @@ class LogResponseBuilder
         return $this;
     }
 
-    public function logging(): LogResponse
+    public function log(): LogResponse
     {
         return $this->response;
     }
