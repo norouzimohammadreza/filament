@@ -11,20 +11,26 @@ class ActivityLogHelper
     public static function logResponse(Response $response)
     {
         self::toggleLog();
-        self::log('HTTP',
-            'HTTP Response',
-            'HTTP Response',
-            [
-                'getStatusCode' => $response->getStatusCode()
-            ],
-            LogLevelEnum::Low->value
-        );
+        $a = new LogResponseBuilder(new LogResponse());
+        $a->withName('HTTP')->withEvent('HTTP Response')->withProperties([
+            'getStatusCode' => $response->getStatusCode()
+        ])->withLevel(0)->logging();
+//        self::log('HTTP',
+//            'HTTP Response',
+//            'HTTP Response',
+//            [
+//                'getStatusCode' => $response->getStatusCode()
+//            ],
+//            LogLevelEnum::Low->value
+//        );
     }
 
     public static function logErrorResponse(Response $response)
     {
         self::toggleLog();
-        self::log('HTTP',
+        $a = new LogResponseBuilder(new LogResponse());
+
+        /*self::log('HTTP',
             'HTTP Error Response',
             'HTTP Error Response',
             [
@@ -32,36 +38,21 @@ class ActivityLogHelper
             ],
             LogLevelEnum::MEDIUM->value
 
-        );
+        );*/
     }
 
-    private static function log(string $name, string $description,
-                                string $event, array $properties, int $logLevel)
-    {
-        $log = activity($name)
-            ->event($event)
-            ->withProperties([
-                'url' => request()->getPathInfo(),
-                'queryString' => request()->query() ?? null,
-                ...$properties
-            ])->tap(function (Activity $activity) use ($logLevel) {
-                $activity->ip = inet_pton(request()->ip());
-                $activity->url = request()->getPathInfo();
-                $activity->level = $logLevel ;
-            });
 
-        if (auth()->check()) {
-            $log->causedBy(auth()->user());
-        }
-
-        $log->log($description);
-    }
-    public static function toggleLog(bool $toggle=false)
+    public static function toggleLog()
     {
-        if ($toggle == false) {
+        $toggle = true;
+        if (!$toggle) {
            return activity()->disableLogging();
         }
         return activity()->enableLogging();
+    }
+    public function LogAsLevel()
+    {
+        //self::log();
 
     }
 
