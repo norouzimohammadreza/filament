@@ -2,6 +2,7 @@
 
 namespace App\ActivityLogsFunctions;
 
+use App\Enums\LogLevelEnum;
 use Spatie\Activitylog\Models\Activity;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -9,37 +10,44 @@ class ActivityLogHelper
 {
     public static function logResponse(Response $response)
     {
+        self::toggleLog();
         self::log('HTTP',
             'HTTP Response',
             'HTTP Response',
             [
                 'getStatusCode' => $response->getStatusCode()
-            ]
+            ],
+            LogLevelEnum::Low->value
         );
     }
 
     public static function logErrorResponse(Response $response)
     {
+        self::toggleLog();
         self::log('HTTP',
             'HTTP Error Response',
             'HTTP Error Response',
             [
                 'getStatusCode' => $response->getStatusCode()
-            ]
+            ],
+            LogLevelEnum::MEDIUM->value
+
         );
     }
 
-    private static function log(string $name, string $description, string $event, array $properties)
+    private static function log(string $name, string $description,
+                                string $event, array $properties, int $logLevel)
     {
-        $log = activity('HTTP')
-            ->event('HTTP Error Response')
+        $log = activity($name)
+            ->event($event)
             ->withProperties([
                 'url' => request()->getPathInfo(),
                 'queryString' => request()->query() ?? null,
                 ...$properties
-            ])->tap(function (Activity $activity) {
+            ])->tap(function (Activity $activity) use ($logLevel) {
                 $activity->ip = inet_pton(request()->ip());
                 $activity->url = request()->getPathInfo();
+                $activity->level = $logLevel ;
             });
 
         if (auth()->check()) {
@@ -47,6 +55,14 @@ class ActivityLogHelper
         }
 
         $log->log($description);
+    }
+    public static function toggleLog(bool $toggle=false)
+    {
+        if ($toggle == false) {
+           return activity()->disableLogging();
+        }
+        return activity()->enableLogging();
+
     }
 
     public static function getViewUrl(Activity $activity): ?string

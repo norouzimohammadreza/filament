@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\ActivityLogsFunctions\ActivityLogHelper;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -40,6 +41,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function tapActivity(Activity $activity, string $eventName)
     {
+        ActivityLogHelper::toggleLog();
         $activity->ip = inet_pton(request()->ip());
         $activity->url = request()->getPathInfo();
     }

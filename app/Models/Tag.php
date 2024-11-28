@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\ActivityLogsFunctions\ActivityLogHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -19,6 +20,7 @@ class Tag extends Model
 
     public function tapActivity(Activity $activity, string $eventName)
     {
+        ActivityLogHelper::toggleLog();
         $activity->ip = inet_pton(request()->ip());
         $activity->url = request()->getPathInfo();
     }
