@@ -3,11 +3,14 @@
 namespace App\Filament\Resources\TagResource\Pages;
 
 use App\Filament\Resources\TagResource;
+use App\Filament\Trait\GlobalSearchQueriesLogTrait;
+use App\Filament\Trait\TableSearchQueriesLogTrait;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListTagResourses extends ListRecords
 {
+    use GlobalSearchQueriesLogTrait, TableSearchQueriesLogTrait;
     protected static string $resource = TagResource::class;
 
     protected function getHeaderActions(): array

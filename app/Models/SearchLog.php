@@ -10,6 +10,7 @@ class SearchLog extends Model
         'resource',
         'search_query',
         'user_id',
+        'ip',
     ];
 
     public function user()
