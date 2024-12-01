@@ -32,7 +32,9 @@ class SearchLogResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('ip'),
+                TextColumn::make('ip')->getStateUsing(function (SearchLog $record) {
+                    return inet_ntop($record->ip);
+                }),
                 TextColumn::make('resource'),
                 TextColumn::make('search_query'),
                 TextColumn::make('user.name'),

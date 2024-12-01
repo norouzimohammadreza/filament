@@ -13,6 +13,7 @@ trait TableSearchQueriesLogTrait
             // Injecting Search Log creation
             SearchLog::create([
                 'search_query' => $this->getTableSearch(),
+                'ip' => inet_pton(request()->ip()),
                 'resource' => static::$resource,
                 'user_id' => auth()->id(),
             ]);
