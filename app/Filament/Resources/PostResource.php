@@ -44,8 +44,8 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title'),
-                TextColumn::make('user.name')->label('Author'),
+                TextColumn::make('title')->searchable(),
+                TextColumn::make('user.name')->label('Author')->searchable(),
                 TextColumn::make('created_at')->label('Published'),
 
             ])

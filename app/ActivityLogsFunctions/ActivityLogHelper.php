@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ActivityLogHelper
 {
     private static bool $toggle = true;
+
     public static function logResponse(Response $response)
     {
         self::toggleLog();
@@ -28,7 +29,7 @@ class ActivityLogHelper
     {
         self::toggleLog();
         //self::LogAsLevel();
-        $logger = new LogResponseBuilder(new LogResponse());
+        $logger = new LogResponseBuilder();
         $logger->withName('HTTP')->withEvent('HTTP Error Response')
             ->withDescription('HTTP Error Response')->withProperties([
                 'getStatusCode' => $response->getStatusCode()
@@ -46,13 +47,13 @@ class ActivityLogHelper
 
     public static function LogAsLevel()
     {
-        $logger = new LogResponse();
-        $level = $logger->getLevel();
-        dd($level);
-        if ($level > LogLevelEnum::MEDIUM->value) {
-            return activity()->disableLogging();
-        }
-        return activity()->enableLogging();
+//        $logger = new LogResponse();
+//        $level = $logger->getLevel();
+//        dd($level);
+//        if ($level > LogLevelEnum::MEDIUM->value) {
+//            return activity()->disableLogging();
+//        }
+//        return activity()->enableLogging();
     }
 
     public static function getViewUrl(Activity $activity): ?string

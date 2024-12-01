@@ -36,9 +36,9 @@ class TransactionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('amount')->sortable(),
-                Tables\Columns\TextColumn::make('description'),
-                Tables\Columns\TextColumn::make('category.name'),
+                Tables\Columns\TextColumn::make('amount')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('description')->searchable(),
+                Tables\Columns\TextColumn::make('category.name')->searchable(),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
 
             ])

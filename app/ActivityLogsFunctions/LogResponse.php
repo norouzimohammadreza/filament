@@ -2,7 +2,6 @@
 
 namespace App\ActivityLogsFunctions;
 
-use App\Enums\LogLevelEnum;
 use Spatie\Activitylog\Models\Activity;
 
 class LogResponse
@@ -11,7 +10,7 @@ class LogResponse
     private string $description = '';
     private string $event = '';
     private array $properties = [];
-    private int $level = LogLevelEnum::Low->value;
+    private int $level;
 
     public function setName(string $name): string
     {
@@ -37,10 +36,11 @@ class LogResponse
     {
         return $this->level = $level;
     }
-    public function getLevel(): int
-    {
-        return $this->level;
-    }
+
+//    public function getLevel(): int
+//    {
+//        return $this->level;
+//    }
 
     public function response()
     {
