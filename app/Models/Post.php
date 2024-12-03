@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\ActivityLogsFunctions\CheckLogEnabledTrait;
+use App\Enums\LogLevelEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,6 +14,13 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Post extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity, CheckLogEnabledTrait;
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->logLevel = LogLevelEnum::MEDIUM->value;
+        $this->enableLoggingModelsEvents = false;
+    }
 
     protected $fillable = [
         'title',

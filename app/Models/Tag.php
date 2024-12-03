@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\ActivityLogsFunctions\CheckLogEnabledTrait;
+use App\Enums\LogLevelEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -17,6 +18,12 @@ class Tag extends Model
     protected $fillable = [
         'name',
     ];
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->logLevel = LogLevelEnum::MEDIUM->value;
+        $this->enableLoggingModelsEvents = false;
+    }
 
     public function tapActivity(Activity $activity, string $eventName)
     {

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\ActivityLogsFunctions\CheckLogEnabledTrait;
+use App\Enums\LogLevelEnum;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,7 +19,12 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable, SoftDeletes, HasRoles, HasPanelShield, LogsActivity, CausesActivity, CheckLogEnabledTrait;
-
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->logLevel = LogLevelEnum::MEDIUM->value;
+        $this->enableLoggingModelsEvents = false;
+    }
     protected $fillable = [
         'name',
         'email',

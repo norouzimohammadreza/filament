@@ -10,7 +10,6 @@ class LogResponseBuilder
 {
     use CheckLogEnabledTrait;
     private ActivityLogger $activityLogger;
-    private int $logLevel;
 
     public function __construct(?string $name, int $logLevel)
     {
