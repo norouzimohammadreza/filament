@@ -36,6 +36,10 @@ class Tag extends Model
     {
         return $this->belongsToMany(Post::class, 'post_tag')->withTimestamps();
     }
+    public function logs()
+    {
+        return $this->morphToMany(Activity::class,'loggable');
+    }
 
     public function getActivitylogOptions(): LogOptions
     {

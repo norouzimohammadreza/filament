@@ -42,13 +42,15 @@ class Category extends Model
     {
         return $this->belongsToMany(Post::class, 'category_post')->withTimestamps();
     }
+    public function logs()
+    {
+        return $this->morphToMany(Activity::class,'loggable');
+    }
 
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logOnly($this->fillable)
             ->logOnlyDirty();
-
-
     }
 }

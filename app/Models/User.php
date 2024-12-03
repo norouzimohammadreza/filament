@@ -51,6 +51,10 @@ class User extends Authenticatable implements FilamentUser
         $activity->ip = inet_pton(request()->ip());
         $activity->url = request()->getPathInfo();
     }
+    public function log()
+    {
+        return $this->morphToMany(Activity::class,'loggable');
+    }
 
     public function posts()
     {

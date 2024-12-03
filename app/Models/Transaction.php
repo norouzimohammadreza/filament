@@ -38,6 +38,10 @@ class Transaction extends Model
     {
         return $this->belongsTo(Category::class);
     }
+    public function logs()
+    {
+        return $this->morphToMany(Activity::class,'loggable');
+    }
 
     public function getActivitylogOptions(): LogOptions
     {

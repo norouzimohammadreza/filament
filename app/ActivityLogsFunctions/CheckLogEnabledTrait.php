@@ -6,7 +6,7 @@ use App\Enums\LogLevelEnum;
 
 trait CheckLogEnabledTrait
 {
-    public int $logLevel = LogLevelEnum::Low->value;
+    public int $logLevel = LogLevelEnum::LOW->value;
 
     public function checkIfLoggingIsEnabled(): void
     {

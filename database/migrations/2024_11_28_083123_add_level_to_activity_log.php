@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::table('activity_log', function (Blueprint $table) {
             $table->tinyInteger('level')
-                ->default(LogLevelEnum::Low->value)->after('description');
+                ->default(LogLevelEnum::LOW->value)->after('description');
         });
     }
 
