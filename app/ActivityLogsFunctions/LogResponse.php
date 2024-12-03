@@ -2,7 +2,9 @@
 
 namespace App\ActivityLogsFunctions;
 
+
 use Spatie\Activitylog\Models\Activity;
+
 
 class LogResponse
 {
@@ -47,8 +49,7 @@ class LogResponse
         $log = activity($this->name)
             ->event($this->event)
             ->withProperties([
-                'url' => request()->getPathInfo(),
-                'queryString' => request()->query() ?? null,
+                'queryString' => request()->getQueryString(),
                 ...$this->properties
             ])->tap(function (Activity $activity) {
                 $activity->ip = inet_pton(request()->ip());

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Trait;
 
+use App\ActivityLogsFunctions\LogResponseBuilder;
 use App\Models\SearchLog;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -11,12 +12,15 @@ trait TableSearchQueriesLogTrait
     {
         if ($this->getTableSearch()) {
             // Injecting Search Log creation
-            SearchLog::create([
-                'search_query' => $this->getTableSearch(),
-                'ip' => inet_pton(request()->ip()),
-                'resource' => static::$resource,
-                'user_id' => auth()->id(),
-            ]);
+            $logger = new LogResponseBuilder();
+            $logger->withName('HTTP')->withEvent('HTTP Error Response')
+                ->withDescription('HTTP Error Response')->withProperties([
+                    'old' => [
+                        'search_query' => $this->getTableSearch(),
+                        'resource' => static::$resource,
+                    ]
+                ])->withLevel(1)->log()->response();
+
         }
 
         // Return to normal function execution
