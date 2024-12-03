@@ -2,48 +2,54 @@
 
 namespace App\ActivityLogsFunctions;
 
+use Spatie\Activitylog\ActivityLogger;
+use Spatie\Activitylog\Contracts\Activity as ActivityContract;
+use Spatie\Activitylog\Models\Activity;
+
 class LogResponseBuilder
 {
-    private LogResponse $response;
+    use CheckLogEnabledTrait;
+    private ActivityLogger $activityLogger;
+    private int $logLevel;
 
-    public function __construct()
+    public function __construct(?string $name, int $logLevel)
     {
-        $this->response = new LogResponse();
+        $this->logLevel = $logLevel;
+        $this->checkIfLoggingIsEnabled();
+
+        $this->activityLogger = activity($name)
+            ->tap(function (Activity $activity) {
+                $activity->url = request()->getPathInfo();
+                $activity->ip = inet_pton(request()->ip());
+                $activity->level = $this->logLevel;
+            });
     }
 
-    public function withName(string $name)
-    {
-        $this->response->setName($name);
-        return $this;
-    }
 
-    public function withDescription(string $description)
-    {
-        $this->response->setDescription($description);
-        return $this;
-    }
 
     public function withEvent(string $event)
     {
-        $this->response->setEvent($event);
+        $this->activityLogger->event($event);
         return $this;
     }
 
     public function withProperties(array $properties)
     {
-        $this->response->setProperties($properties);
+        $this->activityLogger->withProperties($properties);
         return $this;
     }
 
-    public function withLevel(int $level)
+    public function withTap(string $name, string $value)
     {
-        $this->response->setLevel($level);
+        $this->activityLogger->tap(function (Activity $activity) use ($name, $value) {
+            $activity->$name = $value;
+        });
         return $this;
     }
 
-    public function log(): LogResponse
+    public function save(?string $description = null): ?ActivityContract
     {
-        return $this->response;
+        return $this->activityLogger->log($description ?? "NO_DESCRIPTION");
     }
 
 }

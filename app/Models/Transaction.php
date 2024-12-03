@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\ActivityLogsFunctions\ActivityLogHelper;
+use App\ActivityLogsFunctions\CheckLogEnabledTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,7 +12,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Transaction extends Model
 {
-    use  HasFactory, SoftDeletes, LogsActivity;
+    use  HasFactory, SoftDeletes, LogsActivity, CheckLogEnabledTrait;
 
     protected $fillable = [
         'amount',
@@ -23,7 +23,7 @@ class Transaction extends Model
 
     public function tapActivity(Activity $activity, string $eventName)
     {
-        ActivityLogHelper::toggleLog();
+        $this->checkIfLoggingIsEnabled();
         $activity->ip = inet_pton(request()->ip());
         $activity->url = request()->getPathInfo();
     }

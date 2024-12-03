@@ -4,45 +4,15 @@ namespace App\ActivityLogsFunctions;
 
 use App\Enums\LogLevelEnum;
 use Spatie\Activitylog\Models\Activity;
-use Symfony\Component\HttpFoundation\Response;
 
 class ActivityLogHelper
 {
-    private static bool $toggle = true;
+    public static bool $LOGGING_ENABLED = false;
+    public static int $MINIMUM_LOGGING_LEVEL = LogLevelEnum::High->value;
 
-    public static function logResponse(Response $response)
+    public static function log(string $name, int $level = LogLevelEnum::Low->value)
     {
-        self::toggleLog();
-        self::LogAsLevel();
-        $logger = new LogResponseBuilder();
-        $logger
-            ->withName('HTTP')
-            ->withEvent('HTTP Response')
-            ->withDescription('HTTP Response')
-            ->withProperties([
-                'getStatusCode' => $response->getStatusCode()
-            ])->withLevel(3)->log()->response();
-
-    }
-
-    public static function logErrorResponse(Response $response)
-    {
-        self::toggleLog();
-        //self::LogAsLevel();
-        $logger = new LogResponseBuilder();
-        $logger->withName('HTTP')->withEvent('HTTP Error Response')
-            ->withDescription('HTTP Error Response')->withProperties([
-                'getStatusCode' => $response->getStatusCode()
-            ])->withLevel(0)->log()->response();
-    }
-
-
-    public static function toggleLog()
-    {
-        if (!ActivityLogHelper::$toggle) {
-            return activity()->disableLogging();
-        }
-        return activity()->enableLogging();
+        return new LogResponseBuilder($name, $level);
     }
 
     public static function LogAsLevel()

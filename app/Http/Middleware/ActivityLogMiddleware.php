@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\ActivityLogsFunctions\ActivityLogHelper;
+use App\Enums\LogLevelEnum;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +19,11 @@ class ActivityLogMiddleware
     {
         $response = $next($request);
 
-        ActivityLogHelper::logResponse($response);
+        ActivityLogHelper::log('HTTP Response')
+            ->withProperties([
+                'status_code' => $response->getStatusCode(),
+            ])
+            ->save();
         if ($response->getStatusCode() > 400) {
             ActivityLogHelper::logErrorResponse($response);
         }

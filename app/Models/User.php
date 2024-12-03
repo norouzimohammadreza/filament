@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\ActivityLogsFunctions\ActivityLogHelper;
+use App\ActivityLogsFunctions\CheckLogEnabledTrait;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,7 +17,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
 {
-    use HasFactory, Notifiable, SoftDeletes, HasRoles, HasPanelShield, LogsActivity, CausesActivity;
+    use HasFactory, Notifiable, SoftDeletes, HasRoles, HasPanelShield, LogsActivity, CausesActivity, CheckLogEnabledTrait;
 
     protected $fillable = [
         'name',
@@ -41,7 +41,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function tapActivity(Activity $activity, string $eventName)
     {
-        ActivityLogHelper::toggleLog();
+        $this->checkIfLoggingIsEnabled();
         $activity->ip = inet_pton(request()->ip());
         $activity->url = request()->getPathInfo();
     }

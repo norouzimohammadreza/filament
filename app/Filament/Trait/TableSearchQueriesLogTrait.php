@@ -2,6 +2,7 @@
 
 namespace App\Filament\Trait;
 
+use App\ActivityLogsFunctions\ActivityLogHelper;
 use App\ActivityLogsFunctions\LogResponseBuilder;
 use App\Enums\LogLevelEnum;
 use App\Models\SearchLog;
@@ -14,10 +15,11 @@ trait TableSearchQueriesLogTrait
     {
         if ($this->getTableSearch()) {
 
-            $logger = new LogResponseBuilder();
-            $logger->withName('HTTP SEARCH')->withEvent($this->getTableSearch())
-                ->withDescription(static::$resource)
-                ->withLevel(LogLevelEnum::MEDIUM->value)->log()->response();
+            ActivityLogHelper::log('HTTP SEARCH',LogLevelEnum::Low->value)
+                ->withProperties([
+                    'status_code' => response()->getStatusCode(),
+                ])
+                ->save();
 
         }
 
