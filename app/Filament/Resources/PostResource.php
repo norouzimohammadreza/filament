@@ -12,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Spatie\Activitylog\Models\Activity;
 
 class PostResource extends Resource
 {
@@ -46,10 +47,13 @@ class PostResource extends Resource
             ->columns([
                 TextColumn::make('title')->searchable(),
                 TextColumn::make('user.name')->label('Author')->searchable(),
-                TextColumn::make('created_at')->label('Published'),
-
+                TextColumn::make('created_at')->label('Published')->sortable()
+                    ->getStateUsing(function (Post $record) {
+                        return verta($record->created_at, 'Asia/Tehran');
+                    })
             ])
-            ->filters([
+            ->
+            filters([
                 //
             ])
             ->actions([

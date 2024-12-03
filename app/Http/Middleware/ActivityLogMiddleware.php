@@ -25,7 +25,11 @@ class ActivityLogMiddleware
             ])
             ->save();
         if ($response->getStatusCode() > 400) {
-            ActivityLogHelper::logErrorResponse($response);
+            ActivityLogHelper::log('HTTP Error Response',LogLevelEnum::High->value)
+                ->withProperties([
+                    'status_code' => $response->getStatusCode(),
+                ])
+                ->save();
         }
 
         return $response;
