@@ -42,7 +42,9 @@ class LogResource extends Resource
                 TextColumn::make('subject_id')->wrap(),
                 TextColumn::make('subject_type'),
                 TextColumn::make('created_at')->label('Time')
-                    ->sortable()->dateTime()
+                    ->sortable()->getStateUsing(function (Activity $activity) {
+                        return verta($activity->created_at,'Asia/Tehran');
+                    })
                 ,
             ])->defaultSort('created_at', 'desc')
             ->actions([

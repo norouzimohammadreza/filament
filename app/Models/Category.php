@@ -23,7 +23,7 @@ class Category extends Model
     {
         parent::__construct($attributes);
         $this->logLevel = LogLevelEnum::MEDIUM->value;
-        $this->enableLoggingModelsEvents = false;
+        $this->enableLoggingModelsEvents = true;
     }
 
     public function tapActivity(Activity $activity, string $eventName)
