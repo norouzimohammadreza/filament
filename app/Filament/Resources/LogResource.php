@@ -51,7 +51,8 @@ class LogResource extends Resource
                     ->url(function (Activity $record) {
                         return ActivityLogHelper::getViewUrl($record);
                     })
-                    ->icon('heroicon-o-eye'),
+                    ->icon('heroicon-o-eye')
+                ->disabled(fn(Activity $record) => $record->log_name == 'HTTP SEARCH'),
                 Tables\Actions\ViewAction::make('detail')
                     ->label('جزئیات')
                     ->form([
