@@ -12,8 +12,9 @@ use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Models\Activity;
-
+use Filament\Tables\Filters\Filter;
 
 class LogResource extends Resource
 {
@@ -63,7 +64,10 @@ class LogResource extends Resource
                 ])->disabled(fn(Activity $record) => $record->subject_id == null),
             ])
             ->filters([
-                //
+                Filter::make('عملیات')
+                    ->query(fn(Builder $query) => $query->where('subject_id','!=',null)),
+                Filter::make('جستجو')
+                    ->query(fn(Builder $query) => $query->where('log_name','HTTP SEARCH')),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
