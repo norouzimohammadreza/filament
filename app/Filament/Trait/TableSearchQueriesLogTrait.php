@@ -3,11 +3,8 @@
 namespace App\Filament\Trait;
 
 use App\ActivityLogsFunctions\ActivityLogHelper;
-use App\ActivityLogsFunctions\LogResponseBuilder;
 use App\Enums\LogLevelEnum;
-use App\Models\SearchLog;
 use Illuminate\Database\Eloquent\Builder;
-use phpDocumentor\Reflection\Types\Static_;
 
 trait TableSearchQueriesLogTrait
 {
@@ -15,9 +12,10 @@ trait TableSearchQueriesLogTrait
     {
         if ($this->getTableSearch()) {
 
-            ActivityLogHelper::log('HTTP SEARCH',LogLevelEnum::Low->value)
+            ActivityLogHelper::log('HTTP SEARCH', LogLevelEnum::MEDIUM->value)
                 ->withProperties([
-                    'status_code' => response()->getStatusCode(),
+                    'search' => $this->getTableSearch(),
+                    'resource' => static::$resource,
                 ])
                 ->save();
 

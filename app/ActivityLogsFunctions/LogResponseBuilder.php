@@ -37,6 +37,11 @@ class LogResponseBuilder
         $this->activityLogger->withProperties($properties);
         return $this;
     }
+    public function withSubject(mixed $subject)
+    {
+        $this->activityLogger->performedOn($subject);
+        return $this;
+    }
 
     public function withTap(string $name, string $value)
     {
