@@ -55,7 +55,7 @@ class User extends Authenticatable implements FilamentUser
     }
     public function log()
     {
-        return $this->morphToMany(Activity::class,'loggable');
+        return $this->morphToMany(LoggingInfo::class,'model');
     }
 
     public function posts()

@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->tinyInteger('details')->default(LogDetailsAsModelEnum::ENABLED->value);
             $table->tinyInteger('level')->default(LogLevelEnum::LOW->value);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -44,7 +44,7 @@ class Category extends Model
     }
     public function logs()
     {
-        return $this->morphToMany(Activity::class,'loggable');
+        return $this->morphToMany(LoggingInfo::class,'model');
     }
 
     public function getActivitylogOptions(): LogOptions
