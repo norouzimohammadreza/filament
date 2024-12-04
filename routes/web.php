@@ -8,6 +8,11 @@ use Spatie\Activitylog\Facades\CauserResolver;
 use Spatie\Activitylog\Facades\LogBatch;
 use Spatie\Activitylog\Models\Activity;
 
+Route::get('/ttt',function (){
+$user = auth()->user();
+
+dd($user->checkTT());
+});
 Route::get('/test-log', function () {
     auth()->user()->actions();
     $activity = Activity::all()->last();

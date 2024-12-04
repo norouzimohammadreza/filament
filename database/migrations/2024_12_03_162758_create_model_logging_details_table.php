@@ -1,23 +1,21 @@
 <?php
 
 use App\Enums\LogLevelEnum;
+use App\Enums\LogDetailsAsModelEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Spatie\Activitylog\Models\Activity;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('loggables', function (Blueprint $table) {
+        Schema::create('model_logging_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Activity::class)->unsigned()->index()->nullable();
-            $table->unsignedBigInteger('loggable_id')->index();
-            $table->string('loggable_type');
+            $table->morphs('model');
+            $table->tinyInteger('details')->default(LogDetailsAsModelEnum::ENABLED->value);
             $table->tinyInteger('level')->default(LogLevelEnum::LOW->value);
             $table->timestamps();
         });
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('loggables');
+        Schema::dropIfExists('model_logging_details');
     }
 };
