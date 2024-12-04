@@ -56,9 +56,9 @@ class TagResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => TagResource\Pages\ListTagResourses::route('/'),
-            'create' => TagResource\Pages\CreateTagResourse::route('/create'),
-            'edit' => TagResource\Pages\EditTagResourse::route('/{record}/edit'),
+            'index' => TagResource\Pages\ListTag::route('/'),
+            'create' => TagResource\Pages\CreateTag::route('/create'),
+            'edit' => TagResource\Pages\EditTag::route('/{record}/edit'),
         ];
     }
 }

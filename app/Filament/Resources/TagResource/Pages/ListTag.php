@@ -8,7 +8,7 @@ use App\Filament\Trait\TableSearchQueriesLogTrait;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListTagResourses extends ListRecords
+class ListTag extends ListRecords
 {
     use GlobalSearchQueriesLogTrait, TableSearchQueriesLogTrait;
     protected static string $resource = TagResource::class;

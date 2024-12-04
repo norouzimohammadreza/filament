@@ -6,7 +6,7 @@ use App\Filament\Resources\TagResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditTagResourse extends EditRecord
+class EditTag extends EditRecord
 {
     protected static string $resource = TagResource::class;
     protected function getRedirectUrl() :string
