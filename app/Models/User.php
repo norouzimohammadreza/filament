@@ -24,8 +24,8 @@ class User extends Authenticatable implements FilamentUser
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->logLevel = LogLevelEnum::HIGH->value;
-        $this->enableLoggingModelsEvents = true;
+        $this->logLevel = $this->checkValue() ?? LogLevelEnum::HIGH->value;
+        $this->enableLoggingModelsEvents = false ?? true;
     }
     protected $fillable = [
         'name',

@@ -11,7 +11,7 @@ use Spatie\Activitylog\Models\Activity;
 Route::get('/ttt',function (){
 $user = auth()->user();
 
-dd($user->checkTT());
+dd($user->checkValue());
 });
 Route::get('/test-log', function () {
     auth()->user()->actions();
