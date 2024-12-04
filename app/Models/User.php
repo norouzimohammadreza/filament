@@ -24,8 +24,8 @@ class User extends Authenticatable implements FilamentUser
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->logLevel = LogLevelEnum::MEDIUM->value;
-        $this->enableLoggingModelsEvents = false;
+        $this->logLevel = LogLevelEnum::HIGH->value;
+        $this->enableLoggingModelsEvents = true;
     }
     protected $fillable = [
         'name',
@@ -52,6 +52,7 @@ class User extends Authenticatable implements FilamentUser
         $this->checkIfLoggingIsEnabled();
         $activity->ip = inet_pton(request()->ip());
         $activity->url = request()->getPathInfo();
+        $activity->level = $this->logLevel;
     }
     public function log()
     {

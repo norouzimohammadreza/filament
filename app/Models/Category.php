@@ -31,6 +31,7 @@ class Category extends Model
         $this->checkIfLoggingIsEnabled();
         $activity->ip = inet_pton(request()->ip());
         $activity->url = request()->getPathInfo();
+        $activity->level = $this->logLevel;
     }
 
     public function transactions()
