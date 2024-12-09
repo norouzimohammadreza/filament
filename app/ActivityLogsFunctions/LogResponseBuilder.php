@@ -2,6 +2,8 @@
 
 namespace App\ActivityLogsFunctions;
 
+use App\Enums\LogDetailsAsModelEnum;
+use App\Models\LoggingInfo;
 use Spatie\Activitylog\ActivityLogger;
 use Spatie\Activitylog\Contracts\Activity as ActivityContract;
 use Spatie\Activitylog\Models\Activity;
@@ -9,21 +11,30 @@ use Spatie\Activitylog\Models\Activity;
 class LogResponseBuilder
 {
     use CheckLogEnabledTrait;
+
     private ActivityLogger $activityLogger;
 
     public function __construct(?string $name, int $logLevel)
     {
         $this->logLevel = $logLevel;
         $this->checkIfLoggingIsEnabled();
-
         $this->activityLogger = activity($name)
             ->tap(function (Activity $activity) {
-                $activity->url = request()->getPathInfo();
+                if ($this->speciallyUser() != null) {
+                    if ($this->speciallyUser()->details == LogDetailsAsModelEnum::ENABLED->value
+                        && $this->logLevel >= $this->speciallyUser()->level) {
+                        activity()->enableLogging();
+                        $activity->level = $this->speciallyUser()->level;
+                    } else {
+                        activity()->disableLogging();
+                    }
+                } else {
+                    $activity->level = $this->logLevel;
+                }
                 $activity->ip = inet_pton(request()->ip());
-                $activity->level = $this->logLevel;
+                $activity->url = request()->getPathInfo();
             });
     }
-
 
 
     public function withEvent(string $event)
@@ -37,6 +48,7 @@ class LogResponseBuilder
         $this->activityLogger->withProperties($properties);
         return $this;
     }
+
     public function withSubject(mixed $subject)
     {
         $this->activityLogger->performedOn($subject);
@@ -50,6 +62,15 @@ class LogResponseBuilder
         });
         return $this;
     }
+
+    public function speciallyUser()
+    {
+        if (isset(auth()->user()->id)){
+        $user = LoggingInfo::all()
+            ->where('model_type', get_class(auth()->user()))
+            ->where('model_id', auth()->user()->id)->first();
+        return $user ?? null;
+    }}
 
     public function save(?string $description = null): ?ActivityContract
     {
