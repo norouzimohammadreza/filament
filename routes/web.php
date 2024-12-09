@@ -13,6 +13,11 @@ $user = auth()->user();
 
 dd($user->checkValue());
 });
+Route::get('/class',function (){
+    $user = auth()->user();
+
+    dd(($user->id));
+});
 Route::get('/test-log', function () {
     auth()->user()->actions();
     $activity = Activity::all()->last();

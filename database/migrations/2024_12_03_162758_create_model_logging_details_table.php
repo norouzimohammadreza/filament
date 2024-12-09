@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->morphs('model');
             $table->tinyInteger('details')->default(LogDetailsAsModelEnum::ENABLED->value);
-            $table->tinyInteger('level')->default(LogLevelEnum::LOW->value);
+            $table->tinyInteger('level')->default(LogLevelEnum::CRITICAL->value);
             $table->timestamps();
             $table->softDeletes();
         });
