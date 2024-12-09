@@ -4,22 +4,22 @@ namespace App\Models;
 
 use App\ActivityLogsFunctions\CheckLogEnabledTrait;
 use App\Enums\LogLevelEnum;
+use App\Traits\LogOfSpecificallyModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Post extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity, CheckLogEnabledTrait;
+    use HasFactory, SoftDeletes, LogsActivity, CheckLogEnabledTrait, LogOfSpecificallyModel;
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->logLevel = LogLevelEnum::MEDIUM->value;
-        $this->enableLoggingModelsEvents = false;
+        $this->logLevel = LogLevelEnum::LOW->value;
+        $this->enableLoggingModelsEvents = true;
     }
 
     protected $fillable = [
@@ -27,14 +27,6 @@ class Post extends Model
         'user_id',
         'category_id',
     ];
-
-    public function tapActivity(Activity $activity, string $eventName)
-    {
-        $this->checkIfLoggingIsEnabled();
-        $activity->ip = inet_pton(request()->ip());
-        $activity->url = request()->getPathInfo();
-        $activity->level = $this->logLevel;
-    }
 
     public function user()
     {
@@ -50,9 +42,10 @@ class Post extends Model
     {
         return $this->belongsToMany(Category::class, 'category_post')->withTimestamps();
     }
+
     public function logs()
     {
-        return $this->morphToMany(LoggingInfo::class,'model');
+        return $this->morphToMany(LoggingInfo::class, 'model');
     }
 
     public function getActivitylogOptions(): LogOptions

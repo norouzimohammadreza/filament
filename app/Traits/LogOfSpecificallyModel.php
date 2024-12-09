@@ -3,11 +3,11 @@
 namespace App\Traits;
 
 
-use App\Enums\LogDetailsAsModelEnum;
 use App\Models\LoggingInfo;
 
 trait LogOfSpecificallyModel
 {
+    use TapLogActivityTrait;
 
     public function specificallyModel(): ?LoggingInfo
     {
@@ -17,8 +17,4 @@ trait LogOfSpecificallyModel
         return $object ?? null;
     }
 
-    public function checkModelLogger()
-    {
-        //$tmpMinimumLoggingLevel = ActivityLogHelper::$MINIMUM_LOGGING_LEVEL;
-    }
 }

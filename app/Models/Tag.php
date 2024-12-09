@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\ActivityLogsFunctions\CheckLogEnabledTrait;
 use App\Enums\LogLevelEnum;
+use App\Traits\LogOfSpecificallyModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,11 +14,12 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Tag extends Model
 {
-    use  HasFactory, SoftDeletes, LogsActivity, CheckLogEnabledTrait;
+    use  HasFactory, SoftDeletes, LogsActivity, CheckLogEnabledTrait, LogOfSpecificallyModel;
 
     protected $fillable = [
         'name',
     ];
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -37,9 +39,10 @@ class Tag extends Model
     {
         return $this->belongsToMany(Post::class, 'post_tag')->withTimestamps();
     }
+
     public function logs()
     {
-        return $this->morphToMany(LoggingInfo::class,'model');
+        return $this->morphToMany(LoggingInfo::class, 'model');
     }
 
     public function getActivitylogOptions(): LogOptions

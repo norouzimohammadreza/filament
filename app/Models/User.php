@@ -49,26 +49,6 @@ class User extends Authenticatable implements FilamentUser
             'password' => 'hashed',
         ];
     }
-
-    public function tapActivity(Activity $activity, string $eventName)
-    {
-        $this->checkIfLoggingIsEnabled();
-        if ($this->specificallyModel() != null) {
-            if ($this->specificallyModel()->details == LogDetailsAsModelEnum::ENABLED->value
-                && $this->logLevel >= $this->specificallyModel()->level) {
-                activity()->enableLogging();
-                $activity->level = $this->specificallyModel()->level;
-            } else {
-                activity()->disableLogging();
-            }
-        } else {
-            $activity->level = $this->logLevel;
-        }
-        $activity->ip = inet_pton(request()->ip());
-        $activity->url = request()->getPathInfo();
-
-    }
-
     public function log()
     {
         return $this->morphToMany(LoggingInfo::class, 'model');

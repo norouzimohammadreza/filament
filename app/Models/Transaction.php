@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\ActivityLogsFunctions\CheckLogEnabledTrait;
 use App\Enums\LogLevelEnum;
+use App\Traits\LogOfSpecificallyModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,13 +14,14 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Transaction extends Model
 {
-    use  HasFactory, SoftDeletes, LogsActivity, CheckLogEnabledTrait;
+    use  HasFactory, SoftDeletes, LogsActivity, CheckLogEnabledTrait, LogOfSpecificallyModel;
 
     protected $fillable = [
         'amount',
         'description',
         'category_id',
     ];
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -39,9 +41,10 @@ class Transaction extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
     public function logs()
     {
-        return $this->morphToMany(LoggingInfo::class,'model');
+        return $this->morphToMany(LoggingInfo::class, 'model');
     }
 
     public function getActivitylogOptions(): LogOptions
