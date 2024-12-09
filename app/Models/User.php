@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\ActivityLogsFunctions\CheckLogEnabledTrait;
+use App\Enums\LogDetailsAsModelEnum;
 use App\Enums\LogLevelEnum;
 use App\Traits\LogOfSpecificallyModel;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
@@ -21,12 +22,14 @@ class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable, SoftDeletes, HasRoles, HasPanelShield,
         LogsActivity, CausesActivity, CheckLogEnabledTrait, LogOfSpecificallyModel;
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->logLevel = $this->checkValue() ?? LogLevelEnum::HIGH->value;
-        $this->enableLoggingModelsEvents = false ?? true;
+        $this->logLevel = LogLevelEnum::LOW->value;
+        $this->enableLoggingModelsEvents = true;
     }
+
     protected $fillable = [
         'name',
         'email',
@@ -50,13 +53,25 @@ class User extends Authenticatable implements FilamentUser
     public function tapActivity(Activity $activity, string $eventName)
     {
         $this->checkIfLoggingIsEnabled();
+        if ($this->specificallyModel() != null) {
+            if ($this->specificallyModel()->details == LogDetailsAsModelEnum::ENABLED->value
+                && $this->logLevel >= $this->specificallyModel()->level) {
+                activity()->enableLogging();
+                $activity->level = $this->specificallyModel()->level;
+            } else {
+                activity()->disableLogging();
+            }
+        } else {
+            $activity->level = $this->logLevel;
+        }
         $activity->ip = inet_pton(request()->ip());
         $activity->url = request()->getPathInfo();
-        $activity->level = $this->logLevel;
+
     }
+
     public function log()
     {
-        return $this->morphToMany(LoggingInfo::class,'model');
+        return $this->morphToMany(LoggingInfo::class, 'model');
     }
 
     public function posts()
