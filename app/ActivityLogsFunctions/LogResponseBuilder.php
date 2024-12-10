@@ -20,7 +20,10 @@ class LogResponseBuilder
         $this->checkIfLoggingIsEnabled();
         $this->activityLogger = activity($name)
             ->tap(function (Activity $activity) {
-                if ($this->speciallyUser() != null) {
+                if (auth()->user()->enableLoggingModelsEvents
+                    && ActivityLogHelper::$LOGGING_ENABLED
+                    && $this->logLevel >= ActivityLogHelper::$MINIMUM_LOGGING_LEVEL
+                    && $this->speciallyUser() != null) {
                     if ($this->speciallyUser()->details == LogDetailsAsModelEnum::ENABLED->value
                         && $this->logLevel >= $this->speciallyUser()->level) {
                         activity()->enableLogging();
@@ -65,12 +68,13 @@ class LogResponseBuilder
 
     public function speciallyUser()
     {
-        if (isset(auth()->user()->id)){
-        $user = LoggingInfo::all()
-            ->where('model_type', get_class(auth()->user()))
-            ->where('model_id', auth()->user()->id)->first();
-        return $user ?? null;
-    }}
+        if (isset(auth()->user()->id)) {
+            $user = LoggingInfo::all()
+                ->where('model_type', get_class(auth()->user()))
+                ->where('model_id', auth()->user()->id)->first();
+            return $user ?? null;
+        }
+    }
 
     public function save(?string $description = null): ?ActivityContract
     {

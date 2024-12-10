@@ -6,6 +6,7 @@ use App\Enums\LogDetailsAsModelEnum;
 use App\Enums\LogLevelEnum;
 use App\Filament\Resources\LoggingDetailsResource\Pages;
 use App\Models\LoggingInfo;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -21,7 +22,8 @@ class LoggingDetailsResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Select::make('model_type')
+                    ->relationship('')
             ]);
     }
 
@@ -30,27 +32,35 @@ class LoggingDetailsResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('model_type')
-                    ->getStateUsing(function (LoggingInfo $record){
-                        $modelString = explode('\\',$record->model_type);
+                    ->getStateUsing(function (LoggingInfo $record) {
+                        $modelString = explode('\\', $record->model_type);
                         return $modelString[2];
                     }),
                 Tables\Columns\TextColumn::make('model_id'),
                 Tables\Columns\TextColumn::make('level')
-                    ->getStateUsing(function (LoggingInfo $record){
-                        switch ($record->level){
-                            case LogLevelEnum::LOW->value: return 'Low';
-                            case LogLevelEnum::MEDIUM->value: return 'Medium';
-                            case LogLevelEnum::HIGH->value: return 'High';
-                            case LogLevelEnum::CRITICAL->value: return 'Critical';
-                            default: return 'Unknown';
+                    ->getStateUsing(function (LoggingInfo $record) {
+                        switch ($record->level) {
+                            case LogLevelEnum::LOW->value:
+                                return 'Low';
+                            case LogLevelEnum::MEDIUM->value:
+                                return 'Medium';
+                            case LogLevelEnum::HIGH->value:
+                                return 'High';
+                            case LogLevelEnum::CRITICAL->value:
+                                return 'Critical';
+                            default:
+                                return 'Unknown';
                         }
                     }),
                 Tables\Columns\TextColumn::make('details')
-                    ->getStateUsing(function (LoggingInfo $record){
-                        switch ($record->details){
-                            case LogDetailsAsModelEnum::ENABLED->value: return 'Enabled';
-                            case LogDetailsAsModelEnum::DISABLED->value: return 'Disabled';
-                            default: return 'Unknown';
+                    ->getStateUsing(function (LoggingInfo $record) {
+                        switch ($record->details) {
+                            case LogDetailsAsModelEnum::ENABLED->value:
+                                return 'Enabled';
+                            case LogDetailsAsModelEnum::DISABLED->value:
+                                return 'Disabled';
+                            default:
+                                return 'Unknown';
                         }
                     }),
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TestController;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Transaction;
@@ -53,3 +54,5 @@ Route::get('/causer-log', function () {
     echo Activity::all()->last()->causer; // Post Model
     echo Activity::all()->last()->causer->id; // Post#1 Owner
 });
+
+Route::get('/models',[TestController::class,'index']);
