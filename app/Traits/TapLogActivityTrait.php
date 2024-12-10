@@ -13,7 +13,6 @@ trait TapLogActivityTrait
         $this->checkIfLoggingIsEnabled();
         if ($this->enableLoggingModelsEvents
             && ActivityLogHelper::$LOGGING_ENABLED
-            && $this->logLevel >= ActivityLogHelper::$MINIMUM_LOGGING_LEVEL
             && $this->specificallyModel() != null) {
             if ($this->specificallyModel()->details == LogDetailsAsModelEnum::ENABLED->value
                 && $this->logLevel >= $this->specificallyModel()->level) {

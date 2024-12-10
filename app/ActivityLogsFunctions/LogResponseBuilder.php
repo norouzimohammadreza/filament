@@ -22,7 +22,6 @@ class LogResponseBuilder
             ->tap(function (Activity $activity) {
                 if (auth()->user()->enableLoggingModelsEvents
                     && ActivityLogHelper::$LOGGING_ENABLED
-                    && $this->logLevel >= ActivityLogHelper::$MINIMUM_LOGGING_LEVEL
                     && $this->speciallyUser() != null) {
                     if ($this->speciallyUser()->details == LogDetailsAsModelEnum::ENABLED->value
                         && $this->logLevel >= $this->speciallyUser()->level) {

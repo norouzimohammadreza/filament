@@ -27,7 +27,7 @@ class User extends Authenticatable implements FilamentUser
     {
         parent::__construct($attributes);
         $this->logLevel = LogLevelEnum::LOW->value;
-        $this->enableLoggingModelsEvents = true;
+        $this->enableLoggingModelsEvents = false;
     }
 
     protected $fillable = [

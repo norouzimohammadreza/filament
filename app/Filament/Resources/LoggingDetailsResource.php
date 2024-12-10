@@ -23,7 +23,7 @@ class LoggingDetailsResource extends Resource
         return $form
             ->schema([
                 Select::make('model_type')
-                    ->relationship('')
+               //     ->relationship('')
             ]);
     }
 

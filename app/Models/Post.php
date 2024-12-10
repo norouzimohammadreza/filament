@@ -13,7 +13,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Post extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity, CheckLogEnabledTrait, LogOfSpecificallyModel;
+    use SoftDeletes, LogsActivity, CheckLogEnabledTrait, LogOfSpecificallyModel;
 
     public function __construct(array $attributes = [])
     {
