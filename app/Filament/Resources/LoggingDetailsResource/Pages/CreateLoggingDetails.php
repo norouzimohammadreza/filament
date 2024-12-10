@@ -9,4 +9,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateLoggingDetails extends CreateRecord
 {
     protected static string $resource = LoggingDetailsResource::class;
+    protected function getRedirectUrl() :string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

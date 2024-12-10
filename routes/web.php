@@ -12,7 +12,6 @@ use Spatie\Activitylog\Models\Activity;
 Route::get('/ttt',function (){
 $user = auth()->user();
 
-dd($user->checkValue());
 });
 Route::get('/class',function (){
     $user = auth()->user();
@@ -56,3 +55,4 @@ Route::get('/causer-log', function () {
 });
 
 Route::get('/models',[TestController::class,'index']);
+Route::get('/cc',[TestController::class,'getClass']);

@@ -17,4 +17,8 @@ class LoggingInfo extends Model
         'details',
         'level'
     ];
+    public function model()
+    {
+        return $this->morphTo();
+    }
 }

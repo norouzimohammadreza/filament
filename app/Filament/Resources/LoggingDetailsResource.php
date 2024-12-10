@@ -5,8 +5,13 @@ namespace App\Filament\Resources;
 use App\Enums\LogDetailsAsModelEnum;
 use App\Enums\LogLevelEnum;
 use App\Filament\Resources\LoggingDetailsResource\Pages;
+use App\Models\Category;
 use App\Models\LoggingInfo;
-use Filament\Forms\Components\Select;
+use App\Models\Post;
+use App\Models\Tag;
+use App\Models\Transaction;
+use App\Models\User;
+use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -22,8 +27,28 @@ class LoggingDetailsResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('model_type')
-               //     ->relationship('')
+                Forms\Components\MorphToSelect::make('model')
+                    ->types([
+                        Forms\Components\MorphToSelect\Type::make(Post::class)->titleAttribute('title'),
+                        Forms\Components\MorphToSelect\Type::make(User::class)->titleAttribute('name'),
+                        Forms\Components\MorphToSelect\Type::make(Tag::class)->titleAttribute('name'),
+                        Forms\Components\MorphToSelect\Type::make(Category::class)->titleAttribute('name'),
+                        Forms\Components\MorphToSelect\Type::make(Transaction::class)->titleAttribute('description'),
+                    ])
+                    ->disabledOn('edit')
+                    ->required(),
+                Forms\Components\Select::make('level')
+                    ->options([
+                        LogLevelEnum::LOW->value => 'Low',
+                        LogLevelEnum::MEDIUM->value => 'Medium',
+                        LogLevelEnum::HIGH->value => 'High',
+                        LogLevelEnum::CRITICAL->value => 'Critical',
+                    ]),
+                Forms\Components\Select::make('details')
+                    ->options([
+                        LogDetailsAsModelEnum::ENABLED->value => 'Enabled',
+                        LogDetailsAsModelEnum::DISABLED->value => 'Disabled',
+                    ])
             ]);
     }
 
