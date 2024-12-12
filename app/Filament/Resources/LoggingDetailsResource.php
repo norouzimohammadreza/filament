@@ -80,9 +80,9 @@ class LoggingDetailsResource extends Resource
                 Tables\Columns\TextColumn::make('is_enabled')
                     ->getStateUsing(function (LoggingInfo $record) {
                         switch ($record->is_enabled) {
-                            case LogDetailsAsModelEnum::ENABLED->value:
+                            case 1:
                                 return 'Enabled';
-                            case LogDetailsAsModelEnum::DISABLED->value:
+                            case 0:
                                 return 'Disabled';
                             default:
                                 return 'Unknown';

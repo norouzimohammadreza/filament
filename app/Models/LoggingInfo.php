@@ -14,8 +14,8 @@ class LoggingInfo extends Model
     protected $fillable = [
         'model_id',
         'model_type',
-        'details',
-        'level'
+        'is_enabled',
+        'logging_level'
     ];
     public function model()
     {
