@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('model_as_log', function (Blueprint $table) {
+        Schema::create('model_log_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('model');
-            $table->tinyInteger('details')->default(LogDetailsAsModelEnum::ENABLED->value);
-            $table->tinyInteger('level')->default(LogLevelEnum::HIGH->value);
+            $table->string('model_type');
+            $table->boolean('is_enabled')->default(false);
+            $table->tinyInteger('logging_level')->default(LogLevelEnum::HIGH->value);
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('model_logging');
+        Schema::dropIfExists('model_log_settings');
     }
 };
