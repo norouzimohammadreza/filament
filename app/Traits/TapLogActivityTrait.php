@@ -11,13 +11,14 @@ trait TapLogActivityTrait
     public function tapActivity(Activity $activity, string $eventName)
     {
         $this->checkIfLoggingIsEnabled();
-        if ($this->enableLoggingModelsEvents
+        if (($this->specificallyModel() !=null)
+            && $this->enableLoggingModelsEvents
             && ActivityLogHelper::$LOGGING_ENABLED
             && $this->specificallyModel() != null) {
-            if ($this->specificallyModel()->details == LogDetailsAsModelEnum::ENABLED->value
-                && $this->logLevel >= $this->specificallyModel()->level) {
+            if ($this->specificallyModel()->is_enabled == 1
+                && $this->logLevel >= $this->specificallyModel()->logging_level) {
                 activity()->enableLogging();
-                $activity->level = $this->specificallyModel()->level;
+                $activity->level = $this->specificallyModel()->logging_level;
             } else {
                 activity()->disableLogging();
             }

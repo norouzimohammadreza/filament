@@ -37,18 +37,18 @@ class LoggingDetailsResource extends Resource
                     ])
                     ->disabledOn('edit')
                     ->required(),
-                Forms\Components\Select::make('level')
+                Forms\Components\Select::make('logging_level')->label('Level')
                     ->options([
                         LogLevelEnum::LOW->value => 'Low',
                         LogLevelEnum::MEDIUM->value => 'Medium',
                         LogLevelEnum::HIGH->value => 'High',
                         LogLevelEnum::CRITICAL->value => 'Critical',
-                    ]),
-                Forms\Components\Select::make('details')
+                    ])->required(),
+                Forms\Components\Select::make('is_enabled')
                     ->options([
-                        LogDetailsAsModelEnum::ENABLED->value => 'Enabled',
-                        LogDetailsAsModelEnum::DISABLED->value => 'Disabled',
-                    ])
+                        1 => 'Enabled',
+                        0 => 'Disabled',
+                    ])->required(),
             ]);
     }
 
@@ -62,9 +62,9 @@ class LoggingDetailsResource extends Resource
                         return $modelString[2];
                     }),
                 Tables\Columns\TextColumn::make('model_id'),
-                Tables\Columns\TextColumn::make('level')
+                Tables\Columns\TextColumn::make('logging_level')->label('Level')
                     ->getStateUsing(function (LoggingInfo $record) {
-                        switch ($record->level) {
+                        switch ($record->logging_level) {
                             case LogLevelEnum::LOW->value:
                                 return 'Low';
                             case LogLevelEnum::MEDIUM->value:
@@ -77,9 +77,9 @@ class LoggingDetailsResource extends Resource
                                 return 'Unknown';
                         }
                     }),
-                Tables\Columns\TextColumn::make('details')
+                Tables\Columns\TextColumn::make('is_enabled')
                     ->getStateUsing(function (LoggingInfo $record) {
-                        switch ($record->details) {
+                        switch ($record->is_enabled) {
                             case LogDetailsAsModelEnum::ENABLED->value:
                                 return 'Enabled';
                             case LogDetailsAsModelEnum::DISABLED->value:

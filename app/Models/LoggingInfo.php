@@ -10,7 +10,7 @@ class LoggingInfo extends Model
 {
     use SoftDeletes, LogOfSpecificallyModel;
 
-    protected $table = 'model_logging_details';
+    protected $table = 'model_record_log_settings';
     protected $fillable = [
         'model_id',
         'model_type',

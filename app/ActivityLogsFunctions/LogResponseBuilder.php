@@ -20,13 +20,14 @@ class LogResponseBuilder
         $this->checkIfLoggingIsEnabled();
         $this->activityLogger = activity($name)
             ->tap(function (Activity $activity) {
-                if (auth()->user()->enableLoggingModelsEvents
+                if (($this->speciallyUser() !=null)
                     && ActivityLogHelper::$LOGGING_ENABLED
                     && $this->speciallyUser() != null) {
-                    if ($this->speciallyUser()->details == LogDetailsAsModelEnum::ENABLED->value
-                        && $this->logLevel >= $this->speciallyUser()->level) {
+                    if ($this->speciallyUser()->is_enabled == 1
+                        && $this->logLevel >= $this->speciallyUser()->logging_level) {
+
                         activity()->enableLogging();
-                        $activity->level = $this->speciallyUser()->level;
+                        $activity->level = $this->speciallyUser()->logging_level;
                     } else {
                         activity()->disableLogging();
                     }

@@ -9,7 +9,10 @@ use Filament\Resources\Pages\EditRecord;
 class EditLoggingDetails extends EditRecord
 {
     protected static string $resource = LoggingDetailsResource::class;
-
+    protected function getRedirectUrl() :string
+    {
+        return $this->getResource()::getUrl('index');
+    }
     protected function getHeaderActions(): array
     {
         return [
