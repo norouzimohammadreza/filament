@@ -2,7 +2,6 @@
 
 namespace App\ActivityLogsFunctions;
 
-use App\Enums\LogDetailsAsModelEnum;
 use App\Models\LoggingInfo;
 use Spatie\Activitylog\ActivityLogger;
 use Spatie\Activitylog\Contracts\Activity as ActivityContract;
@@ -20,18 +19,18 @@ class LogResponseBuilder
         $this->checkIfLoggingIsEnabled();
         $this->activityLogger = activity($name)
             ->tap(function (Activity $activity) {
-                if (($this->speciallyUser() !=null)
+                if (($this->speciallyUser() != null)
                     && ActivityLogHelper::$LOGGING_ENABLED
                     && $this->speciallyUser() != null) {
                     if ($this->speciallyUser()->is_enabled == 1
                         && $this->logLevel >= $this->speciallyUser()->logging_level) {
-
                         activity()->enableLogging();
                         $activity->level = $this->speciallyUser()->logging_level;
                     } else {
                         activity()->disableLogging();
                     }
-                } else {
+                } else if ($this->logLevel >= ActivityLogHelper::$MINIMUM_LOGGING_LEVEL) {
+                    activity()->enableLogging();
                     $activity->level = $this->logLevel;
                 }
                 $activity->ip = inet_pton(request()->ip());

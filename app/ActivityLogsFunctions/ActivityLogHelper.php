@@ -8,11 +8,11 @@ use Spatie\Activitylog\Models\Activity;
 class ActivityLogHelper
 {
     public static bool $LOGGING_ENABLED = true;
-    public static int $MINIMUM_LOGGING_LEVEL = LogLevelEnum::MEDIUM->value;
+    public static int $MINIMUM_LOGGING_LEVEL = LogLevelEnum::HIGH->value;
 
     public static function log(string $name)
     {
-        return new LogResponseBuilder($name, self::$MINIMUM_LOGGING_LEVEL);
+        return new LogResponseBuilder($name, LogLevelEnum::MEDIUM->value);
     }
 
     public static function getViewUrl(Activity $activity): ?string
