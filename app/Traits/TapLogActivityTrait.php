@@ -22,7 +22,8 @@ trait TapLogActivityTrait
             } else {
                 activity()->disableLogging();
             }
-        } else {
+        } else if ($this->logLevel >= ActivityLogHelper::$MINIMUM_LOGGING_LEVEL) {
+            activity()->enableLogging();
             $activity->level = $this->logLevel;
         }
         $activity->ip = inet_pton(request()->ip());
