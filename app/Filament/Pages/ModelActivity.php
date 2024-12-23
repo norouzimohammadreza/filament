@@ -2,29 +2,32 @@
 
 namespace App\Filament\Pages;
 
-use App\Models\LoggingInfo;
+use App\Models\ModelLog;
 use Filament\Pages\Page;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\DB;
 
 class ModelActivity extends Page implements HasTable
 {
     use InteractsWithTable;
+
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.pages.model-activity';
-    protected static mixed $data ;
-    public function __construct()
-    {
-        self::$data = DB::table('model_as_log');
-    }
 
-    public function getTableQuery() : mixed
+    public function table(Table $table): Table
     {
-        return self::$data;
+        return $table
+            ->query(ModelLog::query())
+            ->columns([
+                TextColumn::make('model_type')
+                    ->getStateUsing(fn() => config('farda_activity_log.models'))
+            ])
+            ->filters([])
+            ->actions([])
+            ->bulkActions([]);
+
     }
-    
 }
