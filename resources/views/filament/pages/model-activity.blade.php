@@ -7,6 +7,8 @@
 ]);
         }
         $logModels =\App\Models\ModelLog::all();
+        //dd(\App\Enums\LogLevelEnum::value(1));
+        $levels = (\App\Enums\LogLevelEnum::values());
     @endphp
     <table>
         <thead>
@@ -18,7 +20,7 @@
         @foreach($logModels as $logModel)
             <tr>
                 <td>{{$logModel->model_type}}</td>
-                <td></td>
+                <td>{{\App\Enums\LogLevelEnum::value($logModel->logging_level)}}</td>
                 <td>{{$logModel->is_enabled?'True':'False'}}</td>
             </tr>
         @endforeach
