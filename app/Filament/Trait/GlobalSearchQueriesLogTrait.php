@@ -3,7 +3,6 @@
 namespace App\Filament\Trait;
 
 use App\ActivityLogsFunctions\ActivityLogHelper;
-use App\ActivityLogsFunctions\LogResponseBuilder;
 use App\Enums\LogLevelEnum;
 
 trait GlobalSearchQueriesLogTrait
@@ -12,7 +11,7 @@ trait GlobalSearchQueriesLogTrait
     {
         if ($search) {
 
-            ActivityLogHelper::log('HTTP SEARCH', LogLevelEnum::MEDIUM->value)
+            ActivityLogHelper::log('HTTP Response', LogLevelEnum::HIGH->value)
                 ->withProperties([
                     'search' => $search,
                     'resource' => static::$resource,

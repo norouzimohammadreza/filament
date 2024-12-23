@@ -11,8 +11,7 @@ trait TableSearchQueriesLogTrait
     protected function applyColumnSearchesToTableQuery(Builder $query): Builder
     {
         if ($this->getTableSearch()) {
-
-            ActivityLogHelper::log('HTTP SEARCH', LogLevelEnum::MEDIUM->value)
+            ActivityLogHelper::log('HTTP Response', LogLevelEnum::HIGH->value)
                 ->withProperties([
                     'search' => $this->getTableSearch(),
                     'resource' => static::$resource,

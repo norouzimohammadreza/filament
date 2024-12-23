@@ -10,9 +10,9 @@ class ActivityLogHelper
     public static bool $LOGGING_ENABLED = true;
     public static int $MINIMUM_LOGGING_LEVEL = LogLevelEnum::HIGH->value;
 
-    public static function log(string $name)
+    public static function log(string $name, $logLevel = LogLevelEnum::MEDIUM->value)
     {
-        return new LogResponseBuilder($name, LogLevelEnum::MEDIUM->value);
+        return new LogResponseBuilder($name, $logLevel);
     }
 
     public static function getViewUrl(Activity $activity): ?string
