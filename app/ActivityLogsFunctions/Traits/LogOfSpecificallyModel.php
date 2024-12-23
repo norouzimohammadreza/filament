@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace App\ActivityLogsFunctions\Traits;
 
 
 use App\Models\LoggingInfo;

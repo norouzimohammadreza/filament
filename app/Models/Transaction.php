@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\ActivityLogsFunctions\CheckLogEnabledTrait;
+use App\ActivityLogsFunctions\Traits\CheckLogEnabledTrait;
+use App\ActivityLogsFunctions\Traits\LogOfSpecificallyModel;
 use App\Enums\LogLevelEnum;
-use App\Traits\LogOfSpecificallyModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -25,8 +25,8 @@ class Transaction extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->logLevel = LogLevelEnum::MEDIUM->value;
-        $this->enableLoggingModelsEvents = false;
+        $this->logLevel = ModelLog::where('model_type', self::class)->first()->logging_level;
+        $this->enableLoggingModelsEvents = ModelLog::where('model_type', self::class)->first()->is_enabled;
     }
 
     public function tapActivity(Activity $activity, string $eventName)

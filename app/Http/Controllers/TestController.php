@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -33,5 +34,9 @@ class TestController extends Controller
     {
        $x = explode('\\',get_class(auth()->user()));
        dd(strtolower($x[2].'s'));
+    }
+    public function x()
+    {
+        Category::x();
     }
 }

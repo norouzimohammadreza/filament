@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\LogOfSpecificallyModel;
+use App\ActivityLogsFunctions\Traits\LogOfSpecificallyModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 

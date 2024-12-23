@@ -56,3 +56,4 @@ Route::get('/causer-log', function () {
 
 Route::get('/models',[TestController::class,'index']);
 Route::get('/cc',[TestController::class,'getClass']);
+Route::get('/x',[TestController::class,'x']);

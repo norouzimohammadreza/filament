@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use App\ActivityLogsFunctions\CheckLogEnabledTrait;
+use App\ActivityLogsFunctions\Traits\CheckLogEnabledTrait;
+use App\ActivityLogsFunctions\Traits\LogOfSpecificallyModel;
 use App\Enums\LogLevelEnum;
-use App\Traits\LogOfSpecificallyModel;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
@@ -18,8 +17,8 @@ class Post extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->logLevel = LogLevelEnum::LOW->value;
-        $this->enableLoggingModelsEvents = true;
+        $this->logLevel = ModelLog::where('model_type', self::class)->first()->logging_level;
+        $this->enableLoggingModelsEvents = ModelLog::where('model_type', self::class)->first()->is_enabled;
     }
 
     protected $fillable = [

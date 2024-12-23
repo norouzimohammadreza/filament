@@ -1,7 +1,8 @@
 <?php
 
-namespace App\ActivityLogsFunctions;
+namespace App\ActivityLogsFunctions\Traits;
 
+use App\ActivityLogsFunctions\ActivityLogHelper;
 use App\Enums\LogLevelEnum;
 
 trait CheckLogEnabledTrait

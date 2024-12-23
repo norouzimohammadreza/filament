@@ -2,6 +2,7 @@
 
 namespace App\ActivityLogsFunctions;
 
+use App\ActivityLogsFunctions\Traits\CheckLogEnabledTrait;
 use App\Models\LoggingInfo;
 use Spatie\Activitylog\ActivityLogger;
 use Spatie\Activitylog\Contracts\Activity as ActivityContract;

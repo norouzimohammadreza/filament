@@ -12,6 +12,7 @@ trait TableSearchQueriesLogTrait
     {
         if ($this->getTableSearch()) {
             ActivityLogHelper::log('HTTP Response', LogLevelEnum::HIGH->value)
+                ->withEvent('HTTP SEARCH')
                 ->withProperties([
                     'search' => $this->getTableSearch(),
                     'resource' => static::$resource,

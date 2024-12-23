@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Traits;
+namespace App\ActivityLogsFunctions\Traits;
 
 use App\ActivityLogsFunctions\ActivityLogHelper;
-use App\Enums\LogDetailsAsModelEnum;
 use Spatie\Activitylog\Models\Activity;
 
 trait TapLogActivityTrait
@@ -11,7 +10,7 @@ trait TapLogActivityTrait
     public function tapActivity(Activity $activity, string $eventName)
     {
         $this->checkIfLoggingIsEnabled();
-        if (($this->specificallyModel() !=null)
+        if (($this->specificallyModel() != null)
             && $this->enableLoggingModelsEvents
             && ActivityLogHelper::$LOGGING_ENABLED
             && $this->specificallyModel() != null) {
