@@ -12,6 +12,20 @@
     @endphp
     <table>
         <thead>
+            <td>state</td>
+            <td>Level</td>
+            <td>Is_Enabled</td>
+        </thead>
+        <tr>
+            <td>Activity Log</td>
+            <td>{{\App\Enums\LogLevelEnum::value(\App\ActivityLogsFunctions\ActivityLogHelper::$MINIMUM_LOGGING_LEVEL)}}</td>
+            <td>{{\App\Enums\LogDetailsAsModelEnum::value(\App\ActivityLogsFunctions\ActivityLogHelper::$LOGGING_ENABLED)}}</td>
+
+        </tr>
+    </table>
+    <hr>
+    <table>
+        <thead>
         <td>Model</td>
         <td>Level</td>
         <td>Enabled</td>
@@ -19,6 +33,7 @@
         <tbody>
         @foreach($logModels as $logModel)
             <tr>
+
                 <td>{{$logModel->model_type}}</td>
                 <td>{{\App\Enums\LogLevelEnum::value($logModel->logging_level)}}</td>
                 <td>{{$logModel->is_enabled?'True':'False'}}</td>
