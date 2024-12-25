@@ -16,23 +16,24 @@ class LogResponseBuilder
 
     public function __construct(?string $name, int $logLevel)
     {
-        $this->logLevel = $logLevel;
-        $this->checkIfLoggingIsEnabled();
         $this->activityLogger = activity($name)
-            ->tap(function (Activity $activity) {
-                if (($this->speciallyUser() != null)
-                    && ActivityLogHelper::$LOGGING_ENABLED
-                    && $this->speciallyUser() != null) {
-                    if ($this->speciallyUser()->is_enabled == 1
-                        && $this->logLevel >= $this->speciallyUser()->logging_level) {
+            ->tap(function (Activity $activity) use ($logLevel) {
+                if (ActivityLogHelper::$LOGGING_ENABLED
+                ) {
+                    if ($this->speciallyUser() != null) {
+                        if ($this->speciallyUser()->is_enabled == 1
+                            && $logLevel >= $this->speciallyUser()->logging_level) {
+                            activity()->enableLogging();
+                            $activity->level = $logLevel;
+                        } else {
+                            activity()->disableLogging();
+                        }
+                    } else if ($logLevel >= ActivityLogHelper::$MINIMUM_LOGGING_LEVEL) {
                         activity()->enableLogging();
-                        $activity->level = $this->logLevel;
-                    } else {
-                        activity()->disableLogging();
+                        $activity->level = $logLevel;
                     }
-                } else if ($this->logLevel >= ActivityLogHelper::$MINIMUM_LOGGING_LEVEL) {
-                    activity()->enableLogging();
-                    $activity->level = $this->logLevel;
+                } else {
+                    activity()->disableLogging();
                 }
                 $activity->ip = inet_pton(request()->ip());
                 $activity->url = request()->getPathInfo();

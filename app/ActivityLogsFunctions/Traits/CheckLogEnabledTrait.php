@@ -18,4 +18,5 @@ trait CheckLogEnabledTrait
        }else
             activity()->disableLogging();
     }
+
 }
