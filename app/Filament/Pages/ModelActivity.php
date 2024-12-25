@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Enums\LogLevelEnum;
 use App\Filament\Widgets\LogSettingWidget;
 use App\Models\ModelLog;
+use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -16,6 +17,7 @@ use Filament\Tables;
 class ModelActivity extends Page implements HasTable
 {
     use InteractsWithTable;
+    use InteractsWithForms;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
@@ -28,7 +30,7 @@ class ModelActivity extends Page implements HasTable
     protected function getHeaderWidgets(): array
     {
         return [
-            \App\Livewire\LogSettingWidget::class
+            \App\Livewire\LogSettingWidget::class,
         ];
     }
 
@@ -36,12 +38,12 @@ class ModelActivity extends Page implements HasTable
     {
         return $table
             ->query(ModelLog::all()->where('model_type','!=','App')->toQuery())
-            ->heading('Log Model')
+            ->paginated(false)
             ->columns([
                 TextColumn::make('model_type')->label('Model'),
-                ToggleColumn::make('is_enabled')->label('Enabled')
+                ToggleColumn::make('is_enabled')->label('Enabled')->alignCenter()
                     ->inline(),
-                SelectColumn::make('logging_level')->label('Level')
+                SelectColumn::make('logging_level')->label('Level')->alignCenter()
                     ->options([
                         LogLevelEnum::LOW->value => 'Low',
                         LogLevelEnum::MEDIUM->value => 'Medium',
@@ -49,9 +51,6 @@ class ModelActivity extends Page implements HasTable
                         LogLevelEnum::CRITICAL->value => 'Critical',
                     ])->selectablePlaceholder(false)
 
-            ])
-            ->filters([])
-            ->actions([])
-            ->bulkActions([]);
+            ]);
     }
 }

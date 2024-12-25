@@ -16,14 +16,14 @@ class LogSettingWidget extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
+            ->heading('')
             ->query(ModelLog::all()->where('model_type', 'App')->toQuery())
             ->paginated(false)
             ->columns([
-                TextColumn::make('model_type')->label('App')
-                    ->getStateUsing(fn(ModelLog $record) => 'Setting'),
-                ToggleColumn::make('is_enabled')->label('Enabled')
+                TextColumn::make('model_type')->label('تنظیمات کلی برنامه'),
+                ToggleColumn::make('is_enabled')->label('Enabled')->alignCenter()
                     ->inline(),
-                SelectColumn::make('logging_level')->label('Level')
+                SelectColumn::make('logging_level')->label('Level')->alignCenter()
                     ->options([
                         LogLevelEnum::LOW->value => 'Low',
                         LogLevelEnum::MEDIUM->value => 'Medium',
