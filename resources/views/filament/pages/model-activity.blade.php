@@ -1,6 +1,9 @@
 <x-filament-panels::page>
     @php
         $models = config('farda_activity_log.models');
+                    \App\Models\ModelLog::firstOrCreate([
+                'model_type' => 'App'
+]);
         for($i=0;$i<sizeof($models);$i++){
             \App\Models\ModelLog::firstOrCreate([
                 'model_type' => ($models[$i])

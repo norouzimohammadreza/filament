@@ -15,7 +15,7 @@ trait TapLogActivityTrait
             case 'updated' : $level = LogLevelEnum::HIGH->value;break;
             case 'deleted' : $level = LogLevelEnum::CRITICAL->value;break;
         }
-        if (ActivityLogHelper::$LOGGING_ENABLED
+        if (ActivityLogHelper::getInstance()->getAppLoggingIsEnabled()
             && $this->enableLoggingModelsEvents) {
             if ($this->specificallyModel() != null) {
                 if ($this->specificallyModel()->is_enabled == 1

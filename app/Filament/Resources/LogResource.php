@@ -52,7 +52,7 @@ class LogResource extends Resource
                 Tables\Actions\DeleteAction::make(),
                 Action::make('نمایش')
                     ->url(function (Activity $record) {
-                        return ActivityLogHelper::getViewUrl($record);
+                        return ActivityLogHelper::getInstance()->getViewUrl($record);
                     })
                     ->icon('heroicon-o-eye')
                 ->disabled(fn(Activity $record) => $record->event == 'HTTP SEARCH'),

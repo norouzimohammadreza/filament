@@ -12,7 +12,7 @@ trait CheckLogEnabledTrait
 
     public function checkIfLoggingIsEnabled(): void
     {
-        if (ActivityLogHelper::$LOGGING_ENABLED){
+        if (ActivityLogHelper::getInstance()->getAppLoggingIsEnabled()){
             activity()->enableLogging();
 
        }else

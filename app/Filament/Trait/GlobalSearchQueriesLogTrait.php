@@ -11,7 +11,7 @@ trait GlobalSearchQueriesLogTrait
     {
         if ($search) {
 
-            ActivityLogHelper::log('HTTP Response', LogLevelEnum::HIGH->value)
+            ActivityLogHelper::getInstance()->log('HTTP Response', LogLevelEnum::HIGH->value)
                 ->withEvent('HTTP SEARCH')
                 ->withProperties([
                     'search' => $search,

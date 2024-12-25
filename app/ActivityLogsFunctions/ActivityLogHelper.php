@@ -3,19 +3,50 @@
 namespace App\ActivityLogsFunctions;
 
 use App\Enums\LogLevelEnum;
+use App\Models\ModelLog;
 use Spatie\Activitylog\Models\Activity;
 
 class ActivityLogHelper
 {
-    public static bool $LOGGING_ENABLED = true;
-    public static int $MINIMUM_LOGGING_LEVEL = LogLevelEnum::HIGH->value;
+    private bool $AppLoggingEnabled;
+    private int $AppMinimumLoggingLevel;
 
-    public static function log(string $name, $logLevel = LogLevelEnum::MEDIUM->value)
+    private static ?ActivityLogHelper $instance = null;
+
+    public static function getInstance(): ActivityLogHelper
+    {
+        if (self::$instance === null) {
+            self::$instance = new ActivityLogHelper();
+        }
+        return self::$instance;
+    }
+
+    private function __construct()
+    {
+        $fakeAppModel = ModelLog::where('model_type', 'App')
+            ->firstOrCreate([
+                'model_type' => 'App',
+            ]);
+        $this->AppLoggingEnabled = $fakeAppModel->is_enabled;
+        $this->AppMinimumLoggingLevel = $fakeAppModel->logging_level;
+    }
+
+    public function getAppLoggingIsEnabled()
+    {
+        return $this->AppLoggingEnabled;
+    }
+
+    public function getAppMinimumLoggingLevel()
+    {
+        return $this->AppMinimumLoggingLevel;
+    }
+
+    public function log(string $name, $logLevel = LogLevelEnum::MEDIUM->value)
     {
         return new LogResponseBuilder($name, $logLevel);
     }
 
-    public static function getViewUrl(Activity $activity): ?string
+    public function getViewUrl(Activity $activity): ?string
     {
         return match ($activity->subject_type) {
             'App\Models\Post' => route('filament.admin.resources.posts.edit', $activity->subject_id),

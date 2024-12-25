@@ -19,13 +19,13 @@ class ActivityLogMiddleware
     {
         $response = $next($request);
 
-        ActivityLogHelper::log('HTTP Response')
+        ActivityLogHelper::getInstance()->log('HTTP Response')
             ->withProperties([
                 'status_code' => $response->getStatusCode(),
             ])
             ->save();
         if ($response->getStatusCode() > 400) {
-            ActivityLogHelper::log('HTTP Error Response')
+            ActivityLogHelper::getInstance()->log('HTTP Error Response')
                 ->withProperties([
                     'status_code' => $response->getStatusCode(),
                 ])

@@ -4,9 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Enums\LogLevelEnum;
 use App\Models\ModelLog;
-use Filament\Forms\Components\Toggle;
 use Filament\Pages\Page;
-use Filament\Tables\Actions\SelectAction;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
@@ -27,9 +25,7 @@ class ModelActivity extends Page implements HasTable
         return $table
             ->query(ModelLog::query())
             ->columns([
-                TextColumn::make('model_type')->label('Model')
-                    ->getStateUsing
-                    (fn(ModelLog $record) => (explode('\\', $record->model_type)[2])),
+                TextColumn::make('model_type')->label('Model'),
                 ToggleColumn::make('is_enabled')->label('Enabled'),
                 SelectColumn::make('logging_level')->label('Level')
                     ->options([
@@ -37,7 +33,8 @@ class ModelActivity extends Page implements HasTable
                         LogLevelEnum::MEDIUM->value => 'Medium',
                         LogLevelEnum::HIGH->value => 'High',
                         LogLevelEnum::CRITICAL->value => 'Critical',
-                    ])
+                    ])->selectablePlaceholder(false)
+
             ])
             ->filters([])
             ->actions([])

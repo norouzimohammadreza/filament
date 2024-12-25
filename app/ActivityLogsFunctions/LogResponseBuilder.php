@@ -18,7 +18,7 @@ class LogResponseBuilder
     {
         $this->activityLogger = activity($name)
             ->tap(function (Activity $activity) use ($logLevel) {
-                if (ActivityLogHelper::$LOGGING_ENABLED
+                if (ActivityLogHelper::getInstance()->getAppLoggingIsEnabled()
                 ) {
                     if ($this->speciallyUser() != null) {
                         if ($this->speciallyUser()->is_enabled == 1
@@ -28,7 +28,7 @@ class LogResponseBuilder
                         } else {
                             activity()->disableLogging();
                         }
-                    } else if ($logLevel >= ActivityLogHelper::$MINIMUM_LOGGING_LEVEL) {
+                    } else if ($logLevel >= ActivityLogHelper::getInstance()->getAppMinimumLoggingLevel()) {
                         activity()->enableLogging();
                         $activity->level = $logLevel;
                     }
