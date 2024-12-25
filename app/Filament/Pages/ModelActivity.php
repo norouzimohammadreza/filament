@@ -20,6 +20,7 @@ class ModelActivity extends Page implements HasTable
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.pages.model-activity';
+    protected ?string $heading = 'Log Setting';
     public function getHeaderWidgetsColumns(): int | array
     {
         return 1;
@@ -27,7 +28,7 @@ class ModelActivity extends Page implements HasTable
     protected function getHeaderWidgets(): array
     {
         return [
-            LogSettingWidget::class
+            \App\Livewire\LogSettingWidget::class
         ];
     }
 
@@ -35,6 +36,7 @@ class ModelActivity extends Page implements HasTable
     {
         return $table
             ->query(ModelLog::all()->where('model_type','!=','App')->toQuery())
+            ->heading('Log Model')
             ->columns([
                 TextColumn::make('model_type')->label('Model'),
                 ToggleColumn::make('is_enabled')->label('Enabled')
