@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\ActivityLogsFunctions\ActivityLogHelper;
 use App\ActivityLogsFunctions\Traits\CheckLogEnabledTrait;
 use App\ActivityLogsFunctions\Traits\LogOfSpecificallyModel;
 use App\Enums\LogLevelEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Post extends Model
@@ -26,7 +28,28 @@ class Post extends Model
         'user_id',
         'category_id',
     ];
-
+    public function tapActivity(Activity $activity, string $eventName,int $level = LogLevelEnum::LOW->value)
+    {
+        switch ($eventName) {
+            case 'created' : $level = LogLevelEnum::MEDIUM->value; break;
+            case 'updated' : $level = LogLevelEnum::HIGH->value;break;
+            case 'deleted' : $level = LogLevelEnum::CRITICAL->value;break;
+        }
+        $this->checkIfLoggingIsEnabled();
+        if(ActivityLogHelper::$LOGGING_ENABLED)
+        {
+            if ($this->enableLoggingModelsEvents
+                && $level >= $this->logLevel ){
+                activity()->enableLogging();
+                $activity->level = $level;
+            }
+        }
+        else{
+            activity()->disableLogging();
+        }
+        $activity->ip = inet_pton(request()->ip());
+        $activity->url = request()->getPathInfo();
+    }
     public function user()
     {
         return $this->belongsTo(User::class);

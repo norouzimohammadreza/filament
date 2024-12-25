@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\ActivityLogsFunctions\ActivityLogHelper;
 use App\ActivityLogsFunctions\Traits\CheckLogEnabledTrait;
 use App\ActivityLogsFunctions\Traits\LogOfSpecificallyModel;
 use App\Enums\LogLevelEnum;
@@ -28,7 +29,28 @@ class User extends Authenticatable implements FilamentUser
         $this->logLevel = ModelLog::where('model_type', self::class)->first()->logging_level;
         $this->enableLoggingModelsEvents = ModelLog::where('model_type', self::class)->first()->is_enabled;
     }
-
+    public function tapActivity(Activity $activity, string $eventName,int $level = LogLevelEnum::LOW->value)
+    {
+        switch ($eventName) {
+            case 'created' : $level = LogLevelEnum::MEDIUM->value; break;
+            case 'updated' : $level = LogLevelEnum::HIGH->value;break;
+            case 'deleted' : $level = LogLevelEnum::CRITICAL->value;break;
+        }
+        $this->checkIfLoggingIsEnabled();
+        if(ActivityLogHelper::$LOGGING_ENABLED)
+        {
+            if ($this->enableLoggingModelsEvents
+                && $level >= $this->logLevel ){
+                activity()->enableLogging();
+                $activity->level = $level;
+            }
+        }
+        else{
+            activity()->disableLogging();
+        }
+        $activity->ip = inet_pton(request()->ip());
+        $activity->url = request()->getPathInfo();
+    }
     protected $fillable = [
         'name',
         'email',
