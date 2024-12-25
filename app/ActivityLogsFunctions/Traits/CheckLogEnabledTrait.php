@@ -4,6 +4,7 @@ namespace App\ActivityLogsFunctions\Traits;
 
 use App\ActivityLogsFunctions\ActivityLogHelper;
 use App\Enums\LogLevelEnum;
+use Spatie\Activitylog\Models\Activity;
 
 trait CheckLogEnabledTrait
 {
@@ -11,8 +12,7 @@ trait CheckLogEnabledTrait
 
     public function checkIfLoggingIsEnabled(): void
     {
-        if (ActivityLogHelper::$LOGGING_ENABLED
-            && $this->logLevel >= ActivityLogHelper::$MINIMUM_LOGGING_LEVEL){
+        if (ActivityLogHelper::$LOGGING_ENABLED){
             activity()->enableLogging();
 
        }else
