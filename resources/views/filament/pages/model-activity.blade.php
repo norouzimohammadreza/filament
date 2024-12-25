@@ -13,5 +13,7 @@
         //dd(\App\Enums\LogLevelEnum::value(1));
         $levels = (\App\Enums\LogLevelEnum::values());
     @endphp
+
+    <hr>
 {{$this->table}}
 </x-filament-panels::page>
