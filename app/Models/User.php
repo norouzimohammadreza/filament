@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use App\ActivityLogsFunctions\ActivityLogHelper;
 use App\ActivityLogsFunctions\Traits\CheckLogEnabledTrait;
 use App\ActivityLogsFunctions\Traits\LogOfSpecificallyModel;
-use App\Enums\LogLevelEnum;
+use App\ActivityLogsFunctions\Traits\TapLogActivityTrait;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,7 +20,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable, SoftDeletes, HasRoles, HasPanelShield,
-        LogsActivity, CausesActivity, CheckLogEnabledTrait, LogOfSpecificallyModel;
+        LogsActivity, CausesActivity, CheckLogEnabledTrait, LogOfSpecificallyModel, TapLogActivityTrait;
 
     public function __construct(array $attributes = [])
     {
@@ -29,28 +28,7 @@ class User extends Authenticatable implements FilamentUser
         $this->logLevel = ModelLog::where('model_type', self::class)->first()->logging_level;
         $this->enableLoggingModelsEvents = ModelLog::where('model_type', self::class)->first()->is_enabled;
     }
-    public function tapActivity(Activity $activity, string $eventName,int $level = LogLevelEnum::LOW->value)
-    {
-        switch ($eventName) {
-            case 'created' : $level = LogLevelEnum::MEDIUM->value; break;
-            case 'updated' : $level = LogLevelEnum::HIGH->value;break;
-            case 'deleted' : $level = LogLevelEnum::CRITICAL->value;break;
-        }
-        $this->checkIfLoggingIsEnabled();
-        if(ActivityLogHelper::$LOGGING_ENABLED)
-        {
-            if ($this->enableLoggingModelsEvents
-                && $level >= $this->logLevel ){
-                activity()->enableLogging();
-                $activity->level = $level;
-            }
-        }
-        else{
-            activity()->disableLogging();
-        }
-        $activity->ip = inet_pton(request()->ip());
-        $activity->url = request()->getPathInfo();
-    }
+
     protected $fillable = [
         'name',
         'email',
@@ -70,6 +48,7 @@ class User extends Authenticatable implements FilamentUser
             'password' => 'hashed',
         ];
     }
+
     public function log()
     {
         return $this->morphToMany(LoggingInfo::class, 'model');
