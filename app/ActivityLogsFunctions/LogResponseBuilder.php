@@ -26,7 +26,7 @@ class LogResponseBuilder
                     if ($this->speciallyUser()->is_enabled == 1
                         && $this->logLevel >= $this->speciallyUser()->logging_level) {
                         activity()->enableLogging();
-                        $activity->level = $this->speciallyUser()->logging_level;
+                        $activity->level = $this->logLevel;
                     } else {
                         activity()->disableLogging();
                     }
