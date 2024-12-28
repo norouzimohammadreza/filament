@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\ActivityLogsFunctions\ActivityLogHelper;
 use App\Enums\LogLevelEnum;
 use App\Models\ModelLog;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -54,8 +55,15 @@ class ModelActivity extends Page implements HasTable
                         LogLevelEnum::CRITICAL->value => 'Critical',
                     ])
                     ->selectablePlaceholder(false)
-                    ->disabled(fn(ModelLog $record) => $record->follow_global_config == 1)
-                ,
+                    ->disabled(fn(ModelLog $record) => $record->follow_global_config==1)
+                    ->getStateUsing(function(ModelLog $record){
+                        if ($record->follow_global_config ==1 ){
+                            return ActivityLogHelper::getInstance()->getAppMinimumLoggingLevel();
+                        }else{
+                            return $record->logging_level;
+                        }
+                    }),
+
 
 
             ]);
