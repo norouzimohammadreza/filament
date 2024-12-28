@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Enums\LogLevelEnum;
 use App\Filament\Widgets\LogSettingWidget;
 use App\Models\ModelLog;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
 use Filament\Tables\Columns\SelectColumn;
@@ -51,6 +52,12 @@ class ModelActivity extends Page implements HasTable
                         LogLevelEnum::CRITICAL->value => 'Critical',
                     ])->selectablePlaceholder(false)
 
+            ])
+            ->actions([
+                Tables\Actions\Action::make('جزئیات')
+                ->form([
+                    TextInput::make('Level')
+                ])->action(fn() => LogLevelEnum::values()),
             ]);
     }
 }

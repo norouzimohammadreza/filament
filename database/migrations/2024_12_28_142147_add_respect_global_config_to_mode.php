@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('model_log_settings', function (Blueprint $table) {
-            $table->boolean('respect_global_config')->default(false);
+            $table->boolean('follow_global_config')->default(false)->after('is_enabled');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('model_log_settings', function (Blueprint $table) {
-            $table->dropColumn('respect_global_config');
+            $table->dropColumn('follow_global_config');
         });
     }
 };
