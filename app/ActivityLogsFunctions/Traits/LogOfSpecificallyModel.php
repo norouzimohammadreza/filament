@@ -3,16 +3,15 @@
 namespace App\ActivityLogsFunctions\Traits;
 
 
-use App\Models\LoggingInfo;
+use App\Models\ModelRecordLogSetting;
 
 trait LogOfSpecificallyModel
 {
-    use TapLogActivityTrait;
+    use MyLogActivityTrait;
 
-    public function specificallyModel(): ?LoggingInfo
+    public function specificallyModel(): ?ModelRecordLogSetting
     {
-        $object = LoggingInfo::all()
-            ->where('model_type', get_class($this))
+        $object = ModelRecordLogSetting::where('model_type', get_class($this))
             ->where('model_id', $this->id)->first();
         return $object ?? null;
     }

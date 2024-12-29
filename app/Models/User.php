@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\ActivityLogsFunctions\Traits\CheckLogEnabledTrait;
 use App\ActivityLogsFunctions\Traits\LogOfSpecificallyModel;
-use App\ActivityLogsFunctions\Traits\TapLogActivityTrait;
+use App\ActivityLogsFunctions\Traits\MyLogActivityTrait;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,13 +20,13 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable, SoftDeletes, HasRoles, HasPanelShield,
-        LogsActivity, CausesActivity, CheckLogEnabledTrait, LogOfSpecificallyModel, TapLogActivityTrait;
+        LogsActivity, CausesActivity, CheckLogEnabledTrait, LogOfSpecificallyModel, MyLogActivityTrait;
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->logLevel = ModelLog::where('model_type', self::class)->first()->logging_level;
-        $this->enableLoggingModelsEvents = ModelLog::where('model_type', self::class)->first()->is_enabled;
+        $this->logLevel = ModelLogSetting::where('model_type', self::class)->first()->logging_level;
+        $this->enableLoggingModelsEvents = ModelLogSetting::where('model_type', self::class)->first()->is_enabled;
     }
 
     protected $fillable = [
@@ -49,9 +49,9 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 
-    public function log()
+    public function modelRecordLogSettings()
     {
-        return $this->morphToMany(LoggingInfo::class, 'model');
+        return $this->morphOne(ModelRecordLogSetting::class, 'model');
     }
 
     public function posts()

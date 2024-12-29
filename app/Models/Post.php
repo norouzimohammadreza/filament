@@ -5,7 +5,7 @@ namespace App\Models;
 use App\ActivityLogsFunctions\ActivityLogHelper;
 use App\ActivityLogsFunctions\Traits\CheckLogEnabledTrait;
 use App\ActivityLogsFunctions\Traits\LogOfSpecificallyModel;
-use App\ActivityLogsFunctions\Traits\TapLogActivityTrait;
+use App\ActivityLogsFunctions\Traits\MyLogActivityTrait;
 use App\Enums\LogLevelEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,13 +16,13 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Post extends Model
 {
     use SoftDeletes, LogsActivity, CheckLogEnabledTrait, LogOfSpecificallyModel
-        ,TapLogActivityTrait;
+        ,MyLogActivityTrait;
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->logLevel = ModelLog::where('model_type', self::class)->first()->logging_level;
-        $this->enableLoggingModelsEvents = ModelLog::where('model_type', self::class)->first()->is_enabled;
+        $this->logLevel = ModelLogSetting::where('model_type', self::class)->first()->logging_level;
+        $this->enableLoggingModelsEvents = ModelLogSetting::where('model_type', self::class)->first()->is_enabled;
     }
 
     protected $fillable = [
@@ -45,9 +45,9 @@ class Post extends Model
         return $this->belongsToMany(Category::class, 'category_post')->withTimestamps();
     }
 
-    public function logs()
+    public function modelRecordLogSettings()
     {
-        return $this->morphToMany(LoggingInfo::class, 'model');
+        return $this->morphOne(ModelRecordLogSetting::class,'model');
     }
 
     public function getActivitylogOptions(): LogOptions

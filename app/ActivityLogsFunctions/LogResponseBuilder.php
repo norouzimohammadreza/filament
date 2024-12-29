@@ -3,7 +3,7 @@
 namespace App\ActivityLogsFunctions;
 
 use App\ActivityLogsFunctions\Traits\CheckLogEnabledTrait;
-use App\Models\LoggingInfo;
+use App\Models\ModelRecordLogSetting;
 use Spatie\Activitylog\ActivityLogger;
 use Spatie\Activitylog\Contracts\Activity as ActivityContract;
 use Spatie\Activitylog\Models\Activity;
@@ -70,7 +70,7 @@ class LogResponseBuilder
     public function speciallyUser()
     {
         if (isset(auth()->user()->id)) {
-            $user = LoggingInfo::all()
+            $user = ModelRecordLogSetting::all()
                 ->where('model_type', get_class(auth()->user()))
                 ->where('model_id', auth()->user()->id)->first();
             return $user ?? null;

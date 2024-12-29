@@ -6,11 +6,10 @@ use App\ActivityLogsFunctions\Traits\LogOfSpecificallyModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class LoggingInfo extends Model
+class ModelRecordLogSetting extends Model
 {
-    use SoftDeletes, LogOfSpecificallyModel;
+    use SoftDeletes;
 
-    protected $table = 'model_record_log_settings';
     protected $fillable = [
         'model_id',
         'model_type',

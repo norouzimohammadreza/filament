@@ -1,7 +1,7 @@
 <?php
 return [
     'models'=>[
-        \App\Models\LoggingInfo::class,
+        \App\Models\ModelRecordLogSetting::class,
         \App\Models\User::class,
         \App\Models\Post::class,
         \App\Models\Category::class,

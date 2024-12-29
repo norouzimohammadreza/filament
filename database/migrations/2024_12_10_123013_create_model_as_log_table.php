@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('model_log_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('model_type');
+            $table->string('model_type'); //todo
             $table->boolean('is_enabled')->default(false);
             $table->tinyInteger('logging_level')->default(LogLevelEnum::HIGH->value);
             $table->timestamps();

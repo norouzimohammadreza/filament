@@ -3,7 +3,7 @@
 namespace App\ActivityLogsFunctions;
 
 use App\Enums\LogLevelEnum;
-use App\Models\ModelLog;
+use App\Models\ModelLogSetting;
 use Spatie\Activitylog\Models\Activity;
 
 class ActivityLogHelper
@@ -23,7 +23,7 @@ class ActivityLogHelper
 
     private function __construct()
     {
-        $fakeAppModel = ModelLog::where('model_type', 'App')
+        $fakeAppModel = ModelLogSetting::where('model_type', 'App')
             ->firstOrCreate([
                 'model_type' => 'App',
             ]);
