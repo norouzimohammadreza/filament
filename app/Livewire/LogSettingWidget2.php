@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\ModelLog;
+use App\Models\ModelLogSetting;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Components\Section;
@@ -32,7 +32,7 @@ class LogSettingWidget2 extends Widget implements HasForms, HasActions
     public function form(Form $form): Form
     {
         return $form
-            ->model(ModelLog::where('model_type', 'App')->first())
+            ->model(ModelLogSetting::where('model_type', 'App')->first())
             ->statePath('data')
             ->schema([
                 Section::make()->schema([

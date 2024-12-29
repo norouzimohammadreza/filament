@@ -4,7 +4,8 @@ namespace App\Filament\Pages;
 
 use App\ActivityLogsFunctions\ActivityLogHelper;
 use App\Enums\LogLevelEnum;
-use App\Models\ModelLog;
+use App\Livewire\CheckLogLevelState;
+use App\Models\ModelLogSetting;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
 use Filament\Tables\Columns\SelectColumn;
@@ -13,11 +14,16 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
+use Livewire\Attributes\On;
 
 class ModelActivity extends Page implements HasTable
 {
     use InteractsWithTable;
     use InteractsWithForms;
+
+    protected $listeners = [
+        'global_settings_updated' => '$refresh',
+    ];
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
@@ -32,14 +38,15 @@ class ModelActivity extends Page implements HasTable
     protected function getHeaderWidgets(): array
     {
         return [
-            \App\Livewire\LogSettingWidget::class,
+            \App\Livewire\GlobalLogSettingWidget::class,
+//            \App\Livewire\LogSettingWidget2::class,
         ];
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->query(ModelLog::all()->where('model_type', '!=', 'App')->toQuery())
+            ->query(ModelLogSetting::all()->where('model_type', '!=', 'App')->toQuery())
             ->paginated(false)
             ->columns([
                 TextColumn::make('model_type')->label('Model'),
@@ -55,17 +62,14 @@ class ModelActivity extends Page implements HasTable
                         LogLevelEnum::CRITICAL->value => 'Critical',
                     ])
                     ->selectablePlaceholder(false)
-                    ->disabled(fn(ModelLog $record) => $record->follow_global_config==1)
-                    ->getStateUsing(function(ModelLog $record){
-                        if ($record->follow_global_config ==1 ){
+                    ->disabled(fn(ModelLogSetting $record) => $record->follow_global_config == 1)
+                    ->getStateUsing(function (ModelLogSetting $record) {
+                        if ($record->follow_global_config == 1) {
                             return ActivityLogHelper::getInstance()->getAppMinimumLoggingLevel();
-                        }else{
-                            return $record->logging_level;
                         }
-                    }),
-
-
-
+                        return $record->logging_level;
+                    })
+                ,
             ]);
     }
 }

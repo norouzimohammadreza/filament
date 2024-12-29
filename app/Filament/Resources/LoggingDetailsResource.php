@@ -6,7 +6,7 @@ use App\Enums\LogDetailsAsModelEnum;
 use App\Enums\LogLevelEnum;
 use App\Filament\Resources\LoggingDetailsResource\Pages;
 use App\Models\Category;
-use App\Models\LoggingInfo;
+use App\Models\ModelRecordLogSetting;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Models\Transaction;
@@ -19,7 +19,7 @@ use Filament\Tables\Table;
 
 class LoggingDetailsResource extends Resource
 {
-    protected static ?string $model = LoggingInfo::class;
+    protected static ?string $model = ModelRecordLogSetting::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -57,13 +57,13 @@ class LoggingDetailsResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('model_type')
-                    ->getStateUsing(function (LoggingInfo $record) {
+                    ->getStateUsing(function (ModelRecordLogSetting $record) {
                         $modelString = explode('\\', $record->model_type);
                         return $modelString[2];
                     }),
                 Tables\Columns\TextColumn::make('model_id'),
                 Tables\Columns\TextColumn::make('logging_level')->label('Level')
-                    ->getStateUsing(function (LoggingInfo $record) {
+                    ->getStateUsing(function (ModelRecordLogSetting $record) {
                         switch ($record->logging_level) {
                             case LogLevelEnum::LOW->value:
                                 return 'Low';
@@ -78,7 +78,7 @@ class LoggingDetailsResource extends Resource
                         }
                     }),
                 Tables\Columns\TextColumn::make('is_enabled')
-                    ->getStateUsing(function (LoggingInfo $record) {
+                    ->getStateUsing(function (ModelRecordLogSetting $record) {
                         switch ($record->is_enabled) {
                             case 1:
                                 return 'Enabled';
