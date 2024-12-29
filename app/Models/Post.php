@@ -45,10 +45,6 @@ class Post extends Model
         return $this->belongsToMany(Category::class, 'category_post')->withTimestamps();
     }
 
-    public function modelRecordLogSettings()
-    {
-        return $this->morphOne(ModelRecordLogSetting::class,'model');
-    }
 
     public function getActivitylogOptions(): LogOptions
     {

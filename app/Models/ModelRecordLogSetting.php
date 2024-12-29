@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ModelRecordLogSetting extends Model
 {
     use SoftDeletes;
+    use LogOfSpecificallyModel;
 
     protected $fillable = [
         'model_id',
@@ -16,6 +17,7 @@ class ModelRecordLogSetting extends Model
         'is_enabled',
         'logging_level'
     ];
+
     public function model()
     {
         return $this->morphTo();

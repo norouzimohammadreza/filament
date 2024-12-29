@@ -49,11 +49,6 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 
-    public function modelRecordLogSettings()
-    {
-        return $this->morphOne(ModelRecordLogSetting::class, 'model');
-    }
-
     public function posts()
     {
         $this->hasMany(Post::class);

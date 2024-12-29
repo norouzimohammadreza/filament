@@ -34,10 +34,6 @@ class Transaction extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function modelRecordLogSettings()
-    {
-        return $this->morphToMany(ModelRecordLogSetting::class, 'model');
-    }
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
