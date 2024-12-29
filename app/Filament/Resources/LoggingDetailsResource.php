@@ -36,7 +36,9 @@ class LoggingDetailsResource extends Resource
                         Forms\Components\MorphToSelect\Type::make(Transaction::class)->titleAttribute('description'),
                     ])
                     ->disabledOn('edit')
-                    ->required(),
+                    //->required()->rules(['exists'])
+
+                ,
                 Forms\Components\Select::make('logging_level')->label('Level')
                     ->options([
                         LogLevelEnum::LOW->value => 'Low',

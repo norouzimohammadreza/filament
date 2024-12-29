@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\ActivityLogsFunctions\Traits\CheckLogEnabledTrait;
-use App\ActivityLogsFunctions\Traits\LogOfSpecificallyModel;
 use App\ActivityLogsFunctions\Traits\MyLogActivityTrait;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Filament\Models\Contracts\FilamentUser;
@@ -19,14 +17,19 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
 {
-    use HasFactory, Notifiable, SoftDeletes, HasRoles, HasPanelShield,
-        LogsActivity, CausesActivity, CheckLogEnabledTrait, LogOfSpecificallyModel, MyLogActivityTrait;
+    use HasFactory, Notifiable, SoftDeletes, HasRoles, HasPanelShield;
+
+    use  HasFactory, SoftDeletes;
+    use CausesActivity, LogsActivity, MyLogActivityTrait {
+        MyLogActivityTrait::shouldLogEvent insteadof LogsActivity;
+    }
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->logLevel = ModelLogSetting::where('model_type', self::class)->first()->logging_level;
-        $this->enableLoggingModelsEvents = ModelLogSetting::where('model_type', self::class)->first()->is_enabled;
+        $modelLoggingSettings = ModelLogSetting::where('model_type', self::class)->first();
+        $this->logLevel = $modelLoggingSettings->logging_level;
+        $this->enableLoggingModelsEvents = $modelLoggingSettings->is_enabled;
     }
 
     protected $fillable = [

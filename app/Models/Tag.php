@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\ActivityLogsFunctions\Traits\CheckLogEnabledTrait;
-use App\ActivityLogsFunctions\Traits\LogOfSpecificallyModel;
 use App\ActivityLogsFunctions\Traits\MyLogActivityTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,8 +11,10 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Tag extends Model
 {
-    use  HasFactory, SoftDeletes, LogsActivity, CheckLogEnabledTrait, LogOfSpecificallyModel
-        , MyLogActivityTrait;
+    use  HasFactory, SoftDeletes;
+    use LogsActivity, MyLogActivityTrait {
+        MyLogActivityTrait::shouldLogEvent insteadof LogsActivity;
+    }
 
     protected $fillable = [
         'name',
@@ -23,8 +23,9 @@ class Tag extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->logLevel = ModelLogSetting::where('model_type', self::class)->first()->logging_level;
-        $this->enableLoggingModelsEvents = ModelLogSetting::where('model_type', self::class)->first()->is_enabled;
+        $modelLoggingSettings = ModelLogSetting::where('model_type', self::class)->first();
+        $this->logLevel = $modelLoggingSettings->logging_level;
+        $this->enableLoggingModelsEvents = $modelLoggingSettings->is_enabled;
     }
 
     public function posts()

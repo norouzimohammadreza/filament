@@ -2,7 +2,6 @@
 
 namespace App\ActivityLogsFunctions;
 
-use App\ActivityLogsFunctions\Traits\CheckLogEnabledTrait;
 use App\Models\ModelRecordLogSetting;
 use Spatie\Activitylog\ActivityLogger;
 use Spatie\Activitylog\Contracts\Activity as ActivityContract;
@@ -10,8 +9,6 @@ use Spatie\Activitylog\Models\Activity;
 
 class LogResponseBuilder
 {
-    use CheckLogEnabledTrait;
-
     private ActivityLogger $activityLogger;
 
     public function __construct(?string $name, int $logLevel)

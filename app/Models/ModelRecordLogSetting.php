@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-use App\ActivityLogsFunctions\Traits\LogOfSpecificallyModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ModelRecordLogSetting extends Model
 {
     use SoftDeletes;
-    use LogOfSpecificallyModel;
 
     protected $fillable = [
         'model_id',
