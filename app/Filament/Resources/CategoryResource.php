@@ -14,8 +14,12 @@ use Filament\Tables\Table;
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament\dashboard.categories');
+    }
+
     public static function getNavigationLabel(): string
     {
         return trans('filament\dashboard.categories');
@@ -24,7 +28,7 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('name')->label(__('validation.attributes.name'))
                    ->minLength('3')->maxLength(255)->required()
                 ->unique(ignoreRecord: true)
             ]);
@@ -34,7 +38,7 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->sortable()
+                Tables\Columns\TextColumn::make('name')->label(__('validation.attributes.name'))->sortable()
                 ->searchable()
 
             ])

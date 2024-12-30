@@ -4,7 +4,7 @@ return [
 
     'dashboard' => 'داشبورد',
     'model_log_settings' => 'تنظیمات لاگ مدل',
-    'categories' => 'دسته‌ها',
+    'categories' => 'دسته‌بندی‌ها',
     'activities' => 'فعالیت‌ها',
     'model_instance_log_settings' => 'تنظیمات لاگ نمونه مدل',
     'posts' => 'پست‌ها',

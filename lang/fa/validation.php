@@ -160,5 +160,7 @@ return [
     ],
 
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'نام',
+    ],
 ];

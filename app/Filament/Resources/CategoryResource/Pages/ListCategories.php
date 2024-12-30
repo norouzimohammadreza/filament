@@ -16,7 +16,7 @@ class ListCategories extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->label(__('filament\category.new_category')),
         ];
     }
 }
