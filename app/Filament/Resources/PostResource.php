@@ -19,7 +19,10 @@ class PostResource extends Resource
     protected static ?string $model = Post::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    public static function getNavigationLabel(): string
+    {
+        return trans('filament\dashboard.posts');
+    }
     public static function form(Form $form): Form
     {
         return $form

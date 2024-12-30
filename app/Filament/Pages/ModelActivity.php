@@ -24,7 +24,10 @@ class ModelActivity extends Page implements HasTable
     protected $listeners = [
         'global_settings_updated' => '$refresh',
     ];
-
+    public static function getNavigationLabel(): string
+    {
+        return trans('filament\dashboard.model_log_settings');
+    }
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.pages.model-activity';

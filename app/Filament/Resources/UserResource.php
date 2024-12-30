@@ -20,7 +20,10 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    public static function getNavigationLabel(): string
+    {
+        return trans('filament\dashboard.users');
+    }
     public static function form(Form $form): Form
     {
         return $form

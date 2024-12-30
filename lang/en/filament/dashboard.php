@@ -2,7 +2,7 @@
 
 return [
     'dashboard' => 'Dashboard',
-    'model_log_setting' => 'Model Log Setting',
+    'model_log_settings' => 'Model Log Setting',
     'categories' => 'Categories',
     'activities' => 'Activities',
     'model_instance_log_settings' => 'Model Instance Log Settings',

@@ -16,7 +16,10 @@ class TransactionResource extends Resource
     protected static ?string $model = Transaction::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    public static function getNavigationLabel(): string
+    {
+        return trans('filament\dashboard.transactions');
+    }
     public static function form(Form $form): Form
     {
         return $form

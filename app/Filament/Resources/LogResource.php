@@ -21,7 +21,10 @@ class LogResource extends Resource
     protected static ?string $model = Activity::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    public static function getNavigationLabel(): string
+    {
+        return trans('filament\dashboard.activities');
+    }
     public static function form(Form $form): Form
     {
         return $form

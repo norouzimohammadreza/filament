@@ -22,6 +22,10 @@ class LoggingDetailsResource extends Resource
     protected static ?string $model = ModelRecordLogSetting::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    public static function getNavigationLabel(): string
+    {
+        return __('filament\dashboard.model_instance_log_settings');
+    }
 
     public static function form(Form $form): Form
     {

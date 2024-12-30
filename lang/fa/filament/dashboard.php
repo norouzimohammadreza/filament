@@ -3,7 +3,7 @@
 return [
 
     'dashboard' => 'داشبورد',
-    'model_log_setting' => 'تنظیمات لاگ مدل',
+    'model_log_settings' => 'تنظیمات لاگ مدل',
     'categories' => 'دسته‌ها',
     'activities' => 'فعالیت‌ها',
     'model_instance_log_settings' => 'تنظیمات لاگ نمونه مدل',
