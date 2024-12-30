@@ -13,7 +13,8 @@ use Spatie\Activitylog\Models\Activity;
 trait MyLogActivityTrait
 {
     public int $logLevel = LogLevelEnum::LOW->value;
-    public function setLevelByEvent(string $eventName) : int
+
+    public function setLevelByEvent(string $eventName): int
     {
         //TODO logging based on event type!?
         switch ($eventName) {
@@ -29,35 +30,12 @@ trait MyLogActivityTrait
         }
         return $event_log_level;
     }
+
     public function tapActivity(Activity $activity, string $eventName, int $event_log_level = LogLevelEnum::LOW->value)
     {
         $activity->ip = inet_pton(request()->ip());
         $activity->url = request()->getPathInfo();
-        $event_log_level = $this->setLevelByEvent($eventName);
-
-
-        if (!ActivityLogHelper::getInstance()->getAppLoggingIsEnabled()) {
-            activity()->disableLogging();
-            return;
-        }
-
-
-        if ($this->modelLogSetting()->follow_global_config == 1) {
-            if ($event_log_level < ActivityLogHelper::getInstance()->getAppMinimumLoggingLevel()) {
-                activity()->disableLogging();
-                return;
-            }
-            activity()->enableLogging();
-            $activity->level = $event_log_level;
-            return;
-        }
-
-        if($event_log_level < $this->logLevel){
-            activity()->disableLogging();
-            return;
-        }
-        activity()->enableLogging();
-        $activity->level = $event_log_level;
+        $activity->level = $this->setLevelByEvent($eventName);
     }
 
     protected function shouldLogEvent(string $eventName): bool
@@ -65,27 +43,41 @@ trait MyLogActivityTrait
         //TODO
         $logStatus = app(ActivityLogStatus::class);
         $event_log_level = $this->setLevelByEvent($eventName);
+
+        if (!$logStatus) {
+            return false;
+        }
+
+        if (!ActivityLogHelper::getInstance()->getAppLoggingIsEnabled()) {
+            return false;
+        }
+
         if ($this->modelRecordLogSettings != null) {
             if (!$this->modelRecordLogSettings->is_enabled || $event_log_level < $this->modelRecordLogSettings->logging_level) {
-                activity()->disableLogging();
                 return false;
             }
-            $this->enableLogging();
-            activity()->enableLogging();
-            \activity()->tap(function (Activity $activity) use ($event_log_level) {
-               $activity->level = $event_log_level;
-            });
             return true;
         }
 
         //TODO where set?
         if (!$this->enableLoggingModelsEvents) {
-            activity()->disableLogging();
+            return false;
+        }
+
+        if ($this->modelLogSetting()->follow_global_config == 1) {
+            if ($event_log_level < ActivityLogHelper::getInstance()->getAppMinimumLoggingLevel()) {
+                return false;
+            }
+            return true;
+        }
+
+        if ($event_log_level < $this->logLevel) {
             return false;
         }
 
 
-        if (! in_array($eventName, ['created', 'updated'])) {
+
+        if (!in_array($eventName, ['created', 'updated'])) {
             return true;
         }
 
@@ -95,7 +87,7 @@ trait MyLogActivityTrait
         }
 
         // Do not log update event if only ignored attributes are changed.
-        return (bool) count(Arr::except($this->getDirty(), $this->activitylogOptions->dontLogIfAttributesChangedOnly));
+        return (bool)count(Arr::except($this->getDirty(), $this->activitylogOptions->dontLogIfAttributesChangedOnly));
     }
 
     public function modelLogSetting(): ModelLogSetting
@@ -103,8 +95,9 @@ trait MyLogActivityTrait
         //dd(get_class($this));
         return ModelLogSetting::where('model_type', get_class($this))->firstOrFail();
     }
+
     public function modelRecordLogSettings()
     {
-        return $this->morphOne(ModelRecordLogSetting::class,'model');
+        return $this->morphOne(ModelRecordLogSetting::class, 'model');
     }
 }
