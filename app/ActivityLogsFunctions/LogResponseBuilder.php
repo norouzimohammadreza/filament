@@ -15,25 +15,34 @@ class LogResponseBuilder
     {
         $this->activityLogger = activity($name)
             ->tap(function (Activity $activity) use ($logLevel) {
-                if (ActivityLogHelper::getInstance()->getAppLoggingIsEnabled()
-                ) {
-                    if ($this->speciallyUser() != null) {
-                        if ($this->speciallyUser()->is_enabled == 1
-                            && $logLevel >= $this->speciallyUser()->logging_level) {
-                            activity()->enableLogging();
-                            $activity->level = $logLevel;
-                        } else {
-                            activity()->disableLogging();
-                        }
-                    } else if ($logLevel >= ActivityLogHelper::getInstance()->getAppMinimumLoggingLevel()) {
-                        activity()->enableLogging();
-                        $activity->level = $logLevel;
-                    }
-                } else {
-                    activity()->disableLogging();
-                }
+
                 $activity->ip = inet_pton(request()->ip());
                 $activity->url = request()->getPathInfo();
+
+
+                if (!ActivityLogHelper::getInstance()->getAppLoggingIsEnabled()){
+                    activity()->disableLogging();
+                    return;
+                }
+
+                if ($this->speciallyUser() != null) {
+                    if (!$this->speciallyUser()->is_enabled == 1
+                        || $logLevel < $this->speciallyUser()->logging_level) {
+                        activity()->disableLogging();
+                        return;
+                    }
+                    activity()->enableLogging();
+                    $activity->level = $logLevel;
+                    return;
+                    }
+
+                if ($logLevel < ActivityLogHelper::getInstance()->getAppMinimumLoggingLevel()) {
+                    activity()->disableLogging();
+                    return;
+                    }
+                activity()->enableLogging();
+                $activity->level = $logLevel;
+
             });
     }
 
