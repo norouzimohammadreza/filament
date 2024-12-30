@@ -20,10 +20,11 @@ class GlobalLogSettingWidget extends BaseWidget
             ->query(ModelLogSetting::all()->where('model_type', 'App')->toQuery())
             ->paginated(false)
             ->columns([
-                TextColumn::make('model_type')->label('تنظیمات کلی برنامه'),
-                ToggleColumn::make('is_enabled')->label('Enabled')->alignCenter()
+                TextColumn::make('model_type')->label(__('filament\model_activity.global_log_setting'))
+                ->getStateUsing(fn() => __('filament\model_activity.app')),
+                ToggleColumn::make('is_enabled')->label(__('filament\model_activity.enabled'))->alignCenter()
                     ->inline(),
-                SelectColumn::make('logging_level')->label('Level')->alignCenter()
+                SelectColumn::make('logging_level')->label(__('filament\model_activity.level'))->alignCenter()
                     ->options([
                         LogLevelEnum::LOW->value => 'Low',
                         LogLevelEnum::MEDIUM->value => 'Medium',

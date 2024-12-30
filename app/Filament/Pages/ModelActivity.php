@@ -14,6 +14,7 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Livewire\Attributes\On;
 
 class ModelActivity extends Page implements HasTable
@@ -31,7 +32,11 @@ class ModelActivity extends Page implements HasTable
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.pages.model-activity';
-    protected ?string $heading = 'Log Setting';
+    protected ?string $heading ;
+    public function mount()
+    {
+        $this->heading = __('filament\model_activity.log_setting');
+    }
 
     public function getHeaderWidgetsColumns(): int|array
     {
@@ -52,12 +57,12 @@ class ModelActivity extends Page implements HasTable
             ->query(ModelLogSetting::all()->where('model_type', '!=', 'App')->toQuery())
             ->paginated(false)
             ->columns([
-                TextColumn::make('model_type')->label('Model'),
-                ToggleColumn::make('is_enabled')->label('Enabled')->alignCenter()
+                TextColumn::make('model_type')->label(__('filament\model_activity.models')),
+                ToggleColumn::make('is_enabled')->label(__('filament\model_activity.enabled'))->alignCenter()
                     ->inline(),
                 ToggleColumn::make('follow_global_config')
-                    ->label('Follow Global Config')->alignCenter()->inline(),
-                SelectColumn::make('logging_level')->label('Level')->alignCenter()
+                    ->label(__('filament\model_activity.follow_global_config'))->alignCenter()->inline(),
+                SelectColumn::make('logging_level')->label(__('filament\model_activity.level'))->alignCenter()
                     ->options([
                         LogLevelEnum::LOW->value => 'Low',
                         LogLevelEnum::MEDIUM->value => 'Medium',
