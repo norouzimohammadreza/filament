@@ -18,7 +18,7 @@ class LogResponseBuilder
     public function __construct(?string $name, int $logLevel)
     {
         $this->logLevel = $logLevel;
-        $this->assessmentLogStatus();
+        $this->evaluationLogStatus();
         $this->activityLogger = activity($name)
             ->tap(function (Activity $activity) use ($logLevel) {
                 $activity->ip = inet_pton(request()->ip());
@@ -65,9 +65,7 @@ class LogResponseBuilder
         if (!ActivityLogHelper::getInstance()->getAppLoggingIsEnabled()) {
             return false;
         }
-
         if ($this->userRecordLogSetting() != null) {
-
             if (!$this->userRecordLogSetting()->is_enabled == 1
                 || $this->logLevel < $this->userRecordLogSetting()->logging_level) {
                 return false;
@@ -82,7 +80,7 @@ class LogResponseBuilder
 
     }
 
-    public function assessmentLogStatus()
+    public function evaluationLogStatus()
     {
         if ($this->checkLogEvent()) {
             activity()->enableLogging();
@@ -90,13 +88,14 @@ class LogResponseBuilder
         }
         activity()->disableLogging();
         return;
-
     }
 
-    public function userRecordLogSetting(): ?User
+    public function userRecordLogSetting()
     {
-        if (auth()->user()->modelRecordLogSettings == null) {
-            return auth()->user();
+        $user = auth()->user() ?? null;
+
+        if ($user && $user->modelRecordLogSettings != null) {
+            return $user->modelRecordLogSettings;
         }
         return null;
     }
