@@ -3,21 +3,21 @@
 namespace App\ActivityLogsFunctions;
 
 use App\Models\ModelRecordLogSetting;
-use Illuminate\Support\Arr;
 use Spatie\Activitylog\ActivityLogger;
 use Spatie\Activitylog\ActivityLogStatus;
 use Spatie\Activitylog\Contracts\Activity as ActivityContract;
-use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Models\Activity;
-use Spatie\Activitylog\Traits\LogsActivity;
+
 
 class LogResponseBuilder
 {
-    use LogsActivity;
+
     private ActivityLogger $activityLogger;
     private int $logLevel;
+
     public function __construct(?string $name, int $logLevel)
     {
+
         $this->logLevel = $logLevel;
         $this->activityLogger = activity($name)
             ->tap(function (Activity $activity) use ($logLevel) {
@@ -53,20 +53,21 @@ class LogResponseBuilder
         });
         return $this;
     }
-    protected function shouldLogEvent(string $eventName): bool
+
+    protected function checkLogEvent(): bool
     {
         //TODO
         $logStatus = app(ActivityLogStatus::class);
-
         if (!$logStatus) {
             return false;
         }
 
-        if (!ActivityLogHelper::getInstance()->getAppLoggingIsEnabled()){
+        if (!ActivityLogHelper::getInstance()->getAppLoggingIsEnabled()) {
             return false;
         }
 
         if ($this->speciallyUser() != null) {
+
             if (!$this->speciallyUser()->is_enabled == 1
                 || $this->logLevel < $this->speciallyUser()->logging_level) {
                 return false;
@@ -75,24 +76,12 @@ class LogResponseBuilder
         }
 
         if ($this->logLevel < ActivityLogHelper::getInstance()->getAppMinimumLoggingLevel()) {
-            activity()->disableLogging();
-            return true;
-        }
-
-
-
-        if (!in_array($eventName, ['created', 'updated'])) {
-            return true;
-        }
-
-        // Do not log update event if the model is restoring
-        if ($this->isRestoring()) {
             return false;
         }
+        return true;
 
-        // Do not log update event if only ignored attributes are changed.
-        return (bool)count(Arr::except($this->getDirty(), $this->activitylogOptions->dontLogIfAttributesChangedOnly));
     }
+
     public function speciallyUser()
     {
         if (isset(auth()->user()->id)) {
@@ -106,10 +95,5 @@ class LogResponseBuilder
     public function save(?string $description = null): ?ActivityContract
     {
         return $this->activityLogger->log($description ?? "NO_DESCRIPTION");
-    }
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()->logOnlyDirty();
     }
 }
