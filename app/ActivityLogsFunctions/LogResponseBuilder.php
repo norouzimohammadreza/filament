@@ -2,7 +2,7 @@
 
 namespace App\ActivityLogsFunctions;
 
-use App\Models\ModelRecordLogSetting;
+use App\Models\User;
 use Spatie\Activitylog\ActivityLogger;
 use Spatie\Activitylog\ActivityLogStatus;
 use Spatie\Activitylog\Contracts\Activity as ActivityContract;
@@ -17,8 +17,8 @@ class LogResponseBuilder
 
     public function __construct(?string $name, int $logLevel)
     {
-
         $this->logLevel = $logLevel;
+        $this->assessmentLogStatus();
         $this->activityLogger = activity($name)
             ->tap(function (Activity $activity) use ($logLevel) {
                 $activity->ip = inet_pton(request()->ip());
@@ -66,10 +66,10 @@ class LogResponseBuilder
             return false;
         }
 
-        if ($this->speciallyUser() != null) {
+        if ($this->userRecordLogSetting() != null) {
 
-            if (!$this->speciallyUser()->is_enabled == 1
-                || $this->logLevel < $this->speciallyUser()->logging_level) {
+            if (!$this->userRecordLogSetting()->is_enabled == 1
+                || $this->logLevel < $this->userRecordLogSetting()->logging_level) {
                 return false;
             }
             return true;
@@ -82,14 +82,23 @@ class LogResponseBuilder
 
     }
 
-    public function speciallyUser()
+    public function assessmentLogStatus()
     {
-        if (isset(auth()->user()->id)) {
-            $user = ModelRecordLogSetting::all()
-                ->where('model_type', get_class(auth()->user()))
-                ->where('model_id', auth()->user()->id)->first();
+        if ($this->checkLogEvent()) {
+            activity()->enableLogging();
+            return;
         }
-        return $user ?? null;
+        activity()->disableLogging();
+        return;
+
+    }
+
+    public function userRecordLogSetting(): ?User
+    {
+        if (auth()->user()->modelRecordLogSettings == null) {
+            return auth()->user();
+        }
+        return null;
     }
 
     public function save(?string $description = null): ?ActivityContract
