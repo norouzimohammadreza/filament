@@ -1,6 +1,6 @@
 <?php
 return [
-    'model_record_log_setting' => 'تنظیمات ثبت لاگ رکورد مدل',
+    'model_record_log_setting' => 'تنظیمات جزئی گزارشات',
     'model_type' => 'نوع مدل',
     'model_id' => 'شناسه مدل',
     'model' => 'مدل',

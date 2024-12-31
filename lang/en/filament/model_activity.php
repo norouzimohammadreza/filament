@@ -2,7 +2,7 @@
 
 return [
 
-    'log_setting' => 'Log Setting',
+    'log_setting' => 'Global Log Setting',
     'app' => 'Application',
     'global_log_setting' => 'Global Log Setting',
     'enabled' => 'Enabled',

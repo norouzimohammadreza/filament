@@ -2,9 +2,9 @@
 
 return [
 
-    'log_setting' => 'تنظیمات لاگ',
+    'log_setting' => 'تنظیمات کلی گزارشات',
     'app' => 'برنامه',
-    'global_log_setting' => 'تنظیمات لاگ سراسری',
+    'global_log_setting' => 'تنظیمات گزارشات سراسری',
     'enabled' => 'فعال',
     'level' => 'سطح',
     'models' => 'مدل‌ها',

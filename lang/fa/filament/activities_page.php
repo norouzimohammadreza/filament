@@ -1,7 +1,7 @@
 <?php
 return [
     'ip_address' => 'آدرس IP',
-    'activities' => 'فعالیت‌ها',
+    'activities' => 'لیست گزارشات',
     'url' => 'آدرس اینترنتی',
     'causer' => 'عامل',
     'subject_type' => 'نوع موضوع',

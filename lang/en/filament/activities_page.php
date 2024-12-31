@@ -1,7 +1,7 @@
 <?php
 return [
     'ip_address' => 'IP Address',
-    'activities' => 'Activities',
+    'activities' => 'List of Logs',
     'url' => 'Url',
     'causer' => 'Causer',
     'subject_type' => 'Subject Type',
