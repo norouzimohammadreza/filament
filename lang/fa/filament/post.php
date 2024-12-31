@@ -1,11 +1,12 @@
 <?php
 return [
-    'posts' => 'Post',
-    'title' => 'Title',
-    'author' => 'Author',
-    'published' => 'Published',
-    'new_post' => 'New post',
-    'create_post' => 'Create post',
-    'edit_post' => 'Edit post',
-    'delete_post' => 'Delete post',
+    'posts' => 'پست‌ها',
+    'title' => 'عنوان',
+    'author' => 'نویسنده',
+    'published' => 'منتشر شده',
+    'new_post' => 'پست جدید',
+    'create_post' => 'ایجاد پست',
+    'edit_post' => 'ویرایش پست',
+    'delete_post' => 'حذف پست',
 ];
+

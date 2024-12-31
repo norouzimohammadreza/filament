@@ -1,6 +1,6 @@
 <?php
 return [
-    'posts' => 'Post',
+    'posts' => 'Posts',
     'title' => 'Title',
     'author' => 'Author',
     'published' => 'Published',
