@@ -5,5 +5,9 @@ return [
         'MEDIUM' => 'متوسط',
         'HIGH' => 'بالا',
         'CRITICAL' => 'شدید',
+    ],
+    'enabled' => [
+        'enabled' => 'فعال',
+        'disabled' => 'غیرفعال',
     ]
 ];

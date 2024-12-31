@@ -60,8 +60,8 @@ class LoggingDetailsResource extends Resource
                 Forms\Components\Select::make('is_enabled')
                     ->label(__('filament\model_record_log_setting.enabled'))
                     ->options([
-                        1 => 'Enabled',
-                        0 => 'Disabled',
+                        1 =>  __('enums.enabled.enabled'),
+                        0 =>  __('enums.enabled.disabled'),
                     ])->required(),
             ]);
     }
@@ -99,9 +99,9 @@ class LoggingDetailsResource extends Resource
                     ->getStateUsing(function (ModelRecordLogSetting $record) {
                         switch ($record->is_enabled) {
                             case 1:
-                                return 'Enabled';
+                                return __('enums.enabled.enabled');
                             case 0:
-                                return 'Disabled';
+                                return __('enums.enabled.disabled');
                             default:
                                 return 'Unknown';
                         }

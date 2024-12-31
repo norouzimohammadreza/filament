@@ -5,5 +5,9 @@ return [
         'MEDIUM' => 'Medium',
         'HIGH' => 'High',
         'CRITICAL' => 'Critical',
+    ],
+    'enabled' => [
+        'enabled' => 'Enabled',
+        'disabled' => 'Disabled',
     ]
 ];
