@@ -32,6 +32,7 @@ class ModelActivity extends Page implements HasTable
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.pages.model-activity';
+    protected static ?string $navigationGroup = 'Log Settings';
     protected ?string $heading ;
     public function mount()
     {

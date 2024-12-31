@@ -19,7 +19,7 @@ use Filament\Tables\Filters\Filter;
 class LogResource extends Resource
 {
     protected static ?string $model = Activity::class;
-
+    protected static ?string $navigationGroup = 'Log Settings';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     public static function getNavigationLabel(): string
     {
