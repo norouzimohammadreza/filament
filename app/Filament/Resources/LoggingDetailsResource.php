@@ -26,12 +26,16 @@ class LoggingDetailsResource extends Resource
     {
         return __('filament\dashboard.model_instance_log_settings');
     }
-
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament\model_record_log_setting.model_record_log_setting');
+    }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\MorphToSelect::make('model')
+                    ->label(__('filament\model_record_log_setting.model'))
                     ->types([
                         Forms\Components\MorphToSelect\Type::make(Post::class)->titleAttribute('title'),
                         Forms\Components\MorphToSelect\Type::make(User::class)->titleAttribute('name'),
@@ -41,7 +45,8 @@ class LoggingDetailsResource extends Resource
                     ])
                     ->disabledOn('edit')
                     ->required(),
-                Forms\Components\Select::make('logging_level')->label('Level')
+                Forms\Components\Select::make('logging_level')
+                    ->label(__('filament\model_record_log_setting.level'))
                     ->options([
                         LogLevelEnum::LOW->value => 'Low',
                         LogLevelEnum::MEDIUM->value => 'Medium',
@@ -49,6 +54,7 @@ class LoggingDetailsResource extends Resource
                         LogLevelEnum::CRITICAL->value => 'Critical',
                     ])->required(),
                 Forms\Components\Select::make('is_enabled')
+                    ->label(__('filament\model_record_log_setting.enabled'))
                     ->options([
                         1 => 'Enabled',
                         0 => 'Disabled',
@@ -61,12 +67,15 @@ class LoggingDetailsResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('model_type')
+                    ->label(__('filament\model_record_log_setting.model_type'))
                     ->getStateUsing(function (ModelRecordLogSetting $record) {
                         $modelString = explode('\\', $record->model_type);
                         return $modelString[2];
                     }),
-                Tables\Columns\TextColumn::make('model_id'),
-                Tables\Columns\TextColumn::make('logging_level')->label('Level')
+                Tables\Columns\TextColumn::make('model_id')
+                    ->label(__('filament\model_record_log_setting.model_id')),
+                Tables\Columns\TextColumn::make('logging_level')
+                    ->label(__('filament\model_record_log_setting.level'))
                     ->getStateUsing(function (ModelRecordLogSetting $record) {
                         switch ($record->logging_level) {
                             case LogLevelEnum::LOW->value:
@@ -82,6 +91,7 @@ class LoggingDetailsResource extends Resource
                         }
                     }),
                 Tables\Columns\TextColumn::make('is_enabled')
+                    ->label(__('filament\model_record_log_setting.enabled'))
                     ->getStateUsing(function (ModelRecordLogSetting $record) {
                         switch ($record->is_enabled) {
                             case 1:

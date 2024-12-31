@@ -3,6 +3,7 @@ return [
     'model_record_log_setting' => 'تنظیمات ثبت لاگ رکورد مدل',
     'model_type' => 'نوع مدل',
     'model_id' => 'شناسه مدل',
+    'model' => 'مدل',
     'level' => 'سطح',
     'enabled' => 'فعال',
     'new_model_record' => 'رکورد جدید مدل',

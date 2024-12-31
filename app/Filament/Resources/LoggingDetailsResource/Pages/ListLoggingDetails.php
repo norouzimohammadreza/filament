@@ -13,7 +13,7 @@ class ListLoggingDetails extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->label(__('filament\model_record_log_setting.create_model_record')),
         ];
     }
 }
