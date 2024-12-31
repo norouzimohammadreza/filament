@@ -19,8 +19,11 @@ use Filament\Tables\Filters\Filter;
 class LogResource extends Resource
 {
     protected static ?string $model = Activity::class;
-    protected static ?string $navigationGroup = 'Log Settings';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament\dashboard.log_settings');
+    }
     public static function getNavigationLabel(): string
     {
         return trans('filament\dashboard.activities');

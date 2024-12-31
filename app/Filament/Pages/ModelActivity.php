@@ -4,7 +4,6 @@ namespace App\Filament\Pages;
 
 use App\ActivityLogsFunctions\ActivityLogHelper;
 use App\Enums\LogLevelEnum;
-use App\Livewire\CheckLogLevelState;
 use App\Models\ModelLogSetting;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
@@ -14,8 +13,6 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
-use Illuminate\Contracts\Support\Htmlable;
-use Livewire\Attributes\On;
 
 class ModelActivity extends Page implements HasTable
 {
@@ -25,15 +22,22 @@ class ModelActivity extends Page implements HasTable
     protected $listeners = [
         'global_settings_updated' => '$refresh',
     ];
+
     public static function getNavigationLabel(): string
     {
         return trans('filament\dashboard.model_log_settings');
     }
+
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.pages.model-activity';
-    protected static ?string $navigationGroup = 'Log Settings';
-    protected ?string $heading ;
+    protected ?string $heading;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament\dashboard.log_settings');
+    }
+
     public function mount()
     {
         $this->heading = __('filament\model_activity.log_setting');
