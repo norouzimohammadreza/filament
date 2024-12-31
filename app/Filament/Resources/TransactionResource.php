@@ -20,15 +20,23 @@ class TransactionResource extends Resource
     {
         return trans('filament\dashboard.transactions');
     }
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament\dashboard.transactions');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('amount')
+                    ->label(__('filament\transaction.amount'))
                     ->required()->maxLength(255)->numeric(),
                 Forms\Components\TextInput::make('description')
+                    ->label(__('filament\transaction.description'))
                     ->required()->maxLength(255),
                 Forms\Components\Select::make('category_id')
+                    ->label(__('filament\transaction.category'))
 //                    ->options(Category::all()->pluck('name', 'id'))
                     ->relationship('category', 'name')
                     ->required(),
@@ -39,10 +47,14 @@ class TransactionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('amount')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('description')->searchable(),
-                Tables\Columns\TextColumn::make('category.name')->searchable(),
-                Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
+                Tables\Columns\TextColumn::make('amount')->sortable()->searchable()
+                    ->label(__('filament\transaction.amount')),
+                Tables\Columns\TextColumn::make('description')->searchable()
+                    ->label(__('filament\transaction.description')),
+                Tables\Columns\TextColumn::make('category.name')->searchable()
+                    ->label(__('filament\transaction.category')),
+                Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()
+                ->label(__('filament\activities_page.when')),
 
             ])
             ->filters([
