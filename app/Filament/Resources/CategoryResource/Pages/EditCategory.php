@@ -18,7 +18,7 @@ public function getTitle(): string|Htmlable
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()->modalHeading(__('filament\category.delete_category')),
         ];
 
     }

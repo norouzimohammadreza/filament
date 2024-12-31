@@ -12,7 +12,7 @@ class CreateCategory extends CreateRecord
 
     public function getTitle(): string|Htmlable
     {
-        return __('filament\category.new_category');
+        return __('filament\category.create_category');
     }
 
     protected function getRedirectUrl() :string
