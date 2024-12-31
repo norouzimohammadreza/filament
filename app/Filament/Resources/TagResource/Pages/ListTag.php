@@ -16,7 +16,7 @@ class ListTag extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->label(__('filament\tag.new_tag')),
         ];
     }
 }

@@ -19,11 +19,17 @@ class TagResource extends Resource
     {
         return trans('filament\dashboard.tags');
     }
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament\dashboard.tags');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->label(__('filament\tag.name'))
                     ->required()
                     ->maxLength(255)
                     ->minLength(3)
@@ -34,7 +40,8 @@ class TagResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->label(__('filament\tag.name'))->searchable(),
             ])
             ->filters([
                 //
