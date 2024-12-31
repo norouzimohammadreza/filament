@@ -25,6 +25,11 @@ class LogResource extends Resource
     {
         return trans('filament\dashboard.activities');
     }
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament\activities_page.activities');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -38,14 +43,15 @@ class LogResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('ip_address')
+                    ->label(__('filament\activities_page.ip_address'))
                     ->getStateUsing(function (Activity $activity) {
                         return inet_ntop($activity->ip);
                     }),
-                TextColumn::make('url'),
-                TextColumn::make('causer.name'),
-                TextColumn::make('subject_id')->wrap(),
-                TextColumn::make('subject_type'),
-                TextColumn::make('created_at')->label('Time')
+                TextColumn::make('url')->label(__('filament\activities_page.url')),
+                TextColumn::make('causer.name')->label(__('filament\activities_page.causer')),
+                TextColumn::make('subject_id')->wrap()->label(__('filament\activities_page.subject_id')),
+                TextColumn::make('subject_type')->label(__('filament\activities_page.subject_type')),
+                TextColumn::make('created_at')->label(__('filament\activities_page.when'))
                     ->sortable()->getStateUsing(function (Activity $activity) {
                         return verta($activity->created_at,'Asia/Tehran');
                     })
@@ -53,23 +59,23 @@ class LogResource extends Resource
             ])->defaultSort('created_at', 'desc')
             ->actions([
                 Tables\Actions\DeleteAction::make(),
-                Action::make('نمایش')
+                Action::make(__('filament\activities_page.show'))
                     ->url(function (Activity $record) {
                         return ActivityLogHelper::getInstance()->getViewUrl($record);
                     })
                     ->icon('heroicon-o-eye')
                 ->disabled(fn(Activity $record) => $record->event == 'HTTP SEARCH'),
                 Tables\Actions\ViewAction::make('detail')
-                    ->label('جزئیات')
+                    ->label(__('filament\activities_page.details'))
                     ->form([
                    KeyValue::make('properties.old'),
                    KeyValue::make('properties.attributes'),
                 ])->disabled(fn(Activity $record) => $record->subject_id == null),
             ])
             ->filters([
-                Filter::make('عملیات')
+                Filter::make(__('filament\activities_page.event_subject'))
                     ->query(fn(Builder $query) => $query->where('subject_id','!=',null)),
-                Filter::make('جستجو')
+                Filter::make(__('filament\activities_page.log_search'))
                     ->query(fn(Builder $query) => $query->where('log_name','HTTP SEARCH')),
             ])
             ->bulkActions([
