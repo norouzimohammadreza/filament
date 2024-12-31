@@ -1,9 +1,9 @@
 <?php
 return [
     'name' => 'نام',
-    'create_tag' => 'ایجاد برچسب',
-    'edit_tag' => 'ویرایش برچسب',
-    'delete_tag' => 'حذف برچسب',
-    'new_tag' => 'برچسب جدید',
+    'create_tag' => 'ایجاد تگ',
+    'edit_tag' => 'ویرایش تگ',
+    'delete_tag' => 'حذف تگ',
+    'new_tag' => 'تگ جدید',
 ];
 

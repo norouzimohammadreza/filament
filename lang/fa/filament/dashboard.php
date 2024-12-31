@@ -8,7 +8,7 @@ return [
     'activities' => 'لیست گزارشات',
     'model_instance_log_settings' => 'تنظیمات جزئی',
     'posts' => 'پست‌ها',
-    'tags' => 'برچسب‌ها',
+    'tags' => 'تگ ها',
     'transactions' => 'تراکنش‌ها',
     'users' => 'کاربران',
     'log_settings' => 'گزارشات',
