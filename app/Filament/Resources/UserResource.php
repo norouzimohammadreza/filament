@@ -20,32 +20,43 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     public static function getNavigationLabel(): string
     {
-        return trans('filament\dashboard.users');
+        return __('filament\dashboard.users');
     }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament\dashboard.users');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')->required()
+                    ->label(__('filament\user.name'))
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')->required()
+                    ->label(__('filament\user.email'))
                     ->maxLength(255),
 
                 Forms\Components\TextInput::make('password')->required()
                     ->password()
+                    ->label(__('filament\user.password'))
                     ->minLength(6)
                     ->visibleOn('create')
                     ->maxLength(12),
                 Forms\Components\TextInput::make('password_confirmation')
                     ->password()
+                    ->label(__('filament\user.confirm_password'))
                     ->required()
                     ->visibleOn('create')
-                    ->same('password')
-                    ->label('Confirm Password'),
+                    ->same('password'),
 
                 Forms\Components\Select::make('role')
+                    ->label(__('filament\user.role'))
                     ->relationship('roles', 'name')
                     ->preload()
                     ->required(),
@@ -57,27 +68,28 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable(),
-                TextColumn::make('email')->searchable(),
-                TextColumn::make('roles.name')->searchable(),
+                TextColumn::make('name')->searchable()->label(__('filament\user.name')),
+                TextColumn::make('email')->searchable()->label(__('filament\user.email')),
+                TextColumn::make('roles.name')->searchable()->label(__('filament\user.role')),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('تغییر مرز عبور')
+                Tables\Actions\Action::make(__('filament\user.change_password'))
                     ->icon('heroicon-o-check-circle')
                     ->form([
                         Forms\Components\TextInput::make('password')->required()
                             ->password()
+                            ->label(__('filament\user.password'))
                             ->minLength(6)
                             ->maxLength(12),
                         Forms\Components\TextInput::make('password_confirmation')
                             ->password()
+                            ->label(__('filament\user.confirm_password'))
                             ->required()
-                            ->same('password')
-                            ->label('Confirm Password'),
+                            ->same('password'),
 
                     ])
                     ->action(function (User $user, array $data): void {
