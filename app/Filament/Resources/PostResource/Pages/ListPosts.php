@@ -22,7 +22,7 @@ class ListPosts extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->label(__('filament\post.new_post')),
         ];
     }
 }

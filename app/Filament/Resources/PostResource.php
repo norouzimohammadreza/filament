@@ -23,19 +23,27 @@ class PostResource extends Resource
     {
         return trans('filament\dashboard.posts');
     }
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament\post.posts');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title')
+                    ->label(__('filament\post.title'))
                     ->required()
                     ->maxLength(255)
                     ->placeholder('Title'),
                 Forms\Components\Select::make('tags')
+                    ->label(__('filament\dashboard.tags'))
                     ->preload()
                     ->multiple()
                     ->relationship('tags', 'name'),
                 Forms\Components\Select::make('categories')
+                    ->label(__('filament\dashboard.categories'))
                     ->preload()
                     ->multiple()
                     ->relationship('categories', 'name')
@@ -48,9 +56,11 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title')->searchable(),
-                TextColumn::make('user.name')->label('Author')->searchable(),
-                TextColumn::make('created_at')->label('Published')->sortable()
+                TextColumn::make('title')->searchable()->label(__('filament\post.title')),
+                TextColumn::make('user.name')->label('Author')->searchable()
+                    ->label(__('filament\post.author')),
+                TextColumn::make('created_at')->label('Published')
+                    ->label(__('filament\post.published'))->sortable()
                     ->getStateUsing(function (Post $record) {
                         return verta($record->created_at, 'Asia/Tehran');
                     })
