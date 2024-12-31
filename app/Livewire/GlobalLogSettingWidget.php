@@ -26,10 +26,10 @@ class GlobalLogSettingWidget extends BaseWidget
                     ->inline(),
                 SelectColumn::make('logging_level')->label(__('filament\model_activity.level'))->alignCenter()
                     ->options([
-                        LogLevelEnum::LOW->value => 'Low',
-                        LogLevelEnum::MEDIUM->value => 'Medium',
-                        LogLevelEnum::HIGH->value => 'High',
-                        LogLevelEnum::CRITICAL->value => 'Critical',
+                        LogLevelEnum::LOW->value => LogLevelEnum::LOW->translation(),
+                        LogLevelEnum::MEDIUM->value => LogLevelEnum::MEDIUM->translation(),
+                        LogLevelEnum::HIGH->value => LogLevelEnum::HIGH->translation(),
+                        LogLevelEnum::CRITICAL->value => LogLevelEnum::CRITICAL->translation(),
                     ])->selectablePlaceholder(false)
                     ->afterStateUpdated(function ($record, $state) {
                         $this->dispatch('global_settings_updated');

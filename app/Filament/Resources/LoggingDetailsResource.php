@@ -52,10 +52,10 @@ class LoggingDetailsResource extends Resource
                 Forms\Components\Select::make('logging_level')
                     ->label(__('filament\model_record_log_setting.level'))
                     ->options([
-                        LogLevelEnum::LOW->value => 'Low',
-                        LogLevelEnum::MEDIUM->value => 'Medium',
-                        LogLevelEnum::HIGH->value => 'High',
-                        LogLevelEnum::CRITICAL->value => 'Critical',
+                        LogLevelEnum::LOW->value => LogLevelEnum::LOW->translation(),
+                        LogLevelEnum::MEDIUM->value => LogLevelEnum::MEDIUM->translation(),
+                        LogLevelEnum::HIGH->value => LogLevelEnum::HIGH->translation(),
+                        LogLevelEnum::CRITICAL->value => LogLevelEnum::CRITICAL->translation(),
                     ])->required(),
                 Forms\Components\Select::make('is_enabled')
                     ->label(__('filament\model_record_log_setting.enabled'))
@@ -83,13 +83,13 @@ class LoggingDetailsResource extends Resource
                     ->getStateUsing(function (ModelRecordLogSetting $record) {
                         switch ($record->logging_level) {
                             case LogLevelEnum::LOW->value:
-                                return 'Low';
+                                return LogLevelEnum::LOW->translation();
                             case LogLevelEnum::MEDIUM->value:
-                                return 'Medium';
+                                return LogLevelEnum::MEDIUM->translation();
                             case LogLevelEnum::HIGH->value:
-                                return 'High';
+                                return LogLevelEnum::HIGH->translation();
                             case LogLevelEnum::CRITICAL->value:
-                                return 'Critical';
+                                return LogLevelEnum::CRITICAL->translation();
                             default:
                                 return 'Unknown';
                         }

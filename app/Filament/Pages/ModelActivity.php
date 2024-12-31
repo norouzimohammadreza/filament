@@ -69,10 +69,10 @@ class ModelActivity extends Page implements HasTable
                     ->label(__('filament\model_activity.follow_global_config'))->alignCenter()->inline(),
                 SelectColumn::make('logging_level')->label(__('filament\model_activity.level'))->alignCenter()
                     ->options([
-                        LogLevelEnum::LOW->value => 'Low',
-                        LogLevelEnum::MEDIUM->value => 'Medium',
-                        LogLevelEnum::HIGH->value => 'High',
-                        LogLevelEnum::CRITICAL->value => 'Critical',
+                        LogLevelEnum::LOW->value => LogLevelEnum::LOW->translation(),
+                        LogLevelEnum::MEDIUM->value => LogLevelEnum::MEDIUM->translation(),
+                        LogLevelEnum::HIGH->value => LogLevelEnum::HIGH->translation(),
+                        LogLevelEnum::CRITICAL->value => LogLevelEnum::CRITICAL->translation(),
                     ])
                     ->selectablePlaceholder(false)
                     ->disabled(fn(ModelLogSetting $record) => $record->follow_global_config == 1)

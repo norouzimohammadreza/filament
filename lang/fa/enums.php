@@ -1,9 +1,9 @@
 <?php
 return [
     'log_level_enum' => [
-        'low' => 'پایین',
-        'medium' => 'متوسط',
-        'high' => 'بالا',
-        'critical' => 'شدید',
+        'LOW' => 'پایین',
+        'MEDIUM' => 'متوسط',
+        'HIGH' => 'بالا',
+        'CRITICAL' => 'شدید',
     ]
 ];
