@@ -17,6 +17,16 @@ class ActivityLogMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $models = config('farda_activity_log.models');
+        \App\Models\ModelLogSetting::firstOrCreate([
+            'model_type' => 'App'
+        ]);
+        for($i=0;$i<sizeof($models);$i++){
+            \App\Models\ModelLogSetting::firstOrCreate([
+                'model_type' => ($models[$i])
+            ]);
+        }
+
         $response = $next($request);
 
         ActivityLogHelper::getInstance()->log('HTTP Response')
