@@ -18,6 +18,10 @@ class PostsRelationManager extends RelationManager
     {
         return __('filament/post.posts');
     }
+    public static function getTitle(\Illuminate\Database\Eloquent\Model $ownerRecord, string $pageClass): string
+    {
+        return __('filament/dashboard.posts');
+    }
 
     public function form(Form $form): Form
     {

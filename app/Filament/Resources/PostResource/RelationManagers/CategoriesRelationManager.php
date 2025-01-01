@@ -22,7 +22,10 @@ class CategoriesRelationManager extends RelationManager
     {
         return CategoryResource::form($form);
     }
-
+    public static function getTitle(\Illuminate\Database\Eloquent\Model $ownerRecord, string $pageClass): string
+    {
+        return __('filament/dashboard.categories');
+    }
     public function table(Table $table): Table
     {
         return CategoryResource::table($table)->headerActions([
