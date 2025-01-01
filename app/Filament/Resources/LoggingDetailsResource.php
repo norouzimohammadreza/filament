@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\ActivityLogsFunctions\ActivityLogHelper;
 use App\Enums\LogLevelEnum;
 use App\Filament\Resources\LoggingDetailsResource\Pages;
 use App\Models\Category;
@@ -16,6 +17,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Collection;
 
 class LoggingDetailsResource extends Resource
 {
@@ -104,8 +106,18 @@ class LoggingDetailsResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                    Tables\Actions\DeleteBulkAction::make()->action(function (Collection $record) {
+                        ActivityLogHelper::getInstance()->log('HTTP Response', LogLevelEnum::CRITICAL->value)
+                            ->withEvent('Bulk Delete Model Record Logging')
+                            ->withProperties([
+                                'resources' => [
+                                    'model_type' => $record->pluck('model_type'),
+                                    'model_id' => $record->pluck('model_id'),
+                                ],
+                            ])
+                            ->save();
+                    }),
+            ])
             ]);
     }
 
