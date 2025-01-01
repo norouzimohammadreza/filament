@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\ActivityLogsFunctions\ActivityLogHelper;
+use App\Enums\LogLevelEnum;
 use App\Filament\Resources\TagResource\RelationManagers\PostsRelationManager;
 use App\Models\Tag;
 use Filament\Forms\Components\TextInput;
@@ -9,6 +11,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Collection;
 
 class TagResource extends Resource
 {
@@ -51,7 +54,16 @@ class TagResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->action(function (Collection $record) {
+                        ActivityLogHelper::getInstance()->log('HTTP Response', LogLevelEnum::CRITICAL->value)
+                            ->withEvent('Bulk Delete Tags')
+                            ->withProperties([
+                                'resources' => [
+                                    'name' => $record->pluck('name'),
+                                ],
+                            ])
+                            ->save();
+                    }),
                 ]),
             ]);
     }
