@@ -3,11 +3,11 @@
 namespace App\ActivityLogsFunctions\Traits;
 
 use App\ActivityLogsFunctions\ActivityLogHelper;
+use App\ActivityLogsFunctions\Class\MyActivityLogStatus;
 use App\Enums\LogLevelEnum;
 use App\Models\ModelLogSetting;
 use App\Models\ModelRecordLogSetting;
 use Illuminate\Support\Arr;
-use Spatie\Activitylog\ActivityLogStatus;
 use Spatie\Activitylog\Models\Activity;
 
 trait MyLogActivityTrait
@@ -41,7 +41,7 @@ trait MyLogActivityTrait
     protected function shouldLogEvent(string $eventName): bool
     {
         //TODO
-        $logStatus = app(ActivityLogStatus::class);
+        $logStatus = app(MyActivityLogStatus::class);
         $event_log_level = $this->setLevelByEvent($eventName);
 
         if (!$logStatus) {
@@ -59,7 +59,6 @@ trait MyLogActivityTrait
             return true;
         }
 
-        //TODO where set?
         if (!$this->enableLoggingModelsEvents) {
             return false;
         }
@@ -74,7 +73,6 @@ trait MyLogActivityTrait
         if ($event_log_level < $this->logLevel) {
             return false;
         }
-
 
 
         if (!in_array($eventName, ['created', 'updated'])) {

@@ -1,5 +1,6 @@
 <?php
 
+use App\ActivityLogsFunctions\Class\MyActivityLogStatus;
 use App\Http\Controllers\TestController;
 use App\Models\Category;
 use App\Models\Post;
@@ -25,6 +26,10 @@ Route::get('/test-log', function () {
 });
 Route::get('/', function () {
     return view('welcome');
+});
+Route::get('/ena',function (){
+    $logStatus = app(MyActivityLogStatus::class);
+    dd($logStatus);
 });
 
 //test-batch
