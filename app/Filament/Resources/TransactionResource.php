@@ -3,6 +3,8 @@
 namespace App\Filament\Resources;
 
 
+use App\ActivityLogsFunctions\ActivityLogHelper;
+use App\Enums\LogLevelEnum;
 use App\Filament\Resources\TransactionResource\Pages;
 use App\Models\Transaction;
 use Filament\Forms;
@@ -10,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Collection;
 
 class TransactionResource extends Resource
 {
@@ -65,7 +68,16 @@ class TransactionResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->action(function (Collection $record) {
+                        ActivityLogHelper::getInstance()->log('HTTP Response', LogLevelEnum::CRITICAL->value)
+                            ->withEvent('Bulk Delete Transactions')
+                            ->withProperties([
+                                'resources' => [
+                                    'description' => $record->pluck('description'),
+                                ],
+                            ])
+                            ->save();
+                    }),
                 ]),
             ]);
     }
