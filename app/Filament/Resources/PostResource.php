@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\ActivityLogsFunctions\ActivityLogHelper;
+use App\Enums\LogLevelEnum;
 use App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource\RelationManagers\CategoriesRelationManager;
 use App\Filament\Resources\PostResource\RelationManagers\TagsRelationManager;
@@ -12,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Collection;
 use Spatie\Activitylog\Models\Activity;
 
 class PostResource extends Resource
@@ -74,7 +77,16 @@ class PostResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->action(function (Collection $record) {
+                        ActivityLogHelper::getInstance()->log('HTTP Response', LogLevelEnum::CRITICAL->value)
+                            ->withEvent('Bulk Delete Model Record Logging')
+                            ->withProperties([
+                                'resources' => [
+                                    'title' => $record->pluck('title'),
+                                ],
+                            ])
+                            ->save();
+                    }),
                 ]),
             ]);
     }
