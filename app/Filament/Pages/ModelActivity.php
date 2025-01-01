@@ -13,6 +13,7 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 
 class ModelActivity extends Page implements HasTable
 {
@@ -37,10 +38,9 @@ class ModelActivity extends Page implements HasTable
     {
         return __('filament\dashboard.log_settings');
     }
-
-    public function mount()
+    public function getHeading(): string|Htmlable
     {
-        $this->heading = __('filament\model_activity.log_setting');
+       return $this->heading = __('filament\model_activity.log_setting');
     }
 
     public function getHeaderWidgetsColumns(): int|array
