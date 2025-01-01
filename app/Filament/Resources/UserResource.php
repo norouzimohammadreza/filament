@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\ActivityLogsFunctions\ActivityLogHelper;
+use App\Enums\LogLevelEnum;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers\ActivityLogRelationManager;
 use App\Filament\Resources\UserResource\RelationManagers\LogsRelationManager;
@@ -13,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
@@ -103,7 +106,16 @@ class UserResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->action(function (Collection $record) {
+                        ActivityLogHelper::getInstance()->log('HTTP Response', LogLevelEnum::CRITICAL->value)
+                            ->withEvent('Bulk Delete Users')
+                            ->withProperties([
+                                'resources' => [
+                                    'name' => $record->pluck('name'),
+                                ],
+                            ])
+                            ->save();
+                    }),
                 ]),
             ]);
     }
