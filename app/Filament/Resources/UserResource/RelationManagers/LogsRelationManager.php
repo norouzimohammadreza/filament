@@ -2,49 +2,21 @@
 
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
-use Filament\Forms;
-use Filament\Forms\Form;
+use App\Filament\Resources\LogResource;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class LogsRelationManager extends RelationManager
 {
     protected static string $relationship = 'logs';
 
-    public function form(Form $form): Form
+    public static function getTitle(\Illuminate\Database\Eloquent\Model $ownerRecord, string $pageClass): string
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('description')
-                    ->required()
-                    ->maxLength(255),
-            ]);
+        return __('filament/dashboard.log_settings');
     }
 
     public function table(Table $table): Table
     {
-        return $table
-            ->recordTitleAttribute('description')
-            ->columns([
-                Tables\Columns\TextColumn::make('description'),
-            ])
-            ->filters([
-                //
-            ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make(),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+        return LogResource::table($table);
     }
 }
