@@ -27,7 +27,7 @@ class PostsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return PostResource::table($table)->headerActions([
-            Tables\Actions\CreateAction::make()->label(__('filament/post.create_post'))
+            Tables\Actions\CreateAction::make()->label(__('filament/post.new_post'))
         ]);
     }
 }
