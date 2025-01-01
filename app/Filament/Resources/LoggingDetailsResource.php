@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\LogDetailsAsModelEnum;
 use App\Enums\LogLevelEnum;
 use App\Filament\Resources\LoggingDetailsResource\Pages;
 use App\Models\Category;
@@ -15,12 +14,14 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 
 class LoggingDetailsResource extends Resource
 {
     protected static ?string $model = ModelRecordLogSetting::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     public static function getNavigationGroup(): ?string
     {
         return __('filament\dashboard.log_settings');
@@ -30,10 +31,12 @@ class LoggingDetailsResource extends Resource
     {
         return __('filament\dashboard.model_instance_log_settings');
     }
+
     public static function getPluralModelLabel(): string
     {
         return __('filament\model_record_log_setting.model_record_log_setting');
     }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -60,8 +63,8 @@ class LoggingDetailsResource extends Resource
                 Forms\Components\Select::make('is_enabled')
                     ->label(__('filament\model_record_log_setting.enabled'))
                     ->options([
-                        1 =>  __('enums.enabled.enabled'),
-                        0 =>  __('enums.enabled.disabled'),
+                        1 => __('enums.enabled.enabled'),
+                        0 => __('enums.enabled.disabled'),
                     ])->required(),
             ]);
     }
@@ -78,41 +81,26 @@ class LoggingDetailsResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('model_id')
                     ->label(__('filament\model_record_log_setting.model_id')),
-                Tables\Columns\TextColumn::make('logging_level')
+                Tables\Columns\SelectColumn::make('logging_level')
                     ->label(__('filament\model_record_log_setting.level'))
-                    ->getStateUsing(function (ModelRecordLogSetting $record) {
-                        switch ($record->logging_level) {
-                            case LogLevelEnum::LOW->value:
-                                return LogLevelEnum::LOW->translation();
-                            case LogLevelEnum::MEDIUM->value:
-                                return LogLevelEnum::MEDIUM->translation();
-                            case LogLevelEnum::HIGH->value:
-                                return LogLevelEnum::HIGH->translation();
-                            case LogLevelEnum::CRITICAL->value:
-                                return LogLevelEnum::CRITICAL->translation();
-                            default:
-                                return 'Unknown';
-                        }
-                    }),
-                Tables\Columns\TextColumn::make('is_enabled')
-                    ->label(__('filament\model_record_log_setting.enabled'))
-                    ->getStateUsing(function (ModelRecordLogSetting $record) {
-                        switch ($record->is_enabled) {
-                            case 1:
-                                return __('enums.enabled.enabled');
-                            case 0:
-                                return __('enums.enabled.disabled');
-                            default:
-                                return 'Unknown';
-                        }
-                    }),
-
+                    ->options([
+                        LogLevelEnum::LOW->value => LogLevelEnum::LOW->translation(),
+                        LogLevelEnum::MEDIUM->value => LogLevelEnum::MEDIUM->translation(),
+                        LogLevelEnum::HIGH->value => LogLevelEnum::HIGH->translation(),
+                        LogLevelEnum::CRITICAL->value => LogLevelEnum::CRITICAL->translation(),
+                    ])->alignCenter()->inline()
+                    ->selectablePlaceholder(false),
+                ToggleColumn::make('is_enabled')->label(__('filament\model_record_log_setting.enabled'))->alignCenter()
+                    ->inline(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(__('filament\activities_page.details'))
+                ->modalHeading(__('filament\dashboard.log_settings'))
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -133,7 +121,7 @@ class LoggingDetailsResource extends Resource
         return [
             'index' => Pages\ListLoggingDetails::route('/'),
             'create' => Pages\CreateLoggingDetails::route('/create'),
-            'edit' => Pages\EditLoggingDetails::route('/{record}/edit'),
+            //'edit' => Pages\EditLoggingDetails::route('/{record}/edit'),
         ];
     }
 }
