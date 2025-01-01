@@ -15,17 +15,18 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
-use Spatie\Activitylog\Models\Activity;
 
 class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     public static function getNavigationLabel(): string
     {
         return trans('filament\dashboard.posts');
     }
+
     public static function getPluralModelLabel(): string
     {
         return __('filament\post.posts');
@@ -79,7 +80,7 @@ class PostResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()->action(function (Collection $record) {
                         ActivityLogHelper::getInstance()->log('HTTP Response', LogLevelEnum::CRITICAL->value)
-                            ->withEvent('Bulk Delete Model Record Logging')
+                            ->withEvent('Bulk Delete Posts')
                             ->withProperties([
                                 'resources' => [
                                     'title' => $record->pluck('title'),

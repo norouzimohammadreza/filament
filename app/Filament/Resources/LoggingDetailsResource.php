@@ -108,7 +108,7 @@ class LoggingDetailsResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()->action(function (Collection $record) {
                         ActivityLogHelper::getInstance()->log('HTTP Response', LogLevelEnum::CRITICAL->value)
-                            ->withEvent('Bulk Delete Model Record Logging')
+                            ->withEvent('Bulk Delete Model Records Logging')
                             ->withProperties([
                                 'resources' => [
                                     'model_type' => $record->pluck('model_type'),

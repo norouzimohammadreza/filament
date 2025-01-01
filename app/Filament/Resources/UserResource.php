@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\ActivityLogsFunctions\ActivityLogHelper;
 use App\Enums\LogLevelEnum;
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers\ActivityLogRelationManager;
 use App\Filament\Resources\UserResource\RelationManagers\LogsRelationManager;
 use App\Models\User;
 use Filament\Forms;

@@ -55,7 +55,7 @@ class CategoryResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()->action(function (Collection $record) {
                         ActivityLogHelper::getInstance()->log('HTTP Response', LogLevelEnum::CRITICAL->value)
-                            ->withEvent('Bulk Delete Model Record Logging')
+                            ->withEvent('Bulk Delete Categories')
                             ->withProperties([
                                 'resources' => [
                                     'name' => $record->pluck('name'),
