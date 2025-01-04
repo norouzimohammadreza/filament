@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\ActivityLogsFunctions\ActivityLogHelper;
+use App\Enums\LogDetailsAsModelEnum;
 use App\Enums\LogLevelEnum;
 use App\Filament\Resources\LoggingDetailsResource\Pages;
 use App\Models\Category;
@@ -13,11 +14,14 @@ use App\Models\Transaction;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
+use Spatie\Activitylog\Models\Activity;
 
 class LoggingDetailsResource extends Resource
 {
@@ -100,9 +104,38 @@ class LoggingDetailsResource extends Resource
             ])
             ->actions([
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ViewAction::make(__('filament\activities_page.details'))
+                Tables\Actions\Action::make(__('filament\activities_page.details'))
                 ->modalHeading(__('filament\dashboard.log_settings'))
-
+                ->infolist([
+                    Section::make()->schema([
+                        TextEntry::make('model_type')
+                            ->label(__('filament\model_record_log_setting.model_type'))->columns(),
+                        TextEntry::make('model_id')
+                            ->label(__('filament\model_record_log_setting.model_id'))->columns(),
+                        TextEntry::make('level')->label(__('filament\model_record_log_setting.level'))
+                            ->getStateUsing(function (ModelRecordLogSetting $record){
+                                switch ($record->logging_level){
+                                    case  LogLevelEnum::LOW->value:
+                                        return LogLevelEnum::LOW->translation();
+                                    case  LogLevelEnum::MEDIUM->value:
+                                        return LogLevelEnum::MEDIUM->translation();
+                                    case  LogLevelEnum::HIGH->value:
+                                        return LogLevelEnum::HIGH->translation();
+                                    case  LogLevelEnum::CRITICAL->value:
+                                        return LogLevelEnum::CRITICAL->translation();
+                                }
+                            }),
+                        TextEntry::make('enabled')->label(__('filament\model_record_log_setting.enabled'))
+                            ->getStateUsing(function (ModelRecordLogSetting $record){
+                                switch ($record->is_enabled){
+                                    case  LogDetailsAsModelEnum::ENABLED->value:
+                                        return __('enums.enabled.enabled');
+                                    case  LogDetailsAsModelEnum::DISABLED->value:
+                                        return __('enums.enabled.disabled');
+                                }
+                            }),
+                    ])->columns(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
