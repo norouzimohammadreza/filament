@@ -11,4 +11,6 @@ return [
     'log_search' => 'Log Search Filter',
     'details' => 'Details',
     'show' => 'Show',
+    'access_event' => 'Access Event',
+    'event' => 'Event',
 ];
