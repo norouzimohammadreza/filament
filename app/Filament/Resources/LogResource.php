@@ -135,6 +135,13 @@ class LogResource extends Resource
                             ->valueLabel(__('filament\dashboard.value'))
                             ->label(__('filament\dashboard.new')),
                     ])->hidden(fn (Activity $activity)=> $activity->subject === null)->columns(),
+                    Section::make(__('filament\activities_page.search_query'))->schema([
+                        KeyValueEntry::make('properties')
+                            ->keyLabel(__('filament\dashboard.key'))
+                            ->valueLabel(__('filament\dashboard.value'))
+                            ->label(__('filament\dashboard.new')),
+                    ])
+                        ->visible(fn (Activity $activity)=> $activity->event === 'HTTP SEARCH'),
                 ]),
             ])
             ->filters([
