@@ -11,5 +11,9 @@ return [
     'transactions' => 'Transactions',
     'users' => 'Users',
     'log_settings' => 'Logs',
+    'key' => 'Key',
+    'value' => 'Value',
+    'old' => 'Old',
+    'new' => 'New',
 
 ];
