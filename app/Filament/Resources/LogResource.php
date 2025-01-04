@@ -8,6 +8,7 @@ use App\Filament\Resources\LogResource\Pages;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ViewEntry;
@@ -125,6 +126,14 @@ class LogResource extends Resource
                             ->label(__('filament\activities_page.subject_type')),
                         TextEntry::make('subject_id')
                             ->label(__('filament\activities_page.subject_id')),
+                        KeyValueEntry::make('properties.old')
+                            ->keyLabel(__('filament\dashboard.key'))
+                            ->valueLabel(__('filament\dashboard.value'))
+                            ->label(__('filament\dashboard.old')),
+                        KeyValueEntry::make('properties.attributes')
+                            ->keyLabel(__('filament\dashboard.key'))
+                            ->valueLabel(__('filament\dashboard.value'))
+                            ->label(__('filament\dashboard.new')),
                     ])->hidden(fn (Activity $activity)=> $activity->subject === null)->columns(),
                 ]),
             ])
