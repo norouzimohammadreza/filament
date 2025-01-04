@@ -5,10 +5,12 @@ namespace App\Filament\Resources;
 use App\ActivityLogsFunctions\ActivityLogHelper;
 use App\Enums\LogLevelEnum;
 use App\Filament\Resources\LogResource\Pages;
+use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Section;
-use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
@@ -60,8 +62,8 @@ class LogResource extends Resource
                 TextColumn::make('subject_id')->wrap()->label(__('filament\activities_page.subject_id')),
                 TextColumn::make('subject_type')->label(__('filament\activities_page.subject_type')),
                 TextColumn::make('level')->label(__('filament\model_record_log_setting.level'))
-                    ->getStateUsing(function (Activity $record) {
-                        switch ($record->level) {
+                    ->getStateUsing(function (Activity $record){
+                        switch ($record->level){
                             case  LogLevelEnum::LOW->value:
                                 return LogLevelEnum::LOW->translation();
                             case  LogLevelEnum::MEDIUM->value:
@@ -89,39 +91,29 @@ class LogResource extends Resource
                 Tables\Actions\ViewAction::make('detail')
                     ->label(__('filament\activities_page.details'))
                     ->modalHeading(__('filament\activities_page.details'))
-                    ->infolist([
-                        Tabs::make('tabs')->tabs([
-                            Tabs\Tab::make(__('filament\activities_page.access_event'))->schema([
-                                Section::make()
-                                    ->schema([
-                                        TextEntry::make('url')
-                                            ->label(__('filament\activities_page.url')),
-                                        TextEntry::make('ip')
-                                            ->label(__('filament\activities_page.ip_address'))
-                                            ->getStateUsing(function (Activity $activity) {
-                                                return inet_ntop($activity->ip);
-                                            }),
-                                        TextEntry::make('event')
-                                            ->label(__('filament\activities_page.event')),
-                                        TextEntry::make('level')
-                                            ->label(__('filament\model_record_log_setting.level'))
-                                            ->getStateUsing(function (Activity $record) {
-                                                switch ($record->level) {
-                                                    case  LogLevelEnum::LOW->value:
-                                                        return LogLevelEnum::LOW->translation();
-                                                    case  LogLevelEnum::MEDIUM->value:
-                                                        return LogLevelEnum::MEDIUM->translation();
-                                                    case  LogLevelEnum::HIGH->value:
-                                                        return LogLevelEnum::HIGH->translation();
-                                                    case  LogLevelEnum::CRITICAL->value:
-                                                        return LogLevelEnum::CRITICAL->translation();
-                                                }
-                                            }),
-                                    ])->columns(),
-                            ]),
-                        ])
-
-                    ]),
+                ->infolist([
+                    Section::make(__('filament\activities_page.access_event'))->schema([
+                        TextEntry::make('url')->label(__('filament\activities_page.url')),
+                        TextEntry::make('ip')->label(__('filament\activities_page.ip_address'))
+                            ->getStateUsing(function (Activity $activity) {
+                            return inet_ntop($activity->ip);
+                        }),
+                        TextEntry::make('event')->label(__('filament\activities_page.event')),
+                        TextEntry::make('level')->label(__('filament\model_record_log_setting.level'))
+                            ->getStateUsing(function (Activity $record){
+                                switch ($record->level){
+                                    case  LogLevelEnum::LOW->value:
+                                        return LogLevelEnum::LOW->translation();
+                                    case  LogLevelEnum::MEDIUM->value:
+                                        return LogLevelEnum::MEDIUM->translation();
+                                    case  LogLevelEnum::HIGH->value:
+                                        return LogLevelEnum::HIGH->translation();
+                                    case  LogLevelEnum::CRITICAL->value:
+                                        return LogLevelEnum::CRITICAL->translation();
+                                }
+                            }),
+                    ])->columns(),
+                ]),
             ])
             ->filters([
                 Filter::make(__('filament\activities_page.event_subject'))
