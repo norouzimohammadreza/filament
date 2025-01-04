@@ -4,7 +4,7 @@ return [
         'LOW' => 'پایین',
         'MEDIUM' => 'متوسط',
         'HIGH' => 'بالا',
-        'CRITICAL' => 'شدید',
+        'CRITICAL' => 'بحرانی',
     ],
     'enabled' => [
         'enabled' => 'فعال',
