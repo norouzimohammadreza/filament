@@ -8,6 +8,9 @@ use App\Filament\Resources\LogResource\Pages;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
@@ -87,12 +90,18 @@ class LogResource extends Resource
                     ->disabled(fn(Activity $record) => $record->event == 'HTTP SEARCH'),
                 Tables\Actions\ViewAction::make('detail')
                     ->label(__('filament\activities_page.details'))
-                    ->form([
-                        KeyValue::make('properties.old'),
-                        KeyValue::make('properties.attributes'),
-                        TextInput::make('properties.resource'),
-                        TextInput::make('properties.search'),
+                    ->modalHeading(__('filament\activities_page.details'))
+                ->infolist([
+                    Section::make(__('filament\activities_page.access_event'))->schema([
+                        TextEntry::make('url')->label(__('filament\activities_page.url')),
+                        TextEntry::make('ip')->label(__('filament\activities_page.ip_address'))
+                            ->getStateUsing(function (Activity $activity) {
+                            return inet_ntop($activity->ip);
+                        }),
+                        TextEntry::make('event')->label(__('filament\activities_page.event')),
+                        TextEntry::make('level')->label(__('filament\activities_page.event')),
                     ]),
+                ]),
             ])
             ->filters([
                 Filter::make(__('filament\activities_page.event_subject'))

@@ -69,8 +69,7 @@ class PostResource extends Resource
                         return verta($record->created_at, 'Asia/Tehran');
                     })
             ])
-            ->
-            filters([
+            ->filters([
                 //
             ])
             ->actions([

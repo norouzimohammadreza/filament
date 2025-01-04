@@ -27,7 +27,8 @@ class Post extends Model
     protected $fillable = [
         'title',
         'user_id',
-        'category_id',
+        'tags.name',
+        'categories.name',
     ];
     public function user()
     {
@@ -48,8 +49,11 @@ class Post extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly($this->fillable)
-            ->logOnlyDirty();
+            ->logOnly([
+                $this->fillable,
+                $this->categories()->pluck('name'),
+                $this->tags()->pluck('name'),
+                ]);
 
     }
 }
