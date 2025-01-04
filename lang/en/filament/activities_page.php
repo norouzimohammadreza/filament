@@ -14,4 +14,5 @@ return [
     'access_event' => 'Access Event',
     'event' => 'Event',
     'subject_details' => 'Subject Details',
+    'search_query' => 'Search Query',
 ];

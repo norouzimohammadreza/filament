@@ -14,5 +14,6 @@ return [
     'access_event' => 'رویداد دسترسی',
     'event' => 'رویداد',
     'subject_details' => 'جزئیات موضوعات',
+    'search_query' => 'جستجو',
 ];
 
