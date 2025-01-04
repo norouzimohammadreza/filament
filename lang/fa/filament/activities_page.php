@@ -11,7 +11,7 @@ return [
     'log_search' => 'فیلتر جستجو',
     'details' => 'جزئیات',
     'show' => 'نمایش',
-    'Access Event' => 'رویداد دسترسی',
-    'Event' => 'رویداد'
+    'access_event' => 'رویداد دسترسی',
+    'event' => 'رویداد'
 ];
 
