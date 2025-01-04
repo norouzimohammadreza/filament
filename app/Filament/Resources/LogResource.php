@@ -59,8 +59,6 @@ class LogResource extends Resource
                     }),
                 TextColumn::make('url')->label(__('filament\activities_page.url')),
                 TextColumn::make('causer.name')->label(__('filament\activities_page.causer')),
-                TextColumn::make('subject_id')->wrap()->label(__('filament\activities_page.subject_id')),
-                TextColumn::make('subject_type')->label(__('filament\activities_page.subject_type')),
                 TextColumn::make('level')->label(__('filament\model_record_log_setting.level'))
                     ->getStateUsing(function (Activity $record){
                         switch ($record->level){
@@ -77,8 +75,7 @@ class LogResource extends Resource
                 TextColumn::make('created_at')->label(__('filament\activities_page.when'))
                     ->sortable()->getStateUsing(function (Activity $activity) {
                         return verta($activity->created_at, 'Asia/Tehran');
-                    })
-                ,
+                    }),
             ])->defaultSort('created_at', 'desc')
             ->actions([
                 Tables\Actions\DeleteAction::make(),
@@ -92,6 +89,11 @@ class LogResource extends Resource
                     ->label(__('filament\activities_page.details'))
                     ->modalHeading(__('filament\activities_page.details'))
                 ->infolist([
+
+                    Section::make()->schema([
+                        TextEntry::make('causer.name')->label(__('filament\activities_page.causer')),
+                    ])->hidden(fn (Activity $activity)=> $activity->causer === null),
+
                     Section::make(__('filament\activities_page.access_event'))->schema([
                         TextEntry::make('url')->label(__('filament\activities_page.url')),
                         TextEntry::make('ip')->label(__('filament\activities_page.ip_address'))
@@ -112,7 +114,18 @@ class LogResource extends Resource
                                         return LogLevelEnum::CRITICAL->translation();
                                 }
                             }),
+                        TextEntry::make('created_at')->label(__('filament\activities_page.when'))
+                            ->getStateUsing(function (Activity $activity) {
+                                return verta($activity->created_at, 'Asia/Tehran');
+                                }),
                     ])->columns(),
+
+                    Section::make(__('filament\activities_page.subject_details'))->schema([
+                        TextEntry::make('subject_type')
+                            ->label(__('filament\activities_page.subject_type')),
+                        TextEntry::make('subject_id')
+                            ->label(__('filament\activities_page.subject_id')),
+                    ])->hidden(fn (Activity $activity)=> $activity->subject === null)->columns(),
                 ]),
             ])
             ->filters([
