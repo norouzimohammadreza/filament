@@ -4,14 +4,15 @@ return [
     'activities' => 'لیست گزارشات',
     'url' => 'آدرس اینترنتی',
     'causer' => 'عامل',
-    'subject_type' => 'نوع موضوع',
-    'subject_id' => 'شناسه موضوع',
+    'subject_type' => 'نوع',
+    'subject_id' => 'شناسه',
     'when' => 'زمان',
     'event_subject' => 'فیلتر براساس موضوع',
     'log_search' => 'فیلتر جستجو',
     'details' => 'جزئیات',
     'show' => 'نمایش',
     'access_event' => 'رویداد دسترسی',
-    'event' => 'رویداد'
+    'event' => 'رویداد',
+    'subject_details' => 'جزئیات موضوعات',
 ];
 

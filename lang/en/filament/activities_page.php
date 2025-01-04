@@ -1,4 +1,4 @@
-<?php
+\<?php
 return [
     'ip_address' => 'IP Address',
     'activities' => 'List of Logs',
@@ -13,4 +13,5 @@ return [
     'show' => 'Show',
     'access_event' => 'Access Event',
     'event' => 'Event',
+    'subject_details' => 'Subject Details',
 ];
