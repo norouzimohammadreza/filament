@@ -26,9 +26,24 @@ final class Post_Tag extends Pivot
         $activity->ip = inet_pton(request()->ip());
     }
 
+    public function tag()
+    {
+        return $this->belongsTo(Tag::class);
+    }
+
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly($this->fillable)->logOnlyDirty();
+            ->logOnly(
+                [
+                    'tag.name',
+                    'post.title',
+                ]
+            )->logOnlyDirty();
     }
 }
