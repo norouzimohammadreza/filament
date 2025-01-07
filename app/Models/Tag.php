@@ -30,7 +30,9 @@ class Tag extends Model
 
     public function posts()
     {
-        return $this->belongsToMany(Post::class, 'post_tag')->withTimestamps();
+        return $this->belongsToMany(Post::class, 'post_tag')
+            ->using(Post_Tag::class)
+            ->withTimestamps();
     }
 
     public function getActivitylogOptions(): LogOptions
