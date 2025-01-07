@@ -132,10 +132,11 @@ class LogResource extends Resource
                             ->valueLabel(__('filament\dashboard.value'))
                             ->label(__('filament\dashboard.old')),
                         KeyValueEntry::make('properties.attributes')
+                            ->hidden(fn(Activity $activity)=> $activity->event == 'deleted')
                             ->keyLabel(__('filament\dashboard.key'))
                             ->valueLabel(__('filament\dashboard.value'))
                             ->label(__('filament\dashboard.new')),
-                    ])->hidden(fn (Activity $activity)=> $activity->subject === null)->columns(),
+                    ])->hidden(fn (Activity $activity)=> $activity->subject_type == null)->columns(),
                     Section::make(__('filament\activities_page.search_query'))->schema([
                         KeyValueEntry::make('properties')
                             ->keyLabel(__('filament\dashboard.key'))
