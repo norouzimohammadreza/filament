@@ -19,6 +19,13 @@ final class Post_Tag extends Pivot
         'tag_id',
     ];
 
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->enableLoggingModelsEvents
+            = ModelLogSetting::where('model_type', Post::class)->first()->is_enabled;
+    }
+
     public function tapActivity(Activity $activity, string $eventName)
     {
         $activity->level = 1;

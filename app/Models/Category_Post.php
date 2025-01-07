@@ -11,6 +11,12 @@ final class Category_Post extends Pivot
 {
     protected $table = 'category_post';
     use LogsActivity;
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->enableLoggingModelsEvents
+            = ModelLogSetting::where('model_type', Post::class)->first()->is_enabled;
+    }
 
     protected $fillable = [
         'post_id',
