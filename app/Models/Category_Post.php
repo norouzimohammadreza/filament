@@ -17,6 +17,16 @@ final class Category_Post extends Pivot
         'category_id',
     ];
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
+    }
+
     public function tapActivity(Activity $activity, string $eventName)
     {
         $activity->level = 1;
@@ -27,6 +37,9 @@ final class Category_Post extends Pivot
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly($this->fillable)->logOnlyDirty();
+            ->logOnly([
+                'category.name',
+                'post.title',
+                ])->logOnlyDirty();
     }
 }
