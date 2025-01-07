@@ -135,7 +135,8 @@ class LoggingDetailsResource extends Resource
                                 }
                             }),
                     ])->columns(),
-                ])
+                ]),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
