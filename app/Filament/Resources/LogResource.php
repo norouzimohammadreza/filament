@@ -127,6 +127,7 @@ class LogResource extends Resource
                         TextEntry::make('subject_id')
                             ->label(__('filament\activities_page.subject_id')),
                         KeyValueEntry::make('properties.old')
+                            ->hidden(fn(Activity $activity)=> $activity->event == 'created')
                             ->keyLabel(__('filament\dashboard.key'))
                             ->valueLabel(__('filament\dashboard.value'))
                             ->label(__('filament\dashboard.old')),
