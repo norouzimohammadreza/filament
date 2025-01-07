@@ -36,7 +36,9 @@ class Category extends Model
 
     public function posts()
     {
-        return $this->belongsToMany(Post::class, 'category_post')->withTimestamps();
+        return $this->belongsToMany(Post::class, 'category_post')
+            ->using(Category_Post::class)
+            ->withTimestamps();
     }
 
     public function getActivitylogOptions(): LogOptions
