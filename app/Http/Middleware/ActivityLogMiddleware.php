@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use App\ActivityLogsFunctions\ActivityLogHelper;
-use App\Enums\LogLevelEnum;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +20,7 @@ class ActivityLogMiddleware
         \App\Models\ModelLogSetting::firstOrCreate([
             'model_type' => 'App'
         ]);
-        for($i=0;$i<sizeof($models);$i++){
+        for ($i = 0; $i < sizeof($models); $i++) {
             \App\Models\ModelLogSetting::firstOrCreate([
                 'model_type' => ($models[$i])
             ]);
@@ -33,12 +32,14 @@ class ActivityLogMiddleware
             ->withProperties([
                 'status_code' => $response->getStatusCode(),
             ])
+            ->withEvent('FOOTPRINT')
             ->save();
         if ($response->getStatusCode() > 400) {
             ActivityLogHelper::getInstance()->log('HTTP Error Response')
                 ->withProperties([
                     'status_code' => $response->getStatusCode(),
                 ])
+                ->withEvent('FOOTPRINT 400 ERROR')
                 ->save();
         }
 
