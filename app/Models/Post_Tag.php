@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use App\ActivityLogsFunctions\Traits\MyLogActivityTrait;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 final class Post_Tag extends Pivot
 {
-    use LogsActivity;
+    use LogsActivity, MyLogActivityTrait {
+        MyLogActivityTrait::shouldLogEvent insteadof LogsActivity;
+    }
 
 
     public $incrementing = true;
@@ -24,13 +26,8 @@ final class Post_Tag extends Pivot
         parent::__construct($attributes);
         $this->enableLoggingModelsEvents
             = ModelLogSetting::where('model_type', Post::class)->first()->is_enabled;
-    }
-
-    public function tapActivity(Activity $activity, string $eventName)
-    {
-        $activity->level = 1;
-        $activity->url = request()->getPathInfo();
-        $activity->ip = inet_pton(request()->ip());
+        $this->logLevel = ModelLogSetting::where('model_type', Post::class)
+            ->first()->logging_level;
     }
 
     public function tag()
