@@ -11,6 +11,7 @@
         "hekmatinasser/verta": "*",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
+        "shuvroroy/filament-spatie-laravel-backup": "^2.2",
         "spatie/laravel-activitylog": "^4.9"
     },
     "require-dev": {
