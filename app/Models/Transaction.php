@@ -25,7 +25,7 @@ class Transaction extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $modelLoggingSettings = ModelLogSetting::where('model_type', self::class)->first();
+        $modelLoggingSettings = $this->getModelLogSetting();
         $this->logLevel = $modelLoggingSettings->logging_level;
         $this->enableLoggingModelsEvents = $modelLoggingSettings->is_enabled;
     }

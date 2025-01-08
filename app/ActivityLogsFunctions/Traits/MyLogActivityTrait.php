@@ -31,7 +31,9 @@ trait MyLogActivityTrait
         return $event_log_level;
     }
 
-    public function tapActivity(Activity $activity, string $eventName, int $event_log_level = LogLevelEnum::LOW->value)
+    public function tapActivity(Activity $activity,
+                                string $eventName,
+                                int $event_log_level = LogLevelEnum::LOW->value)
     {
         $activity->ip = inet_pton(request()->ip());
         $activity->url = request()->getPathInfo();
@@ -53,7 +55,8 @@ trait MyLogActivityTrait
         }
 
         if ($this->modelRecordLogSettings != null) {
-            if (!$this->modelRecordLogSettings->is_enabled || $event_log_level < $this->modelRecordLogSettings->logging_level) {
+            if (!$this->modelRecordLogSettings->is_enabled
+                || $event_log_level < $this->modelRecordLogSettings->logging_level) {
                 return false;
             }
             return true;
@@ -63,8 +66,9 @@ trait MyLogActivityTrait
             return false;
         }
 
-        if ($this->modelLogSetting()->follow_global_config == 1) {
-            if ($event_log_level < ActivityLogHelper::getInstance()->getAppMinimumLoggingLevel()) {
+        if ($this->getModelLogSetting()->follow_global_config == 1) {
+            if ($event_log_level < ActivityLogHelper::getInstance()
+                    ->getAppMinimumLoggingLevel()) {
                 return false;
             }
             return true;
@@ -85,12 +89,12 @@ trait MyLogActivityTrait
         }
 
         // Do not log update event if only ignored attributes are changed.
-        return (bool)count(Arr::except($this->getDirty(), $this->activitylogOptions->dontLogIfAttributesChangedOnly));
+        return (bool)count(Arr::except($this->getDirty(),
+            $this->activitylogOptions->dontLogIfAttributesChangedOnly));
     }
 
-    public function modelLogSetting(): ModelLogSetting
+    public function getModelLogSetting(): ModelLogSetting
     {
-        //dd(get_class($this));
         return ModelLogSetting::where('model_type', get_class($this))->firstOrFail();
     }
 

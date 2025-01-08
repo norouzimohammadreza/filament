@@ -24,7 +24,7 @@ class Category extends Model
     {
         parent::__construct($attributes);
         //TODO can we do this with trait?
-        $modelLoggingSettings = ModelLogSetting::where('model_type', self::class)->first();
+        $modelLoggingSettings = $this->getModelLogSetting();
         $this->logLevel = $modelLoggingSettings->logging_level;
         $this->enableLoggingModelsEvents = $modelLoggingSettings->is_enabled;
     }
