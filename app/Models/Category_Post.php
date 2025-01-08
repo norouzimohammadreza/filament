@@ -2,20 +2,25 @@
 
 namespace App\Models;
 
+use App\ActivityLogsFunctions\Traits\MyLogActivityTrait;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 final class Category_Post extends Pivot
 {
     protected $table = 'category_post';
-    use LogsActivity;
+    use LogsActivity, MyLogActivityTrait {
+        MyLogActivityTrait::shouldLogEvent insteadof LogsActivity;
+    }
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
         $this->enableLoggingModelsEvents
             = ModelLogSetting::where('model_type', Post::class)->first()->is_enabled;
+        $this->logLevel = ModelLogSetting::where('model_type', Post::class)
+            ->first()->logging_level;
     }
 
     protected $fillable = [
@@ -33,12 +38,6 @@ final class Category_Post extends Pivot
         return $this->belongsTo(Post::class);
     }
 
-    public function tapActivity(Activity $activity, string $eventName)
-    {
-        $activity->level = 1;
-        $activity->url = request()->getPathInfo();
-        $activity->ip = inet_pton(request()->ip());
-    }
 
     public function getActivitylogOptions(): LogOptions
     {
@@ -46,6 +45,6 @@ final class Category_Post extends Pivot
             ->logOnly([
                 'category.name',
                 'post.title',
-                ])->logOnlyDirty();
+            ])->logOnlyDirty();
     }
 }

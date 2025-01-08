@@ -66,7 +66,8 @@ trait MyLogActivityTrait
             return false;
         }
 
-        if ($this->getModelLogSetting()->follow_global_config == 1) {
+        if ($this->getModelLogSetting() !=null &&
+            $this->getModelLogSetting()->follow_global_config == 1) {
             if ($event_log_level < ActivityLogHelper::getInstance()
                     ->getAppMinimumLoggingLevel()) {
                 return false;
@@ -93,9 +94,9 @@ trait MyLogActivityTrait
             $this->activitylogOptions->dontLogIfAttributesChangedOnly));
     }
 
-    public function getModelLogSetting(): ModelLogSetting
+    public function getModelLogSetting(): ?ModelLogSetting
     {
-        return ModelLogSetting::where('model_type', get_class($this))->firstOrFail();
+        return ModelLogSetting::where('model_type', get_class($this))->first();
     }
 
     public function modelRecordLogSettings()
