@@ -25,6 +25,7 @@ Route::get('/test-log', function () {
     dd($activity);
 });
 Route::get('/', function () {
+    phpinfo();
     return view('welcome');
 });
 Route::get('/ena',function (){
