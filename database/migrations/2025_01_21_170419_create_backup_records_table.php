@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('backup_records', function (Blueprint $table) {
             $table->id();
+            $table->string('name',255);
+            $table->text('path');
+            $table->tinyInteger('file')->default(1);
+            $table->tinyInteger('db_record')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
