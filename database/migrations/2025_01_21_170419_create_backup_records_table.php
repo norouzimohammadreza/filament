@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name',255);
             $table->text('path');
-            $table->tinyInteger('file')->default(1);
-            $table->tinyInteger('db_record')->default(1);
+            $table->tinyInteger('is_file')->default(1);
+            $table->tinyInteger('is_database_record')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });
