@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\TestJob;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 class TestController extends Controller
 {
     public function index()
     {
+        TestJob::dispatch();
        $c=  $this->getAllModels();
        dd($c);
     }
@@ -38,5 +41,13 @@ class TestController extends Controller
     public function x()
     {
         Category::x();
+    }
+    public function dbBackup()
+    {
+        Artisan::call('backup:run --only-db');
+    }
+    public function dbJob()
+    {
+        TestJob::dispatch();
     }
 }

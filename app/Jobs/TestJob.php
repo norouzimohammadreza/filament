@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Artisan;
 
 class TestJob implements ShouldQueue
 {
@@ -22,6 +23,6 @@ class TestJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $f = 'w';
+       Artisan::call('backup:run --only-db');
     }
 }
