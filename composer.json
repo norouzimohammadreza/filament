@@ -6,14 +6,15 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-pdo": "*",
+        "ext-zip": "*",
         "bezhansalleh/filament-shield": "^3.3",
         "filament/filament": "^3.2",
         "hekmatinasser/verta": "*",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "spatie/laravel-activitylog": "^4.9",
-        "ext-zip": "*",
-        "ext-pdo": "*"
+        "spatie/laravel-backup": "^9.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
