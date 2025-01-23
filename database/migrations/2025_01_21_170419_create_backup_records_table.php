@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name',255);
             $table->text('path');
+            $table->float('size');
             $table->tinyInteger('is_file')->default(1);
             $table->tinyInteger('is_database_record')->default(1);
             $table->timestamps();
