@@ -8,6 +8,7 @@ use Filament\Pages\Page;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -31,9 +32,14 @@ class BackupPage extends Page implements HasTable
 
                 TextColumn::make('path'),
 
-                TextColumn::make('size'),
+                TextColumn::make('size')
+                    ->badge()
+                    ->suffix('MB ') ->color('info')
+
+                ,
 
                 TextColumn::make('type')
+                    ->badge()
                     ->getStateUsing(function (BackupRecord $record) {
                     if ($record->is_file && $record->is_database_record) {
                         return 'file & database';
@@ -49,7 +55,13 @@ class BackupPage extends Page implements HasTable
                 TextColumn::make('created_at'),
             ])
             ->headerActions([
-                CreateAction::make()
+                Action::make('Backup database'),
+                Action::make('Backup files')
+                ->color('success'),
+                Action::make('Backup both')
+                ->color('info'),
+
+
             ])
             ->actions([
                 Action::make('download')
