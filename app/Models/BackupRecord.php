@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class BackupRecord extends Model
 {
     use SoftDeletes;
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'path',
+        'size',
+        'is_file',
+        'is_database_record',
+    ];
 
 }

@@ -2,18 +2,18 @@
 
 namespace App\Filament\Pages;
 
+use App\Jobs\TestJob;
 use App\Models\BackupRecord;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\Action;
-use Filament\Tables\Actions\CreateAction;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
+
 
 class BackupPage extends Page implements HasTable
 {
@@ -23,6 +23,7 @@ class BackupPage extends Page implements HasTable
     protected static ?string $navigationIcon = 'heroicon-m-x-mark';
 
     protected static string $view = 'filament.pages.backup-page';
+    private $backupFiles, $dirName;
 
     public function table(Table $table): Table
     {
@@ -34,40 +35,57 @@ class BackupPage extends Page implements HasTable
 
                 TextColumn::make('size')
                     ->badge()
-                    ->suffix('MB ') ->color('info')
+                    ->suffix('Byte ')->color('info')
 
                 ,
 
                 TextColumn::make('type')
                     ->badge()
                     ->getStateUsing(function (BackupRecord $record) {
-                    if ($record->is_file && $record->is_database_record) {
-                        return 'file & database';
-                    }
-                    if ($record->is_file) {
-                        return 'file';
-                    }
-                    if ($record->is_database_record) {
-                        return 'database';
-                    }
-                }),
+                        if ($record->is_file && $record->is_database_record) {
+                            return 'file & database';
+                        }
+                        if ($record->is_file) {
+                            return 'file';
+                        }
+                        if ($record->is_database_record) {
+                            return 'database';
+                        }
+                    }),
 
                 TextColumn::make('created_at'),
             ])
             ->headerActions([
                 Action::make('Backup database'),
+
                 Action::make('Backup files')
-                ->color('success'),
+                    ->color('success')->action(function () {
+                        $this->dirName = env('APP_NAME');
+                        $this->backupFiles = Storage::disk('local')->files($this->dirName);
+                        Artisan::call('backup:run --only-files');
+                        for ($i = 0; $i < sizeof($this->backupFiles) ?? 1; $i++) {
+                            $file = explode('/', $this->backupFiles[$i]);
+                            BackupRecord::firstOrCreate([
+                                'name' => end($file),
+                                'path' => $this->backupFiles[$i],
+                                'size' => Storage::size($this->backupFiles[$i]),
+                                'is_database_record' => 0
+                            ]);
+                        }
+                    }),
+
                 Action::make('Backup both')
-                ->color('info'),
+                    ->color('info')->action(function () {
+                        TestJob::dispatch()->onQueue('sss');
+                    }),
 
 
             ])
             ->actions([
                 Action::make('download')
-                ->action(function (){
+                    ->action(function () {
 
-                })
+                    })
             ]);
     }
 
