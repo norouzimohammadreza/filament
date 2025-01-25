@@ -7,14 +7,15 @@ use Spatie\Backup\BackupDestination\BackupDestinationFactory;
 use Spatie\Backup\Config\Config;
 use Spatie\Backup\Config\SourceFilesConfig;
 use Spatie\Backup\Tasks\Backup\BackupJob;
+use Spatie\Backup\Tasks\Backup\BackupJobFactory;
 use Spatie\Backup\Tasks\Backup\DbDumperFactory;
 use Spatie\Backup\Tasks\Backup\FileSelection;
 
-class MyBackupJobFactory
+class MyBackupJobFactory extends BackupJobFactory
 {
     public static function createFromConfig(Config $config): BackupJob
     {
-        return (new BackupJob($config))
+        return (new MyBackupJob($config))
             ->setFileSelection(static::createFileSelection($config->backup->source->files))
             ->setDbDumpers(static::createDbDumpers($config->backup->source->databases))
             ->setBackupDestinations(BackupDestinationFactory::createFromArray($config));
