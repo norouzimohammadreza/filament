@@ -25,19 +25,6 @@ class DbBackup implements ShouldQueue
      */
     public function handle(): void
     {
-        Artisan::call('backup:run --only-db');
-        $dirName = env('APP_NAME');
-        $backupFiles = Storage::disk('local')->files($dirName);
-        for ($i = 0; $i < sizeof($backupFiles) ?? 1; $i++) {
-            $file = explode('/', $backupFiles[$i]);
-            BackupRecord::firstOrCreate([
-                'name' => end($file),
-                'path' => $backupFiles[$i],
-                'size' => Storage::size($backupFiles[$i]),
-                'is_file' => 0
-            ]);
-        }
-
-
+        Artisan::call('run:backup --only-db');
     }
 }

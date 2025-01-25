@@ -57,7 +57,9 @@ class BackupPage extends Page implements HasTable
                 TextColumn::make('created_at'),
             ])
             ->headerActions([
-                Action::make('Backup database'),
+                Action::make('Backup database')->action(function () {
+                    DbBackup::dispatch()->onQueue('dbBackup');
+                }),
 
                 Action::make('Backup files')
                     ->color('success')->action(function () {
@@ -65,9 +67,7 @@ class BackupPage extends Page implements HasTable
                     }),
 
                 Action::make('Backup both')
-                    ->color('info')->action(function () {
-                        DbBackup::dispatch()->onQueue('dbBackup');
-                    }),
+                    ->color('info'),
 
 
             ])
