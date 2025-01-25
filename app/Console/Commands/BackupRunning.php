@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\BackupServices\MyBackupJobFactory;
 use Exception;
 use Illuminate\Contracts\Console\Isolatable;
 use Spatie\Backup\Commands\BaseCommand;
@@ -38,7 +39,7 @@ class BackupRunning extends BaseCommand implements Isolatable
         try {
             $this->guardAgainstInvalidOptions();
 
-            $backupJob = BackupJobFactory::createFromConfig($this->config);
+            $backupJob = MyBackupJobFactory::createFromConfig($this->config);
 
             if ($this->option('only-db')) {
                 $backupJob->dontBackupFilesystem();

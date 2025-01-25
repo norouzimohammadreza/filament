@@ -9,7 +9,6 @@ use Spatie\Backup\Config\SourceFilesConfig;
 use Spatie\Backup\Tasks\Backup\BackupJob;
 use Spatie\Backup\Tasks\Backup\DbDumperFactory;
 use Spatie\Backup\Tasks\Backup\FileSelection;
-use Spatie\DbDumper\DbDumper;
 
 class MyBackupJobFactory
 {
@@ -29,14 +28,10 @@ class MyBackupJobFactory
             ->shouldIgnoreUnreadableDirs($sourceFiles->ignoreUnreadableDirectories);
     }
 
-    /**
-     * @param  array<int, string>  $dbConnectionNames
-     * @return Collection<string, DbDumper>
-     */
     protected static function createDbDumpers(array $dbConnectionNames): Collection
     {
         return collect($dbConnectionNames)->mapWithKeys(
-            fn (string $dbConnectionName): array => [$dbConnectionName => DbDumperFactory::createFromConnection($dbConnectionName)]
+            fn(string $dbConnectionName): array => [$dbConnectionName => DbDumperFactory::createFromConnection($dbConnectionName)]
         );
     }
 }
