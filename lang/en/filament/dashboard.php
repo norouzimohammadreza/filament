@@ -15,5 +15,6 @@ return [
     'value' => 'Value',
     'old' => 'Old',
     'new' => 'New',
+    'backup' => 'Backup',
 
 ];
