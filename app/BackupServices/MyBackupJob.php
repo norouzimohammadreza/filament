@@ -2,12 +2,14 @@
 
 namespace App\BackupServices;
 
+use App\Models\BackupRecord;
 use Carbon\Carbon;
 use Exception;
 use Generator;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Backup\BackupDestination\BackupDestination;
 use Spatie\Backup\Config\Config;
 use Spatie\Backup\Events\BackupManifestWasCreated;
@@ -183,6 +185,7 @@ class MyBackupJob extends BackupJob
 
             $zipFile = $this->createZipContainingEveryFileInManifest($manifest);
 
+
             $this->copyToBackupDestinations($zipFile);
         } catch (Exception $exception) {
             consoleOutput()->error("Backup failed because: {$exception->getMessage()}." . PHP_EOL . $exception->getTraceAsString());
@@ -242,6 +245,13 @@ class MyBackupJob extends BackupJob
 
         $zip = Zip::createForManifest($manifest, $pathToZip);
 
+        $explodeFile = (explode('\\',$zip->path()));
+        BackupRecord::create([
+            'name' => end($explodeFile),
+            'path' => $zip->path(),
+            'size' => $zip->size(),
+            'is_database_record' => 0
+        ]);
         consoleOutput()->info("Created zip containing {$zip->count()} files and directories. Size is {$zip->humanReadableSize()}");
 
         if ($this->sendNotifications) {

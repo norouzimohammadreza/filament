@@ -61,18 +61,7 @@ class BackupPage extends Page implements HasTable
 
                 Action::make('Backup files')
                     ->color('success')->action(function () {
-                        $s = Artisan::call('run:backup --only-files');
-                        $this->dirName = env('APP_NAME');
-                        $this->backupFiles = Storage::disk('local')->files($this->dirName);
-                        for ($i = 0; $i < sizeof($this->backupFiles) ?? 1; $i++) {
-                            $file = explode('/', $this->backupFiles[$i]);
-                            BackupRecord::firstOrCreate([
-                                'name' => end($file),
-                                'path' => $this->backupFiles[$i],
-                                'size' => Storage::size($this->backupFiles[$i]),
-                                'is_database_record' => 0
-                            ]);
-                        }
+                        Artisan::call('run:backup --only-files');
                     }),
 
                 Action::make('Backup both')
