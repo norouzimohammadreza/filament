@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Jobs\DbBackup;
 use App\Jobs\TestJob;
 use App\Models\BackupRecord;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -60,9 +61,10 @@ class BackupPage extends Page implements HasTable
 
                 Action::make('Backup files')
                     ->color('success')->action(function () {
+                        $s = Artisan::call('backup:run --only-files');
+                        dd($s);
                         $this->dirName = env('APP_NAME');
                         $this->backupFiles = Storage::disk('local')->files($this->dirName);
-                        Artisan::call('backup:run --only-files');
                         for ($i = 0; $i < sizeof($this->backupFiles) ?? 1; $i++) {
                             $file = explode('/', $this->backupFiles[$i]);
                             BackupRecord::firstOrCreate([
@@ -76,7 +78,7 @@ class BackupPage extends Page implements HasTable
 
                 Action::make('Backup both')
                     ->color('info')->action(function () {
-                        TestJob::dispatch()->onQueue('sss');
+                        DbBackup::dispatch()->onQueue('dbBackup');
                     }),
 
 
