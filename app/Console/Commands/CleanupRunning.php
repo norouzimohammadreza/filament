@@ -2,13 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\BackupServices\Cleanup\CleanupAsJob;
 use Exception;
 use Illuminate\Contracts\Console\Isolatable;
 use Spatie\Backup\BackupDestination\BackupDestinationFactory;
 use Spatie\Backup\Commands\BaseCommand;
 use Spatie\Backup\Config\Config;
 use Spatie\Backup\Events\CleanupHasFailed;
-use Spatie\Backup\Tasks\Cleanup\CleanupJob;
 use Spatie\Backup\Tasks\Cleanup\CleanupStrategy;
 use Spatie\Backup\Traits\Retryable;
 
@@ -41,7 +41,7 @@ class CleanupRunning extends BaseCommand implements Isolatable
         try {
             $backupDestinations = BackupDestinationFactory::createFromArray($this->config);
 
-            $cleanupJob = new CleanupJob($backupDestinations, $this->strategy, $disableNotifications);
+            $cleanupJob = new CleanupAsJob($backupDestinations, $this->strategy, $disableNotifications);
 
             $cleanupJob->run();
 
