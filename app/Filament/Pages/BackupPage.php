@@ -62,12 +62,12 @@ class BackupPage extends Page implements HasTable
                     ->badge()
                     ->getStateUsing(function (BackupRecord $record) {
                         if ($record->is_file && $record->is_database_record) {
-                            return 'file & database';
+                            return __('filament\backup.files_database');
                         }
                         if ($record->is_file) {
-                            return 'file';
+                            return __('filament\backup.files');
                         }
-                        return 'database';
+                        return __('filament\backup.database');
                     }),
 
                 TextColumn::make('created_at')
@@ -78,8 +78,8 @@ class BackupPage extends Page implements HasTable
                 Action::make('Backup database')
                     ->label(__('filament\backup.backup_database'))
                     ->action(function () {
-                    DbBackup::dispatch()->onQueue('dbBackup');
-                }),
+                        DbBackup::dispatch()->onQueue('dbBackup');
+                    }),
 
                 Action::make('Backup files')
                     ->label(__('filament\backup.backup_files'))
