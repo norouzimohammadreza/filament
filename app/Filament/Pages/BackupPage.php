@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Jobs\DbBackup;
+use App\Jobs\FileAndDbBackup;
 use App\Jobs\FileBackup;
 use App\Models\BackupRecord;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -14,6 +15,7 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
 use Spatie\Activitylog\Models\Activity;
+use Spatie\Backup\BackupDestination\Backup;
 
 
 class BackupPage extends Page implements HasTable
@@ -94,7 +96,7 @@ class BackupPage extends Page implements HasTable
                 Action::make('Backup both')
                     ->label(__('filament\backup.backup_both'))
                     ->color('info')->action(function () {
-                        DbBackup::dispatch()->onQueue('Backup');
+                        FileAndDbBackup::dispatch()->onQueue('backup');
                     }),
             ])
             ->actions([
