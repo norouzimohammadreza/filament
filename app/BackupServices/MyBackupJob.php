@@ -9,7 +9,6 @@ use Generator;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
 use Spatie\Backup\BackupDestination\BackupDestination;
 use Spatie\Backup\Config\Config;
 use Spatie\Backup\Events\BackupManifestWasCreated;
@@ -33,6 +32,8 @@ class MyBackupJob extends BackupJob
 {
     public const FILENAME_FORMAT = 'Y-m-d-H-i-s.\z\i\p';
 
+    public static int $is_database = 0;
+    public static int $is_file = 0;
     protected FileSelection $fileSelection;
 
     /** @var Collection<string, DbDumper> */
@@ -66,7 +67,7 @@ class MyBackupJob extends BackupJob
 
     public function dontBackupFilesystem(): self
     {
-        $this->fileSelection = FileSelection::create();
+        $this->fileSelection = SelectionFile::create();
 
         return $this;
     }
@@ -105,7 +106,7 @@ class MyBackupJob extends BackupJob
     public function setDefaultFilename(): self
     {
         $this->filename = Carbon::now()->format(static::FILENAME_FORMAT);
-
+        ///dd($this);
         return $this;
     }
 
@@ -245,12 +246,13 @@ class MyBackupJob extends BackupJob
 
         $zip = Zip::createForManifest($manifest, $pathToZip);
 
-        $explodeFile = (explode('\\',$zip->path()));
+        $explodeFile = (explode('\\', $zip->path()));
         BackupRecord::create([
             'name' => end($explodeFile),
             'path' => $zip->path(),
             'size' => $zip->size(),
-            'is_database_record' => 0
+            'is_database_record' => self::$is_database,
+            'is_file' => self::$is_file,
         ]);
         consoleOutput()->info("Created zip containing {$zip->count()} files and directories. Size is {$zip->humanReadableSize()}");
 
@@ -309,7 +311,7 @@ class MyBackupJob extends BackupJob
                 event(new DumpingDatabase($dbDumper));
 
                 $dbDumper->dumpToFile($temporaryFilePath);
-
+                self::$is_database = 1;
                 return $temporaryFilePath;
             })
             ->toArray();

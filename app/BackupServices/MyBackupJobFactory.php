@@ -6,14 +6,13 @@ use Illuminate\Support\Collection;
 use Spatie\Backup\BackupDestination\BackupDestinationFactory;
 use Spatie\Backup\Config\Config;
 use Spatie\Backup\Config\SourceFilesConfig;
-use Spatie\Backup\Tasks\Backup\BackupJob;
 use Spatie\Backup\Tasks\Backup\BackupJobFactory;
 use Spatie\Backup\Tasks\Backup\DbDumperFactory;
 use Spatie\Backup\Tasks\Backup\FileSelection;
 
 class MyBackupJobFactory extends BackupJobFactory
 {
-    public static function createFromConfig(Config $config): BackupJob
+    public static function createFromConfig(Config $config): MyBackupJob
     {
         return (new MyBackupJob($config))
             ->setFileSelection(static::createFileSelection($config->backup->source->files))
@@ -21,9 +20,9 @@ class MyBackupJobFactory extends BackupJobFactory
             ->setBackupDestinations(BackupDestinationFactory::createFromArray($config));
     }
 
-    protected static function createFileSelection(SourceFilesConfig $sourceFiles): FileSelection
+    protected static function createFileSelection(SourceFilesConfig $sourceFiles): SelectionFile
     {
-        return FileSelection::create($sourceFiles->include)
+        return SelectionFile::create($sourceFiles->include)
             ->excludeFilesFrom($sourceFiles->exclude)
             ->shouldFollowLinks($sourceFiles->followLinks)
             ->shouldIgnoreUnreadableDirs($sourceFiles->ignoreUnreadableDirectories);
