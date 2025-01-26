@@ -24,6 +24,7 @@ class BackupPage extends Page implements HasTable
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
     protected static string $view = 'filament.pages.backup-page';
+    protected static ?string $slug = 'backup';
 
     public function getHeading(): string|Htmlable
     {
