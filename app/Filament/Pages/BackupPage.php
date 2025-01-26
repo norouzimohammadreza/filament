@@ -47,9 +47,7 @@ class BackupPage extends Page implements HasTable
                         if ($record->is_file) {
                             return 'file';
                         }
-                        if ($record->is_database_record) {
-                            return 'database';
-                        }
+                        return 'database';
                     }),
 
                 TextColumn::make('created_at'),
