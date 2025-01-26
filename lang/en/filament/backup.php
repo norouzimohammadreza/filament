@@ -5,6 +5,7 @@ return [
     'Backup Database' => 'Backup Database',
     'backup files' => 'Backup Files',
     'name' => 'Name',
+    'disk' => 'Disk',
     'path' => 'Path',
     'size' => 'Size',
     'type' => 'Type',
