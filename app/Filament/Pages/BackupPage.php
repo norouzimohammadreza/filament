@@ -13,6 +13,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Storage;
 
 
 class BackupPage extends Page implements HasTable
@@ -23,7 +24,6 @@ class BackupPage extends Page implements HasTable
     protected static ?string $navigationIcon = 'heroicon-m-x-mark';
 
     protected static string $view = 'filament.pages.backup-page';
-    private $backupFiles, $dirName;
 
     public function table(Table $table): Table
     {
@@ -31,12 +31,13 @@ class BackupPage extends Page implements HasTable
             ->columns([
                 TextColumn::make('name'),
 
+                TextColumn::make('disk'),
+
                 TextColumn::make('path'),
 
                 TextColumn::make('size')
                     ->badge()
                     ->color('info')
-
                 ,
 
                 TextColumn::make('type')
@@ -67,13 +68,11 @@ class BackupPage extends Page implements HasTable
                     ->color('info')->action(function () {
                         DbBackup::dispatch()->onQueue('Backup');
                     }),
-
-
             ])
             ->actions([
                 Action::make('download')
-                    ->action(function () {
-                        FileAndDbBackup::dispatch()->onQueue('fileAndDbBackup');
+                    ->action(function (BackupRecord $record) {
+                        return response()->download(public_path($record->path . $record->name));
                     })
             ]);
     }
