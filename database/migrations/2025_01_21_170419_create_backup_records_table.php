@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('backup_records', function (Blueprint $table) {
             $table->id();
             $table->string('name',255);
+            $table->string('disk',255);
             $table->text('path');
             $table->string('size',255);
             $table->tinyInteger('is_file')->default(1);

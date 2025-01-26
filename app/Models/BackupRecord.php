@@ -12,6 +12,7 @@ class BackupRecord extends Model
         'name',
         'path',
         'size',
+        'disk',
         'is_file',
         'is_database_record',
     ];

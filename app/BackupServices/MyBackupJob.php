@@ -250,6 +250,7 @@ class MyBackupJob extends BackupJob
             'name' => end($explodeFile),
             'path' => '/'. config('backup.backup.name') . '/',
             'size' => $zip->humanReadableSize(),
+            'disk' => \config('filesystems.default'),
             'is_database_record' => self::$is_database,
             'is_file' => self::$is_file,
         ]);
