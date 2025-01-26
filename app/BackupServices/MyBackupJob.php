@@ -245,12 +245,11 @@ class MyBackupJob extends BackupJob
         $pathToZip = $this->temporaryDirectory->path($this->config->backup->destination->filenamePrefix . $this->filename);
 
         $zip = Zip::createForManifest($manifest, $pathToZip);
-
         $explodeFile = (explode('\\', $zip->path()));
         BackupRecord::create([
             'name' => end($explodeFile),
-            'path' => $zip->path(),
-            'size' => $zip->size(),
+            'path' => '/'. config('backup.backup.name') . '/',
+            'size' => $zip->humanReadableSize(),
             'is_database_record' => self::$is_database,
             'is_file' => self::$is_file,
         ]);

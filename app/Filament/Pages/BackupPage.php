@@ -36,7 +36,7 @@ class BackupPage extends Page implements HasTable
 
                 TextColumn::make('size')
                     ->badge()
-                    ->suffix('Byte ')->color('info')
+                    ->color('info')
 
                 ,
 
