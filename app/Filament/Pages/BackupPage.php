@@ -3,7 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Jobs\DbBackup;
-use App\Jobs\TestJob;
+use App\Jobs\FileAndDbBackup;
 use App\Models\BackupRecord;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
@@ -12,8 +12,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Storage;
 
 
 class BackupPage extends Page implements HasTable
@@ -63,7 +61,7 @@ class BackupPage extends Page implements HasTable
 
                 Action::make('Backup files')
                     ->color('success')->action(function () {
-                        Artisan::call('run:backup --only-files');
+
                     }),
 
                 Action::make('Backup both')
@@ -76,7 +74,7 @@ class BackupPage extends Page implements HasTable
             ->actions([
                 Action::make('download')
                     ->action(function () {
-
+                        FileAndDbBackup::dispatch()->onQueue('fileAndDbBackup');
                     })
             ]);
     }
