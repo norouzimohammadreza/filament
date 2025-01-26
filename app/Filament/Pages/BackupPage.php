@@ -13,6 +13,7 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
+use Spatie\Activitylog\Models\Activity;
 
 
 class BackupPage extends Page implements HasTable
@@ -72,7 +73,10 @@ class BackupPage extends Page implements HasTable
 
                 TextColumn::make('created_at')
                     ->alignCenter()
-                    ->label(__('filament\backup.time')),
+                    ->label(__('filament\backup.time'))
+                    ->getStateUsing(function (Activity $activity) {
+                        return verta($activity->created_at, 'Asia/Tehran');
+                    }),
             ])
             ->headerActions([
                 Action::make('Backup database')
