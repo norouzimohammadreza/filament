@@ -248,12 +248,14 @@ class MyBackupJob extends BackupJob
         $explodeFile = (explode('\\', $zip->path()));
         BackupRecord::create([
             'name' => end($explodeFile),
-            'path' => '/'. config('backup.backup.name') . '/',
+            'path' => '/' . config('backup.backup.name') . '/',
             'size' => $zip->humanReadableSize(),
             'disk' => \config('filesystems.default'),
             'is_database_record' => self::$is_database,
             'is_file' => self::$is_file,
         ]);
+        self::$is_database = 0;
+        self::$is_file = 0;
         consoleOutput()->info("Created zip containing {$zip->count()} files and directories. Size is {$zip->humanReadableSize()}");
 
         if ($this->sendNotifications) {

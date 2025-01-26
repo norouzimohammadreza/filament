@@ -14,8 +14,6 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
-use Spatie\Activitylog\Models\Activity;
-use Spatie\Backup\BackupDestination\Backup;
 
 
 class BackupPage extends Page implements HasTable
