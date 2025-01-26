@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use App\Jobs\DbBackup;
-use App\Jobs\FileAndDbBackup;
 use App\Jobs\FileBackup;
 use App\Models\BackupRecord;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -13,7 +12,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\Support\Htmlable;
 
 
 class BackupPage extends Page implements HasTable
@@ -21,26 +20,45 @@ class BackupPage extends Page implements HasTable
     use InteractsWithTable;
     use InteractsWithForms;
 
-    protected static ?string $navigationIcon = 'heroicon-m-x-mark';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
     protected static string $view = 'filament.pages.backup-page';
+
+    public function getHeading(): string|Htmlable
+    {
+        return $this->heading = __('filament\dashboard.backup');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return trans('filament\dashboard.backup');
+    }
 
     public function table(Table $table): Table
     {
         return $table->query(BackupRecord::query())
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('name')
+                    ->alignCenter()
+                    ->label(__('filament\backup.name')),
 
-                TextColumn::make('disk'),
+                TextColumn::make('disk')
+                    ->alignCenter()
+                    ->label(__('filament\backup.disk')),
 
-                TextColumn::make('path'),
+                TextColumn::make('path')
+                    ->alignCenter()
+                    ->label(__('filament\backup.path')),
 
                 TextColumn::make('size')
                     ->badge()
                     ->color('info')
-                ,
+                    ->alignCenter()
+                    ->label(__('filament\backup.size')),
 
                 TextColumn::make('type')
+                    ->alignCenter()
+                    ->label(__('filament\backup.type'))
                     ->badge()
                     ->getStateUsing(function (BackupRecord $record) {
                         if ($record->is_file && $record->is_database_record) {
@@ -52,25 +70,32 @@ class BackupPage extends Page implements HasTable
                         return 'database';
                     }),
 
-                TextColumn::make('created_at'),
+                TextColumn::make('created_at')
+                    ->alignCenter()
+                    ->label(__('filament\backup.time')),
             ])
             ->headerActions([
-                Action::make('Backup database')->action(function () {
+                Action::make('Backup database')
+                    ->label(__('filament\backup.backup_database'))
+                    ->action(function () {
                     DbBackup::dispatch()->onQueue('dbBackup');
                 }),
 
                 Action::make('Backup files')
+                    ->label(__('filament\backup.backup_files'))
                     ->color('success')->action(function () {
                         FileBackup::dispatch()->onQueue('fileBackup');
                     }),
 
                 Action::make('Backup both')
+                    ->label(__('filament\backup.backup_both'))
                     ->color('info')->action(function () {
                         DbBackup::dispatch()->onQueue('Backup');
                     }),
             ])
             ->actions([
                 Action::make('download')
+                    ->label(__('filament\backup.download'))
                     ->action(function (BackupRecord $record) {
                         return response()->download(public_path($record->path . $record->name));
                     })
