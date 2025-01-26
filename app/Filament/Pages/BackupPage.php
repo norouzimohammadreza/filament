@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Jobs\DbBackup;
 use App\Jobs\FileAndDbBackup;
+use App\Jobs\FileBackup;
 use App\Models\BackupRecord;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
@@ -59,7 +60,7 @@ class BackupPage extends Page implements HasTable
 
                 Action::make('Backup files')
                     ->color('success')->action(function () {
-
+                        FileBackup::dispatch()->onQueue('fileBackup');
                     }),
 
                 Action::make('Backup both')
