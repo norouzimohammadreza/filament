@@ -38,7 +38,7 @@ class CleanupAsJob extends CleanupJob
                 $this->strategy
                     ->setBackupDestination($backupDestination)
                     ->deleteOldBackups($backupDestination->backups());
-                dd($backupDestination->backups()->toArray());
+                // TODO
                 $this->sendNotification(new CleanupWasSuccessful($backupDestination));
 
                 $usedStorage = Format::humanReadableSize($backupDestination->fresh()->usedStorage());
