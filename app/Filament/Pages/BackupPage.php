@@ -67,7 +67,9 @@ class BackupPage extends Page implements HasTable
                     }),
 
                 Action::make('Backup both')
-                    ->color('info'),
+                    ->color('info')->action(function () {
+                        DbBackup::dispatch()->onQueue('Backup');
+                    }),
 
 
             ])
