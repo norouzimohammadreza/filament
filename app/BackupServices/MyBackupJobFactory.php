@@ -8,7 +8,6 @@ use Spatie\Backup\Config\Config;
 use Spatie\Backup\Config\SourceFilesConfig;
 use Spatie\Backup\Tasks\Backup\BackupJobFactory;
 use Spatie\Backup\Tasks\Backup\DbDumperFactory;
-use Spatie\Backup\Tasks\Backup\FileSelection;
 
 class MyBackupJobFactory extends BackupJobFactory
 {

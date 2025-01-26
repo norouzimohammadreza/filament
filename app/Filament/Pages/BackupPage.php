@@ -74,8 +74,8 @@ class BackupPage extends Page implements HasTable
                 TextColumn::make('created_at')
                     ->alignCenter()
                     ->label(__('filament\backup.time'))
-                    ->getStateUsing(function (Activity $activity) {
-                        return verta($activity->created_at, 'Asia/Tehran');
+                    ->getStateUsing(function (BackupRecord $record) {
+                        return verta($record->created_at, 'Asia/Tehran');
                     }),
             ])
             ->headerActions([
