@@ -2,6 +2,7 @@
 
 namespace App\BackupServices\Cleanup;
 
+use App\Models\BackupRecord;
 use Exception;
 use Illuminate\Support\Collection;
 use Spatie\Backup\BackupDestination\BackupDestination;
@@ -35,12 +36,24 @@ class CleanupAsJob extends CleanupJob
                 }
 
                 consoleOutput()->info("Cleaning backups of {$backupDestination->backupName()} on disk {$backupDestination->diskName()}...");
-                $c = $backupDestination->backups()->toArray()[0];
-                dd($c->path());
+
                 $this->strategy
                     ->setBackupDestination($backupDestination)
                     ->deleteOldBackups($backupDestination->backups());
-                // TODO
+
+                $filesArray = $this->strategy
+                    ->setBackupDestination($backupDestination)
+                    ->backupDestination()->backups()->toArray();
+
+                for ($i = 0; $i < sizeof($filesArray); $i++) {
+
+                    if (!$filesArray[$i]->exists()) {
+                        $exploded = explode('/', $filesArray[$i]->path());
+                        $name = end($exploded);
+                        BackupRecord::where('name', $name)->delete();
+                    }
+
+                }
 
                 $this->sendNotification(new CleanupWasSuccessful($backupDestination));
 
