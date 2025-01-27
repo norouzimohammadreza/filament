@@ -7,6 +7,8 @@ use App\Jobs\FileAndDbBackup;
 use App\Jobs\FileBackup;
 use App\Models\BackupRecord;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
@@ -14,6 +16,8 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
 
 
 class BackupPage extends Page implements HasTable
@@ -25,6 +29,7 @@ class BackupPage extends Page implements HasTable
 
     protected static string $view = 'filament.pages.backup-page';
     protected static ?string $slug = 'backup';
+    public static ?array $x = [];
 
     public function getHeading(): string|Htmlable
     {
@@ -34,6 +39,11 @@ class BackupPage extends Page implements HasTable
     public static function getNavigationLabel(): string
     {
         return trans('filament\dashboard.backup');
+    }
+    public function mount()
+    {
+       //Artisan::call('monitor');
+       //dd(Cache::get('main_backup_table'));
     }
 
     public function table(Table $table): Table
@@ -80,6 +90,34 @@ class BackupPage extends Page implements HasTable
                     }),
             ])
             ->headerActions([
+                Action::make('Monitor Backups')
+                    ->label('نظارت بر بکآپ ها')
+                    ->color('danger')->action(function () {
+                        Artisan::call('monitor');
+                    })->infolist([
+                        Section::make('ss')->schema([ TextEntry::make('name')
+                            ->getStateUsing(fn()=>Cache::get('main_backup_table')[0]),
+                            TextEntry::make('disk')
+                                ->getStateUsing
+                                (fn()=>Cache::get('main_backup_table')['disk']),
+                            TextEntry::make('is reachable')
+                                ->getStateUsing(fn()=>Cache::get('main_backup_table')[1]),
+                            TextEntry::make('is Healthy')
+                                ->getStateUsing(fn()=>Cache::get('main_backup_table')[2]),
+                            TextEntry::make('amount')
+                                ->getStateUsing
+                                (fn()=>Cache::get('main_backup_table')['amount']),
+                            TextEntry::make('newest')
+                                ->getStateUsing
+                                (fn()=>Cache::get('main_backup_table')['newest']),
+                            TextEntry::make('usedStorage')
+                                ->getStateUsing
+                                (fn()=>Cache::get('main_backup_table')['usedStorage']),
+                            ])->columns(7)->columnSpan(12)
+
+
+                    ]),
+
                 Action::make('Backup database')
                     ->label(__('filament\backup.backup_database'))
                     ->action(function () {
@@ -102,7 +140,8 @@ class BackupPage extends Page implements HasTable
                 Action::make('download')
                     ->label(__('filament\backup.download'))
                     ->action(function (BackupRecord $record) {
-                        return response()->download(public_path($record->path . $record->name));
+                        return response()
+                            ->download(public_path($record->path . $record->name));
                     })
             ]);
     }

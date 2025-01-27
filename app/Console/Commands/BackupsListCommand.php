@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Contracts\Console\Isolatable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Spatie\Backup\BackupDestination\Backup;
 use Spatie\Backup\Commands\BaseCommand;
 use Spatie\Backup\Config\Config;
@@ -18,8 +19,6 @@ class BackupsListCommand extends BaseCommand implements Isolatable
 
     /** @var string */
     protected $description = 'Display a list of all backups.';
-    protected static array $MAIN_TABLE_DETAILS;
-    protected static array $Failure_TABLE_DETAILS;
 
     public function __construct(protected Config $config)
     {
@@ -68,7 +67,7 @@ class BackupsListCommand extends BaseCommand implements Isolatable
             'newest' => $this->getFormattedBackupDate($destination->newestBackup()),
             'usedStorage' => Format::humanReadableSize($destination->usedStorage()),
         ];
-        self::$MAIN_TABLE_DETAILS = $row;
+        Cache::put('main_backup_table',$row);
         if (!$destination->isReachable()) {
             foreach (['amount', 'newest', 'usedStorage'] as $propertyName) {
                 $row[$propertyName] = '/';
@@ -104,8 +103,7 @@ class BackupsListCommand extends BaseCommand implements Isolatable
             $this->warn('-----------------------------');
             $this->table(['Name', 'Disk', 'Failed check', 'Description'], $failed->all());
         }
-        self::$Failure_TABLE_DETAILS = $failed->first();
-
+        Cache::put('failure_backup_table',$failed->first());
         return $this;
     }
 
