@@ -5,6 +5,7 @@ use App\Http\Controllers\TestController;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Transaction;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Spatie\Activitylog\Facades\CauserResolver;
 use Spatie\Activitylog\Facades\LogBatch;
@@ -25,6 +26,7 @@ Route::get('/test-log', function () {
     dd($activity);
 });
 Route::get('/', function () {
+    Artisan::call('clean:backup');
     //Schedule::command('backup:run --only-db')->everySecond();
 
     phpinfo();

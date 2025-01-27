@@ -17,28 +17,31 @@ class CleanupAsJob extends CleanupJob
 
     /** @param Collection<int, BackupDestination> $backupDestinations */
     public function __construct(
-        protected Collection $backupDestinations,
+        protected Collection      $backupDestinations,
         protected CleanupStrategy $strategy,
-        bool $disableNotifications = false,
-    ) {
-        parent::__construct($this->backupDestinations,$this->strategy);
-        $this->sendNotifications = ! $disableNotifications;
+        bool                      $disableNotifications = false,
+    )
+    {
+        parent::__construct($this->backupDestinations, $this->strategy);
+        $this->sendNotifications = !$disableNotifications;
     }
 
     public function run(): void
     {
         $this->backupDestinations->each(function (BackupDestination $backupDestination) {
             try {
-                if (! $backupDestination->isReachable()) {
+                if (!$backupDestination->isReachable()) {
                     throw new Exception("Could not connect to disk {$backupDestination->diskName()} because: {$backupDestination->connectionError()}");
                 }
 
                 consoleOutput()->info("Cleaning backups of {$backupDestination->backupName()} on disk {$backupDestination->diskName()}...");
-
+                $c = $backupDestination->backups()->toArray()[0];
+                dd($c->path());
                 $this->strategy
                     ->setBackupDestination($backupDestination)
                     ->deleteOldBackups($backupDestination->backups());
                 // TODO
+
                 $this->sendNotification(new CleanupWasSuccessful($backupDestination));
 
                 $usedStorage = Format::humanReadableSize($backupDestination->fresh()->usedStorage());
@@ -57,8 +60,8 @@ class CleanupAsJob extends CleanupJob
     {
         if ($this->sendNotifications) {
             rescue(
-                fn () => event($notification),
-                fn () => consoleOutput()->error('Sending notification failed')
+                fn() => event($notification),
+                fn() => consoleOutput()->error('Sending notification failed')
             );
         }
     }
