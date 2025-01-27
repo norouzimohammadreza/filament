@@ -41,9 +41,7 @@ class CleanupAsJob extends CleanupJob
                     ->setBackupDestination($backupDestination)
                     ->deleteOldBackups($backupDestination->backups());
 
-                $filesArray = $this->strategy
-                    ->setBackupDestination($backupDestination)
-                    ->backupDestination()->backups()->toArray();
+                $filesArray = $backupDestination->backups()->toArray();
 
                 for ($i = 0; $i < sizeof($filesArray); $i++) {
 

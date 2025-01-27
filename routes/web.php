@@ -26,8 +26,8 @@ Route::get('/test-log', function () {
     dd($activity);
 });
 Route::get('/', function () {
+    //Artisan::call('queue:work --queue=fileBackup');
     Artisan::call('clean:backup');
-    //Schedule::command('backup:run --only-db')->everySecond();
 
     phpinfo();
     return view('welcome');
