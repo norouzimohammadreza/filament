@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\BackupServices\Monitoring\BackupStatusFactory;
 use Illuminate\Contracts\Console\Isolatable;
 use Illuminate\Support\Collection;
 use Spatie\Backup\BackupDestination\Backup;
@@ -11,6 +10,7 @@ use Spatie\Backup\Config\Config;
 use Spatie\Backup\Helpers\Format;
 use Spatie\Backup\Helpers\RightAlignedTableStyle;
 use Spatie\Backup\Tasks\Monitor\BackupDestinationStatus;
+use Spatie\Backup\Tasks\Monitor\BackupDestinationStatusFactory;
 
 class BackupsListCommand extends BaseCommand implements Isolatable
 {
@@ -18,6 +18,8 @@ class BackupsListCommand extends BaseCommand implements Isolatable
 
     /** @var string */
     protected $description = 'Display a list of all backups.';
+    protected static array $MAIN_TABLE_DETAILS;
+    protected static array $Failure_TABLE_DETAILS;
 
     public function __construct(protected Config $config)
     {
@@ -26,7 +28,7 @@ class BackupsListCommand extends BaseCommand implements Isolatable
 
     public function handle(): int
     {
-        $statuses = BackupStatusFactory::createForMonitorConfig($this->config->monitoredBackups);
+        $statuses = BackupDestinationStatusFactory::createForMonitorConfig($this->config->monitoredBackups);
 
         $this->displayOverview($statuses)->displayFailures($statuses);
 
@@ -66,7 +68,7 @@ class BackupsListCommand extends BaseCommand implements Isolatable
             'newest' => $this->getFormattedBackupDate($destination->newestBackup()),
             'usedStorage' => Format::humanReadableSize($destination->usedStorage()),
         ];
-
+        self::$MAIN_TABLE_DETAILS = $row;
         if (!$destination->isReachable()) {
             foreach (['amount', 'newest', 'usedStorage'] as $propertyName) {
                 $row[$propertyName] = '/';
@@ -102,6 +104,7 @@ class BackupsListCommand extends BaseCommand implements Isolatable
             $this->warn('-----------------------------');
             $this->table(['Name', 'Disk', 'Failed check', 'Description'], $failed->all());
         }
+        self::$Failure_TABLE_DETAILS = $failed->first();
 
         return $this;
     }
