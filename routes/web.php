@@ -27,7 +27,8 @@ Route::get('/test-log', function () {
 });
 Route::get('/', function () {
     //Artisan::call('queue:work --queue=fileBackup');
-    Artisan::call('clean:backup');
+   $x = Artisan::call('backup:list');
+   dd($x);
 
     phpinfo();
     return view('welcome');

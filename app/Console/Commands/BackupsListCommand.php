@@ -2,18 +2,15 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
+use App\BackupServices\Monitoring\BackupStatusFactory;
 use Illuminate\Contracts\Console\Isolatable;
 use Illuminate\Support\Collection;
 use Spatie\Backup\BackupDestination\Backup;
 use Spatie\Backup\Commands\BaseCommand;
 use Spatie\Backup\Config\Config;
-use Spatie\Backup\Events\HealthyBackupWasFound;
-use Spatie\Backup\Events\UnhealthyBackupWasFound;
 use Spatie\Backup\Helpers\Format;
 use Spatie\Backup\Helpers\RightAlignedTableStyle;
 use Spatie\Backup\Tasks\Monitor\BackupDestinationStatus;
-use Spatie\Backup\Tasks\Monitor\BackupDestinationStatusFactory;
 
 class BackupsListCommand extends BaseCommand implements Isolatable
 {
@@ -29,7 +26,7 @@ class BackupsListCommand extends BaseCommand implements Isolatable
 
     public function handle(): int
     {
-        $statuses = BackupDestinationStatusFactory::createForMonitorConfig($this->config->monitoredBackups);
+        $statuses = BackupStatusFactory::createForMonitorConfig($this->config->monitoredBackups);
 
         $this->displayOverview($statuses)->displayFailures($statuses);
 
@@ -37,7 +34,7 @@ class BackupsListCommand extends BaseCommand implements Isolatable
     }
 
     /**
-     * @param  Collection<int, BackupDestinationStatus>  $backupDestinationStatuses
+     * @param Collection<int, BackupDestinationStatus> $backupDestinationStatuses
      */
     protected function displayOverview(Collection $backupDestinationStatuses): static
     {
@@ -70,14 +67,14 @@ class BackupsListCommand extends BaseCommand implements Isolatable
             'usedStorage' => Format::humanReadableSize($destination->usedStorage()),
         ];
 
-        if (! $destination->isReachable()) {
+        if (!$destination->isReachable()) {
             foreach (['amount', 'newest', 'usedStorage'] as $propertyName) {
                 $row[$propertyName] = '/';
             }
         }
 
         if ($backupDestinationStatus->getHealthCheckFailure() !== null) {
-            $row['disk'] = '<error>'.$row['disk'].'</error>';
+            $row['disk'] = '<error>' . $row['disk'] . '</error>';
         }
 
         return $row;
