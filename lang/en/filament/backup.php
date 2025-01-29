@@ -27,4 +27,5 @@ return [
     'success_db_backup' => 'Database backup has been queued and will be completed.',
     'file_backup_success' => 'File backup has been queued and will be completed.',
     'backup_success' => 'Database and file backups have been queued and will be completed.',
-];
+    'cleanup_success' => 'Cleanup has been successfully queued and will be completed.',
+    ];

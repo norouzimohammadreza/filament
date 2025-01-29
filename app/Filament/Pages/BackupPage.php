@@ -150,6 +150,9 @@ class BackupPage extends Page implements HasTable
                     ->color('info')
                     ->action(function () {
                         CleanupBackupJob::dispatch()->onQueue('cleanupBackup');
+                        Notification::make()
+                            ->body(__('filament/backup.cleanup_success'))
+                            ->success()->send();
                     }),
 
                 Action::make('Backup database')
