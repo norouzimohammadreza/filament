@@ -125,6 +125,7 @@ class BackupPage extends Page implements HasTable
                         ])->columns(4)->columnSpan(12),
 
                         Section::make(__('filament/backup.display_failure'))
+                            ->visible(fn()=>Cache::get('failure_backup_table')!=null)
                             ->schema([
                                 TextEntry::make('name')
                                     ->label(__('filament/backup.name'))
@@ -149,7 +150,7 @@ class BackupPage extends Page implements HasTable
                     ->label(__('filament\backup.cleanup_backup'))
                     ->color('info')
                     ->action(function () {
-                        CleanupBackupJob::dispatch()->onQueue('cleanupBackup');
+                        CleanupBackupJob::dispatch();
                         Notification::make()
                             ->body(__('filament/backup.cleanup_success'))
                             ->success()->send();
@@ -158,7 +159,7 @@ class BackupPage extends Page implements HasTable
                 Action::make('Backup database')
                     ->label(__('filament\backup.backup_database'))
                     ->action(function () {
-                        DbBackup::dispatch()->onQueue('dbBackup');
+                        DbBackup::dispatch();
                         Notification::make()
                             ->body(__('filament/backup.success_db_backup'))
                             ->success()->send();
@@ -167,7 +168,7 @@ class BackupPage extends Page implements HasTable
                 Action::make('Backup files')
                     ->label(__('filament\backup.backup_files'))
                     ->color('success')->action(function () {
-                        FileBackup::dispatch()->onQueue('fileBackup');
+                        FileBackup::dispatch();
                         Notification::make()
                             ->body(__('filament/backup.file_backup_success'))
                             ->success()->send();
@@ -176,7 +177,7 @@ class BackupPage extends Page implements HasTable
                 Action::make('Backup both')
                     ->label(__('filament\backup.backup_both'))
                     ->color('info')->action(function () {
-                        FileAndDbBackup::dispatch()->onQueue('backup');
+                        FileAndDbBackup::dispatch();
                         Notification::make()
                             ->body(__('filament/backup.backup_success'))
                             ->success()->send();
