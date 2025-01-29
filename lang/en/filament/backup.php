@@ -20,4 +20,6 @@ return [
     'amount' => 'Amount',
     'newest' => 'Newest',
     'used_storage' => 'Used Storage',
+    'failed_check' => 'Failed Check',
+    'description' => 'Description',
 ];

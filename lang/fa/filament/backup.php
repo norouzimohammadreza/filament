@@ -20,4 +20,6 @@ return [
     'amount' => 'مقدار',
     'newest' => 'جدیدترین',
     'used_storage' => 'فضای ذخیره‌سازی',
+    'failed_check' => 'بررسی ناموفق',
+    'description' => 'توضیحات',
 ];
