@@ -42,7 +42,7 @@ class BackupPage extends Page implements HasTable
     }
     public function mount()
     {
-       //Artisan::call('monitor');
+       Artisan::call('monitor');
        //dd(Cache::get('main_backup_table'));
     }
 
@@ -92,9 +92,7 @@ class BackupPage extends Page implements HasTable
             ->headerActions([
                 Action::make('Backup Overview')
                     ->label(__('filament/backup.backup_overview'))
-                    ->color('danger')->action(function () {
-                        Artisan::call('monitor');
-                    })->infolist([
+                    ->color('danger')->infolist([
                         Section::make()->schema([
                             TextEntry::make('name')
                                 ->label(__('filament/backup.name'))
