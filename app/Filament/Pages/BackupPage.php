@@ -90,30 +90,38 @@ class BackupPage extends Page implements HasTable
                     }),
             ])
             ->headerActions([
-                Action::make('Monitor Backups')
-                    ->label('نظارت بر بکآپ ها')
+                Action::make('Backup Overview')
+                    ->label(__('filament/backup.backup_overview'))
                     ->color('danger')->action(function () {
                         Artisan::call('monitor');
                     })->infolist([
-                        Section::make('ss')->schema([ TextEntry::make('name')
+                        Section::make()->schema([
+                            TextEntry::make('name')
+                                ->label(__('filament/backup.name'))
                             ->getStateUsing(fn()=>Cache::get('main_backup_table')[0]),
                             TextEntry::make('disk')
+                                ->label(__('filament/backup.disk'))
                                 ->getStateUsing
                                 (fn()=>Cache::get('main_backup_table')['disk']),
                             TextEntry::make('is reachable')
+                                ->label(__('filament/backup.is_reachable'))
                                 ->getStateUsing(fn()=>Cache::get('main_backup_table')[1]),
                             TextEntry::make('is Healthy')
+                                ->label(__('filament/backup.is_healthy'))
                                 ->getStateUsing(fn()=>Cache::get('main_backup_table')[2]),
                             TextEntry::make('amount')
+                                ->label(__('filament/backup.amount'))
                                 ->getStateUsing
                                 (fn()=>Cache::get('main_backup_table')['amount']),
                             TextEntry::make('newest')
+                                ->label(__('filament/backup.newest'))
                                 ->getStateUsing
                                 (fn()=>Cache::get('main_backup_table')['newest']),
                             TextEntry::make('usedStorage')
+                                ->label(__('filament/backup.used_storage'))
                                 ->getStateUsing
                                 (fn()=>Cache::get('main_backup_table')['usedStorage']),
-                            ])->columns(7)->columnSpan(12)
+                            ])->columns(4)->columnSpan(12)
 
 
                     ]),
