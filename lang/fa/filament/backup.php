@@ -14,4 +14,10 @@ return [
     'type' => 'نوع',
     'time' => 'زمان',
     'download' => 'دانلود',
+    'backup_overview' => 'مرور بکاپ',
+    'is_reachable' => 'دسترس‌پذیر است',
+    'is_healthy' => 'سلامت است',
+    'amount' => 'مقدار',
+    'newest' => 'جدیدترین',
+    'used_storage' => 'فضای ذخیره‌سازی',
 ];
