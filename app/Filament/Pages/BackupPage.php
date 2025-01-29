@@ -10,6 +10,7 @@ use App\Models\BackupRecord;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
@@ -155,18 +156,27 @@ class BackupPage extends Page implements HasTable
                     ->label(__('filament\backup.backup_database'))
                     ->action(function () {
                         DbBackup::dispatch()->onQueue('dbBackup');
+                        Notification::make()
+                            ->body(__('filament/backup.success_db_backup'))
+                            ->success()->send();
                     }),
 
                 Action::make('Backup files')
                     ->label(__('filament\backup.backup_files'))
                     ->color('success')->action(function () {
                         FileBackup::dispatch()->onQueue('fileBackup');
+                        Notification::make()
+                            ->body(__('filament/backup.file_backup_success'))
+                            ->success()->send();
                     }),
 
                 Action::make('Backup both')
                     ->label(__('filament\backup.backup_both'))
                     ->color('info')->action(function () {
                         FileAndDbBackup::dispatch()->onQueue('backup');
+                        Notification::make()
+                            ->body(__('filament/backup.backup_success'))
+                            ->success()->send();
                     }),
             ])
             ->actions([
