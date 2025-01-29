@@ -14,4 +14,10 @@ return [
     'type' => 'Type',
     'time' => 'Time',
     'download' => 'Download',
+    'backup_overview' => 'Backup Overview',
+    'is_reachable' => 'Is Reachable',
+    'is_healthy' => 'Is Healthy',
+    'amount' => 'Amount',
+    'newest' => 'Newest',
+    'used_storage' => 'Used Storage',
 ];
