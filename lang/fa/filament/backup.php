@@ -22,4 +22,6 @@ return [
     'used_storage' => 'فضای ذخیره‌سازی',
     'failed_check' => 'بررسی ناموفق',
     'description' => 'توضیحات',
+    'display_failure' => 'نمایش خطا',
+
 ];

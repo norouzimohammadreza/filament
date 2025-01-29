@@ -22,4 +22,5 @@ return [
     'used_storage' => 'Used Storage',
     'failed_check' => 'Failed Check',
     'description' => 'Description',
+    'display_failure' => 'Display Failure',
 ];

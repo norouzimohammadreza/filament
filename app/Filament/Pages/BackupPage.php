@@ -121,7 +121,7 @@ class BackupPage extends Page implements HasTable
                                 (fn()=>Cache::get('main_backup_table')['usedStorage']),
                             ])->columns(4)->columnSpan(12),
 
-                        Section::make()
+                        Section::make(__('filament/backup.display_failure'))
                         ->schema([
                             TextEntry::make('name')
                                 ->label(__('filament/backup.name'))
