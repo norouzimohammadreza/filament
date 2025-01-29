@@ -67,7 +67,7 @@ class BackupsListCommand extends BaseCommand implements Isolatable
             'newest' => $this->getFormattedBackupDate($destination->newestBackup()),
             'usedStorage' => Format::humanReadableSize($destination->usedStorage()),
         ];
-        Cache::put('main_backup_table',$row);
+
         if (!$destination->isReachable()) {
             foreach (['amount', 'newest', 'usedStorage'] as $propertyName) {
                 $row[$propertyName] = '/';
@@ -78,6 +78,7 @@ class BackupsListCommand extends BaseCommand implements Isolatable
             $row['disk'] = '<error>' . $row['disk'] . '</error>';
         }
 
+        Cache::put('main_backup_table',$row);
         return $row;
     }
 
