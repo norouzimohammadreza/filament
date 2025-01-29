@@ -24,4 +24,7 @@ return [
     'description' => 'Description',
     'display_failure' => 'Display Failure',
     'cleanup_backup' => 'Cleanup Backup',
+    'success_db_backup' => 'Database backup has been queued and will be completed.',
+    'file_backup_success' => 'File backup has been queued and will be completed.',
+    'backup_success' => 'Database and file backups have been queued and will be completed.',
 ];
