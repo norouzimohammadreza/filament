@@ -73,12 +73,10 @@ class BackupsListCommand extends BaseCommand implements Isolatable
                 $row[$propertyName] = '/';
             }
         }
-
+        Cache::put('main_backup_table',$row);
         if ($backupDestinationStatus->getHealthCheckFailure() !== null) {
             $row['disk'] = '<error>' . $row['disk'] . '</error>';
         }
-
-        Cache::put('main_backup_table',$row);
         return $row;
     }
 
