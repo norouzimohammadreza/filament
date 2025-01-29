@@ -41,10 +41,11 @@ class BackupPage extends Page implements HasTable
     {
         return trans('filament\dashboard.backup');
     }
+
     public function mount()
     {
-       Artisan::call('monitor');
-       //dd(Cache::get('main_backup_table'));
+        Artisan::call('monitor');
+        //dd(Cache::get('main_backup_table'));
     }
 
     public function table(Table $table): Table
@@ -97,48 +98,48 @@ class BackupPage extends Page implements HasTable
                         Section::make()->schema([
                             TextEntry::make('name')
                                 ->label(__('filament/backup.name'))
-                            ->getStateUsing(fn()=>Cache::get('main_backup_table')[0]),
+                                ->getStateUsing(fn() => Cache::get('main_backup_table')[0]),
                             TextEntry::make('disk')
                                 ->label(__('filament/backup.disk'))
                                 ->getStateUsing
-                                (fn()=>Cache::get('main_backup_table')['disk']),
+                                (fn() => Cache::get('main_backup_table')['disk']),
                             TextEntry::make('is reachable')
                                 ->label(__('filament/backup.is_reachable'))
-                                ->getStateUsing(fn()=>Cache::get('main_backup_table')[1]),
+                                ->getStateUsing(fn() => Cache::get('main_backup_table')[1]),
                             TextEntry::make('is Healthy')
                                 ->label(__('filament/backup.is_healthy'))
-                                ->getStateUsing(fn()=>Cache::get('main_backup_table')[2]),
+                                ->getStateUsing(fn() => Cache::get('main_backup_table')[2]),
                             TextEntry::make('amount')
                                 ->label(__('filament/backup.amount'))
                                 ->getStateUsing
-                                (fn()=>Cache::get('main_backup_table')['amount']),
+                                (fn() => Cache::get('main_backup_table')['amount']),
                             TextEntry::make('newest')
                                 ->label(__('filament/backup.newest'))
                                 ->getStateUsing
-                                (fn()=>Cache::get('main_backup_table')['newest']),
+                                (fn() => Cache::get('main_backup_table')['newest']),
                             TextEntry::make('usedStorage')
                                 ->label(__('filament/backup.used_storage'))
                                 ->getStateUsing
-                                (fn()=>Cache::get('main_backup_table')['usedStorage']),
-                            ])->columns(4)->columnSpan(12),
+                                (fn() => Cache::get('main_backup_table')['usedStorage']),
+                        ])->columns(4)->columnSpan(12),
 
                         Section::make(__('filament/backup.display_failure'))
-                        ->schema([
-                            TextEntry::make('name')
-                                ->label(__('filament/backup.name'))
-                            ->getStateUsing(fn()=>Cache::get('failure_backup_table')[0]),
-                            TextEntry::make('disk')
-                                ->label(__('filament/backup.disk'))
-                                ->getStateUsing(fn()=>Cache::get('failure_backup_table')[1]),
-                            TextEntry::make('failed check')
-                                ->label(__('filament/backup.failed_check'))
-                                ->getStateUsing(fn()=>Cache::get('failure_backup_table')[2]),
-                            TextEntry::make('description')
-                                ->label(__('filament/backup.description'))
-                                ->getStateUsing(fn()=>Cache::get('failure_backup_table')[3])
-                            ->columnSpan(3),
+                            ->schema([
+                                TextEntry::make('name')
+                                    ->label(__('filament/backup.name'))
+                                    ->getStateUsing(fn() => Cache::get('failure_backup_table')[0]),
+                                TextEntry::make('disk')
+                                    ->label(__('filament/backup.disk'))
+                                    ->getStateUsing(fn() => Cache::get('failure_backup_table')[1]),
+                                TextEntry::make('failed check')
+                                    ->label(__('filament/backup.failed_check'))
+                                    ->getStateUsing(fn() => Cache::get('failure_backup_table')[2]),
+                                TextEntry::make('description')
+                                    ->label(__('filament/backup.description'))
+                                    ->getStateUsing(fn() => Cache::get('failure_backup_table')[3])
+                                    ->columnSpan(3),
 
-                        ])->columns(3)->columnSpan(12),
+                            ])->columns(3)->columnSpan(12),
 
 
                     ]),
@@ -147,13 +148,13 @@ class BackupPage extends Page implements HasTable
                     ->label(__('filament\backup.cleanup_backup'))
                     ->color('info')
                     ->action(function () {
-
+                        CleanupBackupJob::dispatch()->onQueue('cleanupBackup');
                     }),
 
                 Action::make('Backup database')
                     ->label(__('filament\backup.backup_database'))
                     ->action(function () {
-                        CleanupBackupJob::dispatch()->onQueue('cleanupBackup');
+                        DbBackup::dispatch()->onQueue('dbBackup');
                     }),
 
                 Action::make('Backup files')
