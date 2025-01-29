@@ -124,12 +124,16 @@ class BackupPage extends Page implements HasTable
                         Section::make()
                         ->schema([
                             TextEntry::make('name')
+                                ->label(__('filament/backup.name'))
                             ->getStateUsing(fn()=>Cache::get('failure_backup_table')[0]),
                             TextEntry::make('disk')
+                                ->label(__('filament/backup.disk'))
                                 ->getStateUsing(fn()=>Cache::get('failure_backup_table')[1]),
                             TextEntry::make('failed check')
+                                ->label(__('filament/backup.failed_check'))
                                 ->getStateUsing(fn()=>Cache::get('failure_backup_table')[2]),
                             TextEntry::make('description')
+                                ->label(__('filament/backup.description'))
                                 ->getStateUsing(fn()=>Cache::get('failure_backup_table')[3])
                             ->columnSpan(3),
 
