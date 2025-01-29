@@ -23,5 +23,5 @@ return [
     'failed_check' => 'بررسی ناموفق',
     'description' => 'توضیحات',
     'display_failure' => 'نمایش خطا',
-
+    'cleanup_backup' => 'پاکسازی بکاپ ها',
 ];

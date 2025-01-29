@@ -23,4 +23,5 @@ return [
     'failed_check' => 'Failed Check',
     'description' => 'Description',
     'display_failure' => 'Display Failure',
+    'cleanup_backup' => 'Cleanup Backup',
 ];

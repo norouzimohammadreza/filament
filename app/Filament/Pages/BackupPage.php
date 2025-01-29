@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Jobs\CleanupBackupJob;
 use App\Jobs\DbBackup;
 use App\Jobs\FileAndDbBackup;
 use App\Jobs\FileBackup;
@@ -142,10 +143,17 @@ class BackupPage extends Page implements HasTable
 
                     ]),
 
+                Action::make('Cleanup Backup')
+                    ->label(__('filament\backup.cleanup_backup'))
+                    ->color('info')
+                    ->action(function () {
+
+                    }),
+
                 Action::make('Backup database')
                     ->label(__('filament\backup.backup_database'))
                     ->action(function () {
-                        DbBackup::dispatch()->onQueue('dbBackup');
+                        CleanupBackupJob::dispatch()->onQueue('cleanupBackup');
                     }),
 
                 Action::make('Backup files')
