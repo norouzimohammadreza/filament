@@ -34,8 +34,8 @@ class ScheduleSeeder extends Seeder
             ]
         ];
 
-        foreach ($data as $key => $value) {
-            Schedule::create($value);
-        }
+//        foreach ($data as $key => $value) {
+//            Schedule::create($value);
+//        }
     }
 }
