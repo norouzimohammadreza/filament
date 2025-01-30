@@ -24,8 +24,9 @@ class DatabaseSeeder extends Seeder
             srand(self::$RANDOM_SEED);
 
         $this->call([
-            UserSeeder::class,
+            //UserSeeder::class,
             ShieldSeeder::class,
+            ScheduleSeeder::class,
         ]);
 
         if (self::$useSeed)

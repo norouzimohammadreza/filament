@@ -26,11 +26,12 @@ class User extends Authenticatable implements FilamentUser
 
     public function __construct(array $attributes = [])
     {
+        if ($this->getModelLogSetting()){
         parent::__construct($attributes);
         $modelLoggingSettings = $this->getModelLogSetting();
         $this->logLevel = $modelLoggingSettings->logging_level;
         $this->enableLoggingModelsEvents = $modelLoggingSettings->is_enabled;
-    }
+    }}
 
     protected $fillable = [
         'name',
