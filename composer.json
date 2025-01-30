@@ -6,16 +6,18 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-pcntl": "*",
         "ext-pdo": "*",
         "ext-zip": "*",
         "bezhansalleh/filament-shield": "^3.3",
+        "brofian/cron-translator": "^0.2.4",
         "filament/filament": "^3.2",
         "hekmatinasser/verta": "*",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
+        "lorisleiva/cron-translator": "^0.4.5",
         "spatie/laravel-activitylog": "^4.9",
-        "spatie/laravel-backup": "^9.2",
-        "ext-pcntl": "*"
+        "spatie/laravel-backup": "^9.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

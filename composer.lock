@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c692d9aae8e03827658a986bacba55b0",
+    "content-hash": "847ffbb5e440dc76c3c30dda64c79208",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -368,6 +368,52 @@
                 }
             ],
             "time": "2023-11-29T23:19:16+00:00"
+        },
+        {
+            "name": "brofian/cron-translator",
+            "version": "0.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Brofian/cron-translator.git",
+                "reference": "38ec673154cb0730809139c764f8f2d91fe2583b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Brofian/cron-translator/zipball/38ec673154cb0730809139c764f8f2d91fe2583b",
+                "reference": "38ec673154cb0730809139c764f8f2d91fe2583b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Brofian\\CronTranslator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabian Holzwarth",
+                    "email": "info@fabianholzwarth.de",
+                    "role": "developer"
+                }
+            ],
+            "description": "A simple and lightweight cron expression to human readable translator",
+            "homepage": "https://github.com/Brofian/cron-translator",
+            "keywords": [
+                "cron",
+                "translate"
+            ],
+            "support": {
+                "issues": "https://github.com/Brofian/cron-translator/issues",
+                "source": "https://github.com/Brofian/cron-translator/tree/0.2.4"
+            },
+            "time": "2023-03-14T10:20:19+00:00"
         },
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -3402,6 +3448,62 @@
                 }
             ],
             "time": "2024-10-15T19:35:06+00:00"
+        },
+        {
+            "name": "lorisleiva/cron-translator",
+            "version": "v0.4.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lorisleiva/cron-translator.git",
+                "reference": "3c7d8e3984c845a33bc1ae3cdc36c0b38f4783e9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lorisleiva/cron-translator/zipball/3c7d8e3984c845a33bc1ae3cdc36c0b38f4783e9",
+                "reference": "3c7d8e3984c845a33bc1ae3cdc36c0b38f4783e9",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Lorisleiva\\CronTranslator\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Loris LEIVA",
+                    "email": "loris.leiva@gmail.com",
+                    "homepage": "https://lorisleiva.com"
+                }
+            ],
+            "description": "Makes CRON expressions human-readable",
+            "homepage": "https://github.com/lorisleiva/cron-translator",
+            "keywords": [
+                "cron",
+                "expression",
+                "human"
+            ],
+            "support": {
+                "issues": "https://github.com/lorisleiva/cron-translator/issues",
+                "source": "https://github.com/lorisleiva/cron-translator/tree/v0.4.5"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/lorisleiva",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-02-02T10:51:56+00:00"
         },
         {
             "name": "masterminds/html5",
@@ -11317,6 +11419,7 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2",
+        "ext-pcntl": "*",
         "ext-pdo": "*",
         "ext-zip": "*"
     },
