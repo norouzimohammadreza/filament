@@ -14,28 +14,26 @@ class ScheduleSeeder extends Seeder
     public function run(): void
     {
         $data = [
-            [
-                'name' => 'TaskRunEveryMinutes',
-                'frequency' => 'everySecond',
-            ],
-            [
-                'name' => 'TaskRunHourly',
-                'frequency' => 'hourly'
-            ],
-            [
-                'name' => 'TaskRunHourlyWithParam',
-                'frequency' => 'hourlyAt',
-                'params' => '17'
-            ],
-            [
-                'name' => 'TaskRunTwiceDaily',
-                'frequency' => 'twiceDaily',
-                'params' => '1,13'
-            ]
+                [
+                    'name' => 'TaskRunEveryMinutes',
+                    'cron' => '* * * * *',
+                ],
+                [
+                    'name' => 'TaskRunHourly',
+                    'cron' => '0 * * * *',
+                ],
+                [
+                    'name' => 'TaskRunHourlyWithParam',
+                    'cron' => '30 * * * *',
+                ],
+                [
+                    'name' => 'TaskRunTwiceDaily',
+                    'cron' => '0 7,19 * * *',
+                ]
         ];
 
-//        foreach ($data as $key => $value) {
-//            Schedule::create($value);
-//        }
+        foreach ($data as $key => $value) {
+            Schedule::create($value);
+        }
     }
 }
