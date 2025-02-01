@@ -3,6 +3,8 @@
 namespace App\Filament\Pages;
 
 use App\CronExpressionParser\CronExpression;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
 
@@ -44,6 +46,13 @@ class Schedule extends Page implements HasTable
             ->headerActions([
                 CreateAction::make()
                 ->label(__('filament/schedules.create_new_schedule'))
+                ->modalHeading(__('filament/schedules.create_new_schedule'))
+                ->form([
+                    Section::make()->schema([
+                        TextInput::make('name'),
+                        TextInput::make('cron'),
+                    ])->columns()
+                ]),
             ])
             ->columns([
                 TextColumn::make('name')
