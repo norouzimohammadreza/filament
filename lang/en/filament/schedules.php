@@ -79,4 +79,5 @@ return [
             'clock' => 'At %02s:%02s o\'clock',
         ],
     ],
+    'schedule_tasks' => 'Schedule tasks',
 ];
