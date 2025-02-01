@@ -83,4 +83,5 @@ return [
     'name' => 'Name',
     'cron_pattern' => 'Cron Pattern',
     'expression_pattern' => 'Expression Pattern',
+    'create_new_schedule' => 'Create Schedule',
 ];

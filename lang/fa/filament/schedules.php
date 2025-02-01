@@ -83,4 +83,5 @@ return [
     'name' => 'نام',
     'cron_pattern' => 'الگوی کرون',
     'expression_pattern' => 'توضیح الگو',
+    'create_new_schedule' => 'ایجاد زمان بندی جدید',
 ];

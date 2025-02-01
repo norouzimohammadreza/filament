@@ -43,6 +43,7 @@ class Schedule extends Page implements HasTable
             ->query(\App\Models\Schedule::query())
             ->headerActions([
                 CreateAction::make()
+                ->label(__('filament/schedules.create_new_schedule'))
             ])
             ->columns([
                 TextColumn::make('name')
