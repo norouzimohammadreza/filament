@@ -49,8 +49,13 @@ class Schedule extends Page implements HasTable
                 ->modalHeading(__('filament/schedules.create_new_schedule'))
                 ->form([
                     Section::make()->schema([
-                        TextInput::make('name'),
-                        TextInput::make('cron'),
+                        TextInput::make('name')
+                            ->label(__('filament/schedules.name'))
+                            ->required(),
+                        TextInput::make('cron')
+                            ->label(__('filament/schedules.cron_pattern'))
+                            ->required()
+                        ->default('* * * * *'),
                     ])->columns()
                 ]),
             ])
