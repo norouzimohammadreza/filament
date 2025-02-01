@@ -37,10 +37,17 @@ class Schedule extends Page implements HasTable
         return $table
             ->query(\App\Models\Schedule::query())
             ->columns([
-                TextColumn::make('name'),
-                TextColumn::make('cron'),
-                TextColumn::make('translated')->getStateUsing(fn(\App\Models\Schedule $schedule) => (CronExpression::expressionToString($schedule->cron))),
-
+                TextColumn::make('name')
+                    ->alignCenter()
+                ->label(__('filament/schedules.name')),
+                TextColumn::make('cron')
+                    ->alignCenter()
+                    ->label(__('filament/schedules.cron_pattern')),
+                TextColumn::make('translated')
+                    ->alignCenter()
+                    ->getStateUsing(fn(\App\Models\Schedule $schedule)
+                    => (CronExpression::expressionToString($schedule->cron)))
+                    ->label(__('filament/schedules.expression_pattern')),
             ]);
     }
 }

@@ -80,4 +80,7 @@ return [
         ],
     ],
     'schedule_tasks' => 'زمان بندی تسک ها',
+    'name' => 'نام',
+    'cron_pattern' => 'الگوی کرون',
+    'expression_pattern' => 'توضیح الگو',
 ];

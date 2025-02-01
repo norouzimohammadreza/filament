@@ -80,4 +80,7 @@ return [
         ],
     ],
     'schedule_tasks' => 'Schedule tasks',
+    'name' => 'Name',
+    'cron_pattern' => 'Cron Pattern',
+    'expression_pattern' => 'Expression Pattern',
 ];
