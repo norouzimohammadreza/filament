@@ -2,13 +2,14 @@
 
 namespace App\Filament\Pages;
 
+use App\CronExpressionParser\CronExpression;
+use Brofian\CronTranslator\CronTranslator;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
-use Lorisleiva\CronTranslator\CronTranslator;
 
 class Schedule extends Page  implements HasTable
 {
@@ -25,7 +26,7 @@ class Schedule extends Page  implements HasTable
             ->columns([
                 TextColumn::make('name'),
                 TextColumn::make('cron'),
-                TextColumn::make('translated')->getStateUsing(fn(\App\Models\Schedule $schedule)=>\Brofian\CronTranslator\CronTranslator::expressionToString($schedule->cron)),
+                TextColumn::make('translated')->getStateUsing(fn(\App\Models\Schedule $schedule)=>(CronExpression::expressionToString($schedule->cron))),
 
             ]);
     }
