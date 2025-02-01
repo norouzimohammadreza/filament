@@ -19,6 +19,10 @@ class Schedule extends Page  implements HasTable
 
     protected static string $view = 'filament.pages.schedule';
 
+    public static function getNavigationLabel(): string
+    {
+        return trans('filament\dashboard.schedule');
+    }
     public function table(Table $table): Table
     {
         return $table
