@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
-    public $fillable = ['name', 'frequency', 'params'];
+    public $fillable = ['name', 'cron'];
 }
