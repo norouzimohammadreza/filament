@@ -21,7 +21,7 @@ class Schedule extends Page implements HasTable
     use InteractsWithTable;
     use InteractsWithForms;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationIcon = 'heroicon-m-signal';
 
     protected static string $view = 'filament.pages.schedule';
 
