@@ -50,7 +50,7 @@ return [
             'suffix' => '',
             'connection' => ' and ',
             'interval' => 'on every %s. day',
-            'single' => 'on every %s. day',
+            'single' => 'on day %s.',
             'always' => '',
             'range_prefix' => 'on every day',
             'range' => 'from the %s. to the %s.',

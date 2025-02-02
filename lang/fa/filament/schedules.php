@@ -50,7 +50,7 @@ return [
             'suffix' => '',
             'connection' => ' و ',
             'interval' => 'در هر %s. روز',
-            'single' => 'در هر %s. روز',
+            'single' => 'روز %s ام',
             'always' => '',
             'range_prefix' => 'در هر روز',
             'range' => 'از %s تا %s.',
