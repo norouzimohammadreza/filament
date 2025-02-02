@@ -53,7 +53,7 @@ return [
             'single' => 'روز %s ام',
             'always' => '',
             'range_prefix' => 'در هر روز',
-            'range' => 'از %s تا %s.',
+            'range' => ' بین %s ام تا %s ام',
         ],
         'months' => [
             'prefix' => ',',
