@@ -43,7 +43,7 @@ return [
             'single' => 'ساعت %s.',
             'always' => '',
             'range_prefix' => '',
-            'range' => 'از %02s ساعت تا %02s ساعت',
+            'range' => 'از ساعت %02s تا ساعت %02s',
         ],
         'days' => [
             'prefix' => '',
@@ -52,7 +52,7 @@ return [
             'interval' => 'در هر %s. روز',
             'single' => 'روز %s ام',
             'always' => '',
-            'range_prefix' => 'در هر روز',
+            'range_prefix' => 'در روزهای',
             'range' => ' بین %s ام تا %s ام',
         ],
         'months' => [
@@ -69,7 +69,7 @@ return [
             'prefix' => '',
             'suffix' => '',
             'connection' => ' و ',
-            'interval' => 'در هر %s. روز هفته',
+            'interval' => 'هر %s. روز در هفته',
             'single' => 'در %s',
             'always' => '',
             'range_prefix' => '',
